@@ -41,7 +41,7 @@ For now, only a small supset of what is shown in the code example works.
 
 ## Medium priority
 - [ ] Implement AniList client
-- [ ] Implement HummingBird client
+- [x] Implement HummingBird client
 - [ ] Implement MyAnimeList client
 
 ## Low priority 
