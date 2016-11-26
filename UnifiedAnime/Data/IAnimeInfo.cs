@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UnifiedAnime.Data
+﻿namespace UnifiedAnime.Data
 {
     public interface IAnimeInfo
     {
-        string Url { get; set; }
-        string Title { get; set; }
+        #region Properties
+
+        string ShowType { get; set; }
+        int Id { get; set; }
         int EpisodeCount { get; set; }
         string ImageUrl { get; set; }
+        double Score { get; set; }
         string Synopsis { get; set; }
-        double Rating { get; set; }
+        string Title { get; set; }
+        string Url { get; set; }
+
+        #endregion
     }
 }

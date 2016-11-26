@@ -13,7 +13,7 @@ namespace UnifiedAnime.Sample
         {
             var client = new HummingBirdV1Client();
 
-            var result = client.SearchAnime("Flip Flappers");
+            var result = client.GetFavorite("Hejsil");
             foreach (var anime in result.Data)
             {
                 Console.WriteLine(anime.Title);

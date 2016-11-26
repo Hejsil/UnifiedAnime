@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clients\AniList\AniListClient.cs" />
     <Compile Include="Clients\Client.cs" />
     <Compile Include="Clients\ImplementedClient.cs" />
     <Compile Include="Clients\HummingBirdV1\HummingBirdV1Client.cs" />
@@ -77,7 +78,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Clients\AniDB\" />
-    <Folder Include="Clients\AniList\" />
     <Folder Include="Clients\AnimePlanet\" />
     <Folder Include="Clients\HummingBirdV2\" />
     <Folder Include="Clients\MyAnimeList\" />
