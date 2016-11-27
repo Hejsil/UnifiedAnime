@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2FB73706
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifiedAnime.Samples.HummingBird", "UnifiedAnime.Samples.HummingBird\UnifiedAnime.Samples.HummingBird.csproj", "{6C8ECA22-CBEA-4950-BF19-D8D241EF8E42}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifiedAnime.Samples.SimpleConsole", "UnifiedAnime.Samples.SimpleConsole\UnifiedAnime.Samples.SimpleConsole.csproj", "{1231EDA9-190B-4AD2-8FB1-3ED06C83A54B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,11 +27,16 @@ Global
 		{6C8ECA22-CBEA-4950-BF19-D8D241EF8E42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C8ECA22-CBEA-4950-BF19-D8D241EF8E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C8ECA22-CBEA-4950-BF19-D8D241EF8E42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1231EDA9-190B-4AD2-8FB1-3ED06C83A54B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1231EDA9-190B-4AD2-8FB1-3ED06C83A54B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1231EDA9-190B-4AD2-8FB1-3ED06C83A54B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1231EDA9-190B-4AD2-8FB1-3ED06C83A54B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6C8ECA22-CBEA-4950-BF19-D8D241EF8E42} = {BA3E7308-7C19-4110-8CDB-3576EF4A0BB6}
+		{1231EDA9-190B-4AD2-8FB1-3ED06C83A54B} = {BA3E7308-7C19-4110-8CDB-3576EF4A0BB6}
 	EndGlobalSection
 EndGlobal

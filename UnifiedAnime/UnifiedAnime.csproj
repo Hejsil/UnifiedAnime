@@ -50,13 +50,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Clients\AniList\AniListClient.cs" />
+    <Compile Include="Clients\AniList\UnifiedAniListClient.cs" />
     <Compile Include="Clients\AnimeClient.cs" />
     <Compile Include="Clients\Bases\RestBasedAnimeClient.cs" />
     <Compile Include="Clients\HummingBirdV1\UnifiedHummingBirdV1Client.cs" />
     <Compile Include="Clients\ImplementedClient.cs" />
     <Compile Include="Clients\HummingBirdV1\HummingBirdV1Client.cs" />
     <Compile Include="Clients\AnimeClientMethod.cs" />
+    <Compile Include="Clients\MyAnimeList\UnifiedMyAnimeListClient.cs" />
     <Compile Include="Data\Common\AnimeAgeRating.cs" />
     <Compile Include="Data\Common\AnimeStatus.cs" />
     <Compile Include="Data\Common\EntryStatus.cs" />
@@ -104,7 +105,6 @@
     <Folder Include="Clients\AniDB\" />
     <Folder Include="Clients\AnimePlanet\" />
     <Folder Include="Clients\HummingBirdV2\" />
-    <Folder Include="Clients\MyAnimeList\" />
     <Folder Include="Data\AniDB\" />
     <Folder Include="Data\AniList\" />
     <Folder Include="Data\AnimePlanet\" />

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{63C1D83B-A5D4-4FC1-B717-9005F7A80072}</ProjectGuid>
+    <ProjectGuid>{1231EDA9-190B-4AD2-8FB1-3ED06C83A54B}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnifiedAnime.Sample</RootNamespace>
-    <AssemblyName>UnifiedAnime.Sample</AssemblyName>
+    <RootNamespace>UnifiedAnime.Samples.SimpleConsole</RootNamespace>
+    <AssemblyName>UnifiedAnime.Samples.SimpleConsole</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

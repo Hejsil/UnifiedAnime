@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("UnifiedAnime.Sample")]
+[assembly: AssemblyTitle("UnifiedAnime.Samples.SimpleConsole")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("UnifiedAnime.Sample")]
+[assembly: AssemblyProduct("UnifiedAnime.Samples.SimpleConsole")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("63c1d83b-a5d4-4fc1-b717-9005f7a80072")]
+[assembly: Guid("1231eda9-190b-4ad2-8fb1-3ed06c83a54b")]
 
 // Version information for an assembly consists of the following four values:
 //

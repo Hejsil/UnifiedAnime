@@ -60,6 +60,9 @@ namespace UnifiedAnime.Data.HummingBirdV1
             set { Rating.Value = ScoreConverter.UnifiedToHummingBird(value); }
         }
 
+        [JsonIgnore]
+        public IAnimeInfo Info => Anime;
+
         #endregion
     }
 }

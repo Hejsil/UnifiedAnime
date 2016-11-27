@@ -6,14 +6,23 @@ namespace UnifiedAnime.Data
     {
         #region Properties
 
-        int EpisodesWatched { get; set; }
-        int Id { get; set; }
-        string Notes { get; set; }
-        bool Private { get; set; }
-        bool Rewatching { get; set; }
-        int RewatchTimes { get; set; }
-        double Score { get; set; }
+        int Id { get; }
+
         EntryStatus Status { get; set; }
+
+        int EpisodesWatched { get; set; }
+
+        double Score { get; set; }
+
+        bool Rewatching { get; set; }
+
+        int RewatchTimes { get; set; }
+
+        bool Private { get; set; }
+
+        string Notes { get; set; }
+
+        IAnimeInfo Info { get; }
 
         #endregion
     }

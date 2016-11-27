@@ -1,19 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using UnifiedAnime.Data;
 using UnifiedAnime.Data.Common;
 
-namespace UnifiedAnime.Clients.AniList
+namespace UnifiedAnime.Clients.MyAnimeList
 {
-    public class AniListClient : IAnimeClient
+    public class UnifiedMyAnimeListClient : IAnimeClient
     {
-        private const string ClientBaseUrl = "https://anilist.co/api";
-
         public Response LibraryAdd(IAnimeEntry entry)
         {
             throw new NotImplementedException();
         }
 
-        public Response AuthenticateKey(string key)
+        public Response LibraryUpdate(IAnimeEntry entry)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response LibraryRemove(IAnimeEntry entry)
         {
             throw new NotImplementedException();
         }
@@ -48,7 +55,7 @@ namespace UnifiedAnime.Clients.AniList
             throw new NotImplementedException();
         }
 
-        public bool IsMethodSupported(AnimeClientMethod animeClientMethod)
+        public Tuple<Response, IAnimeInfo[]> BrowseAnime(string query)
         {
             throw new NotImplementedException();
         }
@@ -63,22 +70,12 @@ namespace UnifiedAnime.Clients.AniList
             throw new NotImplementedException();
         }
 
-        public Response UnifiedRemoveEntry(int id)
+        public Response AuthenticateKey(string key)
         {
             throw new NotImplementedException();
         }
 
-        public Response LibraryRemove(IAnimeEntry entry)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Tuple<Response, IAnimeInfo[]> BrowseAnime(string query)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Response LibraryUpdate(IAnimeEntry entry)
+        public bool IsMethodSupported(AnimeClientMethod animeClientMethod)
         {
             throw new NotImplementedException();
         }
