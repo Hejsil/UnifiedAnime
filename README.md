@@ -68,9 +68,9 @@ if (response.Item1.Success)
 
 ```
 
-A whole system for keeping multible sites up to date at the same time could be implemented like this.
+A whole system, for keeping multible sites up to date, could be implemented like this.
 
-So inferface are great, but each site has it's own set of features. Some sites might have something specific that the interface can't incorparate. None inferface versions of each client can therefor also be instantiated.
+So inferface are great, but a generic intefaces can cover everything. Some sites might have something specific that the interface can't incorparate. None inferface versions of each client can therefor also be instantiated.
 
 ```csharp
 var client = new HummingBirdV1Client();
@@ -110,4 +110,4 @@ var data2 = unifiedClient.SearchAnime("Flip Flappers");
 
 ## Low priority 
 - [ ] Implement AniDB client
-- [ ] Implement AnimePlanet client (AnimePlanet have no api, so it's gonna be one giant hack)
+- [ ] Implement AnimePlanet client (AnimePlanet have no api, so it's gonna be one giant hack(Is it even possible?))
