@@ -9,7 +9,7 @@ namespace UnifiedAnime.Other.JsonConverters.HummingBirdV1
     /// all values of ShowType.
     /// </remarks>
     /// </summary>
-    public class ShowTypeConverter : BaseStringToTypeConverter<ShowType>
+    public class ShowTypeMapper : TypeToTypeMapper<string, ShowType>
     {
         protected override Map<string, ShowType> Map { get; } = new Map<string, ShowType>
         {

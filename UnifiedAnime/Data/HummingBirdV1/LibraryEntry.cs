@@ -2,7 +2,6 @@
 using System.Globalization;
 using Newtonsoft.Json;
 using UnifiedAnime.Data.Common;
-using UnifiedAnime.Clients.HummingBirdV1;
 using UnifiedAnime.Other;
 using UnifiedAnime.Other.JsonConverters;
 using UnifiedAnime.Other.JsonConverters.HummingBirdV1;
@@ -38,7 +37,7 @@ namespace UnifiedAnime.Data.HummingBirdV1
         public bool NotesPresent { get; set; }
 
         [JsonProperty("status")]
-        [JsonConverter(typeof(EntryStatusConverter))]
+        [JsonConverter(typeof(EntryStatusMapper))]
         public EntryStatus Status { get; set; }
 
         [JsonProperty("private")]

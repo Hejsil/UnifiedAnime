@@ -10,13 +10,13 @@ using UnifiedAnime.Data.Common;
 
 namespace UnifiedAnime.Other.JsonConverters
 {
-    public abstract class BaseStringToTypeConverter<T> : JsonConverter
+    public abstract class TypeToTypeMapper<T1, T2> : JsonConverter
     {
-        protected abstract Map<string, T> Map { get; }
+        protected abstract Map<T1, T2> Map { get; }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var result = TypeToString((T)value);
+            var result = Type2ToType1((T2)value);
 
             if (result != null)
                 writer.WriteValue(result);
@@ -27,16 +27,16 @@ namespace UnifiedAnime.Other.JsonConverters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var value = (string)reader.Value;
-            return StringToType(value);
+            var value = (T1)reader.Value;
+            return Type1ToType2(value);
         }
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(string);
+            return objectType == typeof(T1);
         }
 
-        public string TypeToString(T t) => Map.Reverse[t];
-        public T StringToType(string str) => Map.Forward[str];
+        public T2 Type1ToType2(T1 t1) => Map.Forward[t1];
+        public T1 Type2ToType1(T2 t2) => Map.Reverse[t2];
     }
 }

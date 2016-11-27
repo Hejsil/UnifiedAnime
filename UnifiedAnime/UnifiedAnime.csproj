@@ -50,14 +50,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Clients\AniList\UnifiedAniListClient.cs" />
-    <Compile Include="Clients\AnimeClient.cs" />
     <Compile Include="Clients\Bases\RestBasedAnimeClient.cs" />
-    <Compile Include="Clients\HummingBirdV1\UnifiedHummingBirdV1Client.cs" />
-    <Compile Include="Clients\ImplementedClient.cs" />
-    <Compile Include="Clients\HummingBirdV1\HummingBirdV1Client.cs" />
-    <Compile Include="Clients\AnimeClientMethod.cs" />
-    <Compile Include="Clients\MyAnimeList\UnifiedMyAnimeListClient.cs" />
+    <Compile Include="Clients\Browsers\AniList\AniListBrowser.cs" />
+    <Compile Include="Clients\Browsers\HummingBirdV1\UnifiedHummingBirdV1Browser.cs" />
+    <Compile Include="Clients\IAnimeProfile.cs" />
+    <Compile Include="Clients\Browsers\HummingBirdV1\HummingBirdV1Browser.cs" />
+    <Compile Include="Clients\Profiles\AniList\AniListBrowser.cs" />
+    <Compile Include="Clients\Profiles\HummingBirdV1\HummingBirdV1Profile.cs" />
+    <Compile Include="Clients\Profiles\HummingBirdV1\UnifiedHummingBirdV1Profile.cs" />
+    <Compile Include="Data\AniList\Activity.cs" />
+    <Compile Include="Data\AniList\ActivityType.cs" />
+    <Compile Include="Data\AniList\Anime.cs" />
+    <Compile Include="Data\AniList\Credentials.cs" />
+    <Compile Include="Data\AniList\Manga.cs" />
+    <Compile Include="Data\AniList\MediaTypes.cs" />
+    <Compile Include="Data\AniList\Series.cs" />
+    <Compile Include="Data\AniList\SmallSeries.cs" />
+    <Compile Include="Data\AniList\SmallUser.cs" />
+    <Compile Include="Data\AniList\User.cs" />
     <Compile Include="Data\Common\AnimeAgeRating.cs" />
     <Compile Include="Data\Common\AnimeStatus.cs" />
     <Compile Include="Data\Common\EntryStatus.cs" />
@@ -75,25 +85,25 @@
     <Compile Include="Data\HummingBirdV1\StoryType.cs" />
     <Compile Include="Data\HummingBirdV1\SubStory.cs" />
     <Compile Include="Data\HummingBirdV1\SubStoryType.cs" />
-    <Compile Include="Data\HummingBirdV1\TitleLanguage.cs" />
+    <Compile Include="Data\Common\TitleLanguage.cs" />
     <Compile Include="Data\HummingBirdV1\User.cs" />
     <Compile Include="Data\HummingBirdV1\UserMini.cs" />
-    <Compile Include="Clients\IAnimeClient.cs" />
     <Compile Include="Data\IAnimeEntry.cs" />
     <Compile Include="Data\IAnimeInfo.cs" />
-    <Compile Include="Data\IUserInfo.cs" />
-    <Compile Include="Data\IFeedEntry.cs" />
+    <Compile Include="Clients\IAnimeBrowser.cs" />
     <Compile Include="MoreCollections\Map.cs" />
-    <Compile Include="Other\JsonConverters\BaseStringToTypeConverter.cs" />
-    <Compile Include="Other\JsonConverters\HummingBirdV1\SubStoryTypeConverter.cs" />
-    <Compile Include="Other\JsonConverters\HummingBirdV1\StoryTypeConverter.cs" />
-    <Compile Include="Other\JsonConverters\HummingBirdV1\TitleLanguageConverter.cs" />
-    <Compile Include="Other\JsonConverters\HummingBirdV1\ItemTypeConverter.cs" />
-    <Compile Include="Other\JsonConverters\HummingBirdV1\RatingTypeConverter.cs" />
-    <Compile Include="Other\JsonConverters\HummingBirdV1\ShowTypeConverter.cs" />
-    <Compile Include="Other\JsonConverters\HummingBirdV1\AnimeStatusConverter.cs" />
+    <Compile Include="Other\JsonConverters\AniList\ActivityTypeConverter.cs" />
+    <Compile Include="Other\JsonConverters\AniList\TitleLanguageMapper.cs" />
+    <Compile Include="Other\JsonConverters\TypeToTypeMapper.cs" />
+    <Compile Include="Other\JsonConverters\HummingBirdV1\SubStoryTypeMapper.cs" />
+    <Compile Include="Other\JsonConverters\HummingBirdV1\StoryTypeMapper.cs" />
+    <Compile Include="Other\JsonConverters\HummingBirdV1\TitleLanguageMapper.cs" />
+    <Compile Include="Other\JsonConverters\HummingBirdV1\ItemTypeMapper.cs" />
+    <Compile Include="Other\JsonConverters\HummingBirdV1\RatingTypeMapper.cs" />
+    <Compile Include="Other\JsonConverters\HummingBirdV1\ShowTypeMapper.cs" />
+    <Compile Include="Other\JsonConverters\HummingBirdV1\AnimeStatusMapper.cs" />
     <Compile Include="Other\JsonConverters\InterfaceInstatiator.cs" />
-    <Compile Include="Other\JsonConverters\HummingBirdV1\EntryStatusConverter.cs" />
+    <Compile Include="Other\JsonConverters\HummingBirdV1\EntryStatusMapper.cs" />
     <Compile Include="Other\NewsoftJsonSerializer.cs" />
     <Compile Include="Other\ScoreConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -102,14 +112,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Clients\AniDB\" />
-    <Folder Include="Clients\AnimePlanet\" />
-    <Folder Include="Clients\HummingBirdV2\" />
-    <Folder Include="Data\AniDB\" />
-    <Folder Include="Data\AniList\" />
-    <Folder Include="Data\AnimePlanet\" />
-    <Folder Include="Data\HummingBirdV2\" />
-    <Folder Include="Data\MyAnimeList\" />
+    <Folder Include="Clients\Browsers\MyAnimeList\" />
+    <Folder Include="Clients\Profiles\MyAnimeList\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -25,7 +25,7 @@ namespace UnifiedAnime.Data.HummingBirdV1
         public string Slug { get; set; }
 
         [JsonProperty("status")]
-        [JsonConverter(typeof(AnimeStatusConverter))]
+        [JsonConverter(typeof(AnimeStatusMapper))]
         public AnimeStatus Status { get; set; }
 
         [JsonProperty("url")]

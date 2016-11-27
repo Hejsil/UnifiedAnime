@@ -1,5 +1,7 @@
 ﻿using System;
-using UnifiedAnime.Clients.HummingBirdV1;
+using UnifiedAnime.Clients.Bases;
+using UnifiedAnime.Clients.Browsers.AniList;
+using UnifiedAnime.Clients.Browsers.HummingBirdV1;
 
 namespace UnifiedAnime.Samples.HummingBird
 {
@@ -8,8 +10,8 @@ namespace UnifiedAnime.Samples.HummingBird
 
         static void Main(string[] args)
         {
-            var hbClient = new HummingBirdV1Client();
-            var animes = hbClient.GetUserActivityFeed("Hejsil");
+            var browser = new AniListBrowser("***REMOVED***", "***REMOVED***");
+            var response1 = browser.GetFavourites("RogueTofu");
         }
     }
 }

@@ -22,7 +22,7 @@ namespace UnifiedAnime.Data.HummingBirdV1
         public int ItemId { get; set; }
 
         [JsonProperty("item_type")]
-        [JsonConverter(typeof(ItemTypeConverter))]
+        [JsonConverter(typeof(ItemTypeMapper))]
         public ItemType ItemType { get; set; }
 
         [JsonProperty("created_at")]

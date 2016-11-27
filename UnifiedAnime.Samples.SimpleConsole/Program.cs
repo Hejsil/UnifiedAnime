@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnifiedAnime.Clients;
-using UnifiedAnime.Clients.AniList;
-using UnifiedAnime.Clients.HummingBirdV1;
-using UnifiedAnime.Clients.MyAnimeList;
+using UnifiedAnime.Clients.Profiles.HummingBirdV1;
 using UnifiedAnime.Data.Common;
 
 namespace UnifiedAnime.Samples.SimpleConsole
@@ -15,31 +9,30 @@ namespace UnifiedAnime.Samples.SimpleConsole
     {
         static void Main(string[] args)
         {
-            IAnimeClient client;
+            IAnimeProfile profile;
             var username = args[0];
-            var site = args[1];
+            var password = args[1];
+            var site = args[2];
 
             switch (site)
             {
                 case "HummingBird":
-                    client = new UnifiedHummingBirdV1Client();
-                    break;
-                case "MyAnimeList":
-                    client = new UnifiedMyAnimeListClient();
+                    profile = new UnifiedHummingBirdV1Profile();
                     break;
                 case "AniList":
-                    client = new UnifiedAniListClient();
+                    profile = new UnifiedAniListProfile();
                     break;
                 default:
                     Console.WriteLine($"Site not supported: {site}");
                     return;
             }
-            
-            var response = client.BrowseUserLibrary(username);
 
-            if (response.Item1.Status == ResponseStatus.Success)
+            profile.Authenticate(username, password);
+            var response = profile.Get();
+
+            if (response.Status == ResponseStatus.Success)
             {
-                var animeEntries = response.Item2;
+                var animeEntries = response.Data;
 
                 foreach (var entry in animeEntries)
                 {

@@ -8,31 +8,30 @@ Let's imagine a program that prints the users anime library for them. This progr
 ```csharp
 static void Main(string[] args)
 {
-    IAnimeClient client;
+    IAnimeProfile profile;
     var username = args[0];
-    var site = args[1];
+    var password = args[1];
+    var site = args[2];
 
     switch (site)
     {
         case "HummingBird":
-            client = new UnifiedHummingBirdV1Client();
-            break;
-        case "MyAnimeList":
-            client = new UnifiedMyAnimeListClient();
+            profile = new UnifiedHummingBirdV1Profile();
             break;
         case "AniList":
-            client = new UnifiedAniListClient();
+            profile = new UnifiedAniListProfile("clientId", "clientSecret");
             break;
         default:
             Console.WriteLine($"Site not supported: {site}");
             return;
     }
-    
-    var response = client.BrowseUserLibrary(username);
 
-    if (response.Item1.Status == ResponseStatus.Success)
+    profile.Authenticate(username, password);
+    var response = profile.Get();
+
+    if (response.Status == ResponseStatus.Success)
     {
-        var animeEntries = response.Item2;
+        var animeEntries = response.Data;
 
         foreach (var entry in animeEntries)
         {
@@ -47,23 +46,25 @@ static void Main(string[] args)
 As seen from the example, swapping out clients is easy. With a system like this, having mutible client connected at the same time can also be beneficial, as users might have an account on more than one site at the time.
 
 ```csharp
-var client = new IAnimeClient[2]
+var profiles = new IAnimeProfile[2]
 {
-    new UnifiedHummingBirdV1Client();
-    new UnifiedAniListClient();
+    new UnifiedHummingBirdV1Profile();
+    new UnifiedAniListProfile("clientId", "clientSecret");
 };
 
-client[0].AuthenticateUsername("HummingBirdUsername", "HummingBirdPassWord");
-client[0].AuthenticateUsername("AniListUsername", "AniListPassWord");
+profiles[0].Authenticate("HummingBirdUsername", "HummingBirdPassWord");
+profiles[0].Authenticate("AniListUsername", "AniListPassWord");
+
+var hbBrowser = new UnifiedHummingBirdV1Browser();
 
 // We search for an anime on one client
-var response = client[0].BrowseAnime("Flip Flappers");
+var response = hbBrowser.Search("Flip Flappers");
 
-if (response.Item1.Success)
+if (response.Status == ResponseStatus.Success)
 {
     // We can now add the result to both clients
-    client[0].LibraryAdd(response.Item2[0]);
-    client[1].LibraryAdd(response.Item2[0]);
+    profiles[0].Add(response.Data[0]);
+    profiles[1].Add(response.Data[0]);
 }
 
 ```
@@ -73,41 +74,47 @@ A whole system, for keeping multible sites up to date, could be implemented like
 So inferface are great, but a generic intefaces can cover everything. Some sites might have something specific that the interface can't incorparate. None inferface versions of each client can therefor also be instantiated.
 
 ```csharp
-var client = new HummingBirdV1Client();
-var unifiedClient = new UnifiedHummingBirdV1Client();
-IAnimeClient interfacedClient = new UnifiedHummingBirdV1Client();
+var browser1 = new HummingBirdV1Browser();
+var browser2 = new UnifiedHummingBirdV1Client();
+IAnimeClient browse3 = new UnifiedHummingBirdV1Client();
 
-// Returns Tuple<Response, Anime[]>
-var data1 = client.SearchAnime("Flip Flappers");
-
-// Returns Tuple<Response, IAnimeInfo[]>
-var unifiedData1 = unifiedClient.BrowseAnime("Flip Flappers");
+Response<Anime[]> data1 = browser1.GetSearchAnime("Flip Flappers");
+Response<IAnimeInfo[]> data2 = browser2.Search("Flip Flappers");
 
 // Interfaced clients inherit from uninterfaced clients, 
-// so uninterfaced functionallity is available.
-var data2 = unifiedClient.SearchAnime("Flip Flappers");
+// so uninterfaced functionallity is also available.
+Response<Anime[]> data3 = browser2.GetSearchAnime("Flip Flappers");
 
 // This gives compile error, as the interface doesn't have 
-// a SearchAnime method.
-// var data3 = interfacedClient.SearchAnime("Flip Flappers");
+// a GetSearchAnime method.
+Response<Anime[]> data4 = browse3.GetSearchAnime("Flip Flappers");
 ```
 
 
 
 # Status
 ## High priority
-- [ ] Finalize the IAnimeClient interface
+- [ ] Finalize the IAnimeProfile interface
+- [ ] Finalize the IAnimeBrowser interface
 - [ ] Finalize the interfaces for data
     * [ ] IAnimeEntry
     * [ ] IAnimeInfo
-    * [ ] IFeedEntry
-    * [ ] IUserInfo
 
 ## Medium priority
-- [ ] Implement AniList client
-- [x] Implement HummingBird client
-- [ ] Implement MyAnimeList client
+- [ ] Implement AniList
+    * [ ] Browser
+    * [ ] Profile
+- [x] Implement HummingBird
+    * [x] Browser
+    * [x] Profile
+- [ ] Implement MyAnimeList
+    * [ ] Browser
+    * [ ] Profile
 
 ## Low priority 
-- [ ] Implement AniDB client
-- [ ] Implement AnimePlanet client (AnimePlanet have no api, so it's gonna be one giant hack(Is it even possible?))
+- [ ] Implement AniDB
+    * [ ] Browser
+    * [ ] Profile
+- [ ] Implement AnimePlanet (AnimePlanet have no api. Is it even possible?)
+    * [ ] Browser
+    * [ ] Profile

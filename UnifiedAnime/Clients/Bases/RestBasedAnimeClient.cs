@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using RestSharp;
+using UnifiedAnime.Data.Common;
 using UnifiedAnime.Other;
 
 namespace UnifiedAnime.Clients.Bases
@@ -9,21 +10,15 @@ namespace UnifiedAnime.Clients.Bases
     {
         public abstract string Url { get; }
 
-        public RestRequest MakeRequest(string resource, Method method)
-        {
-            return new RestRequest(resource, method) { JsonSerializer = NewtonsoftJsonSerializer.Default };
-        }
+        protected RestRequest MakeRequest(string resource, Method method) 
+            => new RestRequest(resource, method) { JsonSerializer = NewtonsoftJsonSerializer.Default };
 
-        public IRestResponse Execute(RestRequest request)
-        {
-            var client = new RestClient(Url);
-            return client.Execute(request);
-        }
+        protected Response Execute(RestRequest request) =>  new Response(RestExecute(request));
 
-        public Tuple<IRestResponse, T> Execute<T>(RestRequest request)
+        protected Response<T> Execute<T>(RestRequest request)
         {
-            var response = Execute(request);
-            return new Tuple<IRestResponse, T>(
+            var response = RestExecute(request);
+            return new Response<T>(
                 response, 
                 JsonConvert.DeserializeObject<T>(response.Content,
                     new JsonSerializerSettings
@@ -32,5 +27,30 @@ namespace UnifiedAnime.Clients.Bases
                         MissingMemberHandling = MissingMemberHandling.Ignore
                     }));
         }
+
+        protected Response MakeAndExecute(string resource, Method method)
+        {
+            var request = MakeRequest(resource, method);
+            return Execute(request);
+        }
+
+        protected Response<T> MakeAndExecute<T>(string resource, Method method)
+        {
+            var request = MakeRequest(resource, method);
+            return Execute<T>(request);
+        }
+
+        protected IRestResponse RestExecute(RestRequest request)
+        {
+            var client = new RestClient(Url);
+            return client.Execute(request);
+        }
+
+        protected IRestResponse MakeAndRestExecute(string resource, Method method)
+        {
+            var request = MakeRequest(resource, method);
+            return RestExecute(request);
+        }
+
     }
 }

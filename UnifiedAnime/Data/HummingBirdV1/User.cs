@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
+using UnifiedAnime.Data.Common;
 using UnifiedAnime.Other.JsonConverters;
 using UnifiedAnime.Other.JsonConverters.HummingBirdV1;
 
@@ -9,7 +10,7 @@ namespace UnifiedAnime.Data.HummingBirdV1
     /// <summary>
     /// https://github.com/hummingbird-me/hummingbird/wiki/API-v1-Structures#user-object
     /// </summary>
-    public class User : IUserInfo
+    public class User
     {
         #region Properties
 
@@ -54,7 +55,7 @@ namespace UnifiedAnime.Data.HummingBirdV1
         public bool ShowAdultContent { get; set; }
 
         [JsonProperty("title_language_preference")]
-        [JsonConverter(typeof(TitleLanguageConverter))]
+        [JsonConverter(typeof(TitleLanguageMapper))]
         public TitleLanguage PreferenceTitleLanguage { get; set; }
 
         [JsonProperty("last_library_update")]

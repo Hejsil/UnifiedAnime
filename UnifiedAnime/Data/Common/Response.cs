@@ -7,13 +7,16 @@ namespace UnifiedAnime.Data.Common
     {
         #region Properties
         
-        public ResponseStatus Status { get; set; }
-        public string Message { get; set; }
+        public ResponseStatus Status { get; }
+        public string Message { get; }
 
         #endregion
 
-        public Response()
-        { }
+        public Response(ResponseStatus status, string message = null)
+        {
+            Status = status;
+            Message = message;
+        }
 
         public Response(IRestResponse restResponse)
         {
@@ -41,5 +44,26 @@ namespace UnifiedAnime.Data.Common
                     break;
             }
         }
+    }
+
+    public class Response<T> : Response
+    {
+        public T Data { get; }
+
+        public Response(ResponseStatus status, T data, string message = null) 
+            : base(status, message)
+        {
+            Data = data;
+        }
+
+        public Response(IRestResponse restResponse, T data) 
+            : base(restResponse)
+        {
+            Data = data;
+        }
+
+        public Response(Response response, T data)
+            : this(response.Status, data, response.Message)
+        { }
     }
 }

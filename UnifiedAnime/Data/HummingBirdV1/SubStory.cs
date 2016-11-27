@@ -16,7 +16,7 @@ namespace UnifiedAnime.Data.HummingBirdV1
         public int Id { get; set; }
 
         [JsonProperty("substory_type")]
-        [JsonConverter(typeof(SubStoryTypeConverter))]
+        [JsonConverter(typeof(SubStoryTypeMapper))]
         public SubStoryType SubstoryType { get; set; }
 
         [JsonProperty("comment")]
@@ -29,7 +29,7 @@ namespace UnifiedAnime.Data.HummingBirdV1
         public UserMini FollowedUser { get; set; }
         
         [JsonProperty("new_status")]
-        [JsonConverter(typeof(EntryStatusConverter))]
+        [JsonConverter(typeof(EntryStatusMapper))]
         public EntryStatus NewStatus { get; set; }
 
         [JsonProperty("created_at")]

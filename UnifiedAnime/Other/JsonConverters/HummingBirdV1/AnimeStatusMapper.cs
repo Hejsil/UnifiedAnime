@@ -4,7 +4,7 @@ using UnifiedAnime.Data.HummingBirdV1;
 
 namespace UnifiedAnime.Other.JsonConverters.HummingBirdV1
 {
-    public class AnimeStatusConverter : BaseStringToTypeConverter<AnimeStatus>
+    public class AnimeStatusMapper : TypeToTypeMapper<string, AnimeStatus>
     {
         protected override Map<string, AnimeStatus> Map { get; } = new Map<string, AnimeStatus>
         {

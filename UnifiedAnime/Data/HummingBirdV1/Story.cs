@@ -7,7 +7,7 @@ namespace UnifiedAnime.Data.HummingBirdV1
     /// <summary>
     /// https://github.com/hummingbird-me/hummingbird/wiki/API-v1-Structures#story-object
     /// </summary>
-    public class Story : IFeedEntry
+    public class Story
     {
         #region Properties
 
@@ -15,7 +15,7 @@ namespace UnifiedAnime.Data.HummingBirdV1
         public int Id { get; set; }
 
         [JsonProperty("story_type")]
-        [JsonConverter(typeof(StoryTypeConverter))]
+        [JsonConverter(typeof(StoryTypeMapper))]
         public StoryType StoryType { get; set; }
 
         [JsonProperty("user")]

@@ -12,7 +12,7 @@ namespace UnifiedAnime.Data.HummingBirdV1
         #region Properties
 
         [JsonProperty("type")]
-        [JsonConverter(typeof(RatingTypeConverter))]
+        [JsonConverter(typeof(RatingTypeMapper))]
         public RatingType Type { get; set; }
 
         [JsonProperty("value")]
