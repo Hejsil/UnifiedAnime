@@ -3,8 +3,9 @@ using UnifiedAnime.Clients.HummingBirdV1;
 
 namespace UnifiedAnime.Clients
 {
-    public static class Client
+    public static class AnimeClient
     {
+
         #region Other Members
 
         public static IAnimeClient Make(ImplementedClient client)
@@ -18,7 +19,7 @@ namespace UnifiedAnime.Clients
                 case ImplementedClient.AnimePlanet:
                     break;
                 case ImplementedClient.HummingBirdV1:
-                    return new HummingBirdV1Client();
+                    return new UnifiedHummingBirdV1Client();
                 case ImplementedClient.HummingBirdV2:
                     break;
                 case ImplementedClient.MyAnimeList:

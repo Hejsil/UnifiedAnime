@@ -13,7 +13,7 @@ namespace UnifiedAnime.Data
         bool Rewatching { get; set; }
         int RewatchTimes { get; set; }
         double Score { get; set; }
-        AnimeStatus Status { get; set; }
+        EntryStatus Status { get; set; }
 
         #endregion
     }

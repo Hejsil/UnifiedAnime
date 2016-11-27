@@ -2,11 +2,8 @@
 {
     public enum AnimeStatus
     {
-        Watching,
-        PlanToWatch,
-        Completed,
-        OnHold,
-        Dropped,
-        WontWatch
+        NotYetAired,
+        CurrentlyAiring,
+        FinishedAiring
     }
 }

@@ -6,7 +6,7 @@
         TimedOut,
         InternalServerError,
         Unauthorized,
-        NotSupportMethod,
+        MethodNotSupported,
         Unknown
     }
 }

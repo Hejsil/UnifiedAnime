@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace UnifiedAnime.Json
+namespace UnifiedAnime.Other.JsonConverters
 {
     public class InterfaceInstatiator<TConcret, TInterface> : JsonConverter where TConcret : TInterface
     {

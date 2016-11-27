@@ -1,42 +1,22 @@
 ﻿using Newtonsoft.Json;
+using UnifiedAnime.Other.JsonConverters;
+using UnifiedAnime.Other.JsonConverters.HummingBirdV1;
 
 namespace UnifiedAnime.Data.HummingBirdV1
 {
+    /// <summary>
+    /// https://github.com/hummingbird-me/hummingbird/wiki/API-v1-Structures#library-entry-rating-object
+    /// </summary>
     public class LibraryEntryRating
     {
-        #region Constants
-
-        private const int Scores = 11;
-        private const int Splits = Scores + 1;
-        private const double SplitSize = 100.0/Splits;
-
-        #endregion
-
         #region Properties
 
         [JsonProperty("type")]
-        public string Type { get; set; }
+        [JsonConverter(typeof(RatingTypeConverter))]
+        public RatingType Type { get; set; }
 
         [JsonProperty("value")]
-        public string Value { get; set; }
-
-        #endregion
-
-        #region Other Members
-
-        public static double ConvertToHummingBirdRating(double value)
-        {
-            for (var i = 1; i < Splits; i++)
-                if (((i - 1)*SplitSize <= value) && (value <= i*SplitSize))
-                    return (i - 1)*0.5;
-
-            return 0.0;
-        }
-
-        public static double ConvertToUnifiedAnimeScore(double value)
-        {
-            return value*20;
-        }
+        public double Value { get; set; }
 
         #endregion
     }

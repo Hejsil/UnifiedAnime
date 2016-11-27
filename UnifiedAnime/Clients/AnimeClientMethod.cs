@@ -1,6 +1,6 @@
 ﻿namespace UnifiedAnime.Clients
 {
-    public enum Method
+    public enum AnimeClientMethod
     {
         LoginUsername,
         LoginEmail,

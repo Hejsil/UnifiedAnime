@@ -5,7 +5,11 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifiedAnime", "UnifiedAnime\UnifiedAnime.csproj", "{ED5C942E-52E3-4FAD-9EFA-B59092EC0FD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifiedAnime.Sample", "UnifiedAnime.Sample\UnifiedAnime.Sample.csproj", "{63C1D83B-A5D4-4FC1-B717-9005F7A80072}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{BA3E7308-7C19-4110-8CDB-3576EF4A0BB6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2FB73706-BAD8-4CB2-9049-CDFBD1991467}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnifiedAnime.Samples.HummingBird", "UnifiedAnime.Samples.HummingBird\UnifiedAnime.Samples.HummingBird.csproj", "{6C8ECA22-CBEA-4950-BF19-D8D241EF8E42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,12 +21,15 @@ Global
 		{ED5C942E-52E3-4FAD-9EFA-B59092EC0FD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED5C942E-52E3-4FAD-9EFA-B59092EC0FD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED5C942E-52E3-4FAD-9EFA-B59092EC0FD3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{63C1D83B-A5D4-4FC1-B717-9005F7A80072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{63C1D83B-A5D4-4FC1-B717-9005F7A80072}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{63C1D83B-A5D4-4FC1-B717-9005F7A80072}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{63C1D83B-A5D4-4FC1-B717-9005F7A80072}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C8ECA22-CBEA-4950-BF19-D8D241EF8E42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C8ECA22-CBEA-4950-BF19-D8D241EF8E42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C8ECA22-CBEA-4950-BF19-D8D241EF8E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C8ECA22-CBEA-4950-BF19-D8D241EF8E42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6C8ECA22-CBEA-4950-BF19-D8D241EF8E42} = {BA3E7308-7C19-4110-8CDB-3576EF4A0BB6}
 	EndGlobalSection
 EndGlobal

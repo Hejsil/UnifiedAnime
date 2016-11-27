@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnifiedAnime.Data;
 using UnifiedAnime.Data.Common;
 
@@ -12,7 +8,7 @@ namespace UnifiedAnime.Clients.AniList
     {
         private const string ClientBaseUrl = "https://anilist.co/api";
 
-        public Response AddAnime(IAnimeEntry entry)
+        public Response LibraryAdd(IAnimeEntry entry)
         {
             throw new NotImplementedException();
         }
@@ -22,67 +18,67 @@ namespace UnifiedAnime.Clients.AniList
             throw new NotImplementedException();
         }
 
-        public Response<IAnimeInfo> GetAnime(int id)
+        public Tuple<Response, IAnimeInfo> BrowseGet(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Response<IAnimeInfo[]> GetFavorite(string username)
+        public Tuple<Response, IAnimeInfo[]> BrowseUserFavorites(string username)
         {
             throw new NotImplementedException();
         }
 
-        public Response<IAnimeInfo[]> GetLibrary(string username)
+        public Tuple<Response, IAnimeEntry[]> BrowseUserLibrary(string username)
         {
             throw new NotImplementedException();
         }
 
-        public Response<IAnimeInfo[]> GetLibrary(string username, AnimeStatus animeStatus)
+        public Tuple<Response, IAnimeEntry[]> BrowseUserLibrary(string username, EntryStatus entryStatus)
         {
             throw new NotImplementedException();
         }
 
-        public Response<IFeedEntry[]> GetUserFeed(string username)
+        public Tuple<Response, IFeedEntry[]> BrowseUserFeed(string username)
         {
             throw new NotImplementedException();
         }
 
-        public Response<IUserInfo> GetUserInfo(string username)
+        public Tuple<Response, IUserInfo> BrowseUserInfo(string username)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsSupported(Method method)
+        public bool IsMethodSupported(AnimeClientMethod animeClientMethod)
         {
             throw new NotImplementedException();
         }
 
-        public Response LoginEmail(string email, string password)
+        public Response AuthenticateEmail(string email, string password)
         {
             throw new NotImplementedException();
         }
 
-        public Response LoginUsername(string username, string password)
+        public Response AuthenticateUsername(string username, string password)
         {
             throw new NotImplementedException();
         }
 
-        public Response RemoveAnime(int id)
+        public Response UnifiedRemoveEntry(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Response RemoveAnime(IAnimeEntry entry)
+        public Response LibraryRemove(IAnimeEntry entry)
         {
             throw new NotImplementedException();
         }
 
-        public Response<IAnimeInfo[]> SearchAnime(string query)
+        public Tuple<Response, IAnimeInfo[]> BrowseAnime(string query)
         {
             throw new NotImplementedException();
         }
 
-        public Response UpdateAnime(IAnimeEntry entry)
+        public Response LibraryUpdate(IAnimeEntry entry)
         {
             throw new NotImplementedException();
         }

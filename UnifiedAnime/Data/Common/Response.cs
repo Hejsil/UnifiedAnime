@@ -1,4 +1,5 @@
-﻿using RestSharp;
+﻿using System.Net;
+using RestSharp;
 
 namespace UnifiedAnime.Data.Common
 {
@@ -10,14 +11,35 @@ namespace UnifiedAnime.Data.Common
         public string Message { get; set; }
 
         #endregion
-    }
 
-    public class Response<T> : Response
-    {
-        #region Properties
+        public Response()
+        { }
 
-        public T Data { get; set; }
+        public Response(IRestResponse restResponse)
+        {
+            if (restResponse.ResponseStatus == RestSharp.ResponseStatus.TimedOut)
+            {
+                Status = ResponseStatus.TimedOut;
+                return;
+            }
 
-        #endregion
+            switch (restResponse.StatusCode)
+            {
+                case HttpStatusCode.Created:
+                case HttpStatusCode.OK:
+                    Status = ResponseStatus.Success;
+                    break;
+                case HttpStatusCode.InternalServerError:
+                    Status = ResponseStatus.InternalServerError;
+                    break;
+                case HttpStatusCode.Unauthorized:
+                    Status = ResponseStatus.Unauthorized;
+                    break;
+                default:
+                    Status = ResponseStatus.Unknown;
+                    Message = "Unified anime should never give this response.";
+                    break;
+            }
+        }
     }
 }
