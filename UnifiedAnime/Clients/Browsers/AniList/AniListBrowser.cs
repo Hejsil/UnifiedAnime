@@ -27,7 +27,7 @@ namespace UnifiedAnime.Clients.Browsers.AniList
             _clientSecret = clientSecret;
 
             _clientCredentialsRefresher = new Timer();
-            _clientCredentialsRefresher.Elapsed += (sender, e) => RefreshHandler();
+            _clientCredentialsRefresher.Elapsed += (sender, e) => RefreshCredentials();
             
             if (GrantClientCredentials())
                 StartTimer();
@@ -47,6 +47,14 @@ namespace UnifiedAnime.Clients.Browsers.AniList
 
         public Response<Series[]> GetFavourites(int id) => GetFavourites(id.ToString());
         public Response<Series[]> GetFavourites(string displayName) => MakeAndExecute<Series[]>($"user/{displayName}/following", Method.GET);
+
+        public Response<SmallUser[]> SearchUsers(string query) => MakeAndExecute<SmallUser[]>($"user/search/{query}", Method.GET);
+
+        public Response<Anime[]> GetAnimelist(int id) => GetAnimelist(id.ToString());
+        public Response<Anime[]> GetAnimelist(string displayName) => MakeAndExecute<Anime[]>($"user/{displayName}/animelist", Method.GET);
+
+        public Response<Manga[]> GetMangalist(int id) => GetMangalist(id.ToString());
+        public Response<Manga[]> GetMangalist(string displayName) => MakeAndExecute<Manga[]>($"user/{displayName}/mangalist", Method.GET);
 
         /// <summary>
         /// https://anilist-api.readthedocs.io/en/latest/authentication.html
@@ -69,7 +77,7 @@ namespace UnifiedAnime.Clients.Browsers.AniList
             return false;
         }
 
-        private void RefreshHandler()
+        private void RefreshCredentials()
         {
             _clientCredentialsRefresher.Stop();
 
