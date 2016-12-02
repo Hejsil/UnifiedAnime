@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Hejsil.UnifiedAnime</id>
-    <version>$version$</version>
+    <version>0.1.0</version>
     <title>UnifiedAnime</title>
     <authors>Jimmi Holst Christensen</authors>
     <owners>Jimmi Holst Christensen</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/Hejsil/UnifiedAnime.git</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A library trying to make one common interface for most anime database sites.</description>
-    <releaseNotes>First Nuget version. Contains a working HummingBird implementation, and the start of an AniList implementation.</releaseNotes>
+    <releaseNotes>Removed MoreCollection nuget depedency.</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>Anime HummingBird MyAnimeList AniList AnimeDB</tags>
   </metadata>
