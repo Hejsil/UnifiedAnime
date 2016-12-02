@@ -58,6 +58,7 @@
     <Compile Include="Clients\Profiles\AniList\AniListBrowser.cs" />
     <Compile Include="Clients\Profiles\HummingBirdV1\HummingBirdV1Profile.cs" />
     <Compile Include="Clients\Profiles\HummingBirdV1\UnifiedHummingBirdV1Profile.cs" />
+    <Compile Include="Collections\Map.cs" />
     <Compile Include="Data\AniList\Activity.cs" />
     <Compile Include="Data\AniList\ActivityType.cs" />
     <Compile Include="Data\AniList\Anime.cs" />
@@ -91,7 +92,6 @@
     <Compile Include="Data\IAnimeEntry.cs" />
     <Compile Include="Data\IAnimeInfo.cs" />
     <Compile Include="Clients\IAnimeBrowser.cs" />
-    <Compile Include="MoreCollections\Map.cs" />
     <Compile Include="Other\JsonConverters\AniList\ActivityTypeConverter.cs" />
     <Compile Include="Other\JsonConverters\AniList\TitleLanguageMapper.cs" />
     <Compile Include="Other\JsonConverters\TypeToTypeMapper.cs" />
