@@ -53,7 +53,7 @@ var profiles = new IAnimeProfile[2]
 };
 
 profiles[0].Authenticate("HummingBirdUsername", "HummingBirdPassWord");
-profiles[0].Authenticate("AniListUsername", "AniListPassWord");
+profiles[1].Authenticate("AniListUsername", "AniListPassWord");
 
 var hbBrowser = new UnifiedHummingBirdV1Browser();
 
