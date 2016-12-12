@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,6 +56,42 @@ namespace UnifiedAnime.Clients.Browsers.AniList
 
         public Response<Manga[]> GetMangalist(int id) => GetMangalist(id.ToString());
         public Response<Manga[]> GetMangalist(string displayName) => MakeAndExecute<Manga[]>($"user/{displayName}/mangalist", Method.GET);
+
+        public Response<SmallSeries[]> GetBrowseAnime(
+            int? year = null,
+            string season = null, // TODO: Season enum
+            MediaTypes? type = null,
+            AnimeStatus? status = null,
+            string[] genres = null, // TODO: Genre enum
+            string[] excludedGenres = null, // TODO: Genre enum
+            string sort = null, // TODO: Sort enum
+            bool? airingData = null,
+            bool? fullPage = null,
+            int? page = null)
+        {
+            return GetBrowse("anime", year, season, type, status, genres, excludedGenres, sort, airingData, fullPage, page);
+        }
+
+        private Response<SmallSeries[]> GetBrowse(
+            string seriesType,
+            int? year = null,
+            string season = null, // TODO: Season enum
+            MediaTypes? type = null,
+            AnimeStatus? status = null,
+            string[] genres = null, // TODO: Genre enum
+            string[] excludedGenres = null, // TODO: Genre enum
+            string sort = null, // TODO: Sort enum
+            bool? airingData = null,
+            bool? fullPage = null,
+            int? page = null)
+        {
+            var request = MakeRequest($"browse/{seriesType}", Method.GET);
+
+            if (year != null)
+                request.AddParameter("year", year.ToString());
+            if (!string.IsNullOrEmpty(season))
+                request.AddParameter("season", year.ToString());
+        }
 
         /// <summary>
         /// https://anilist-api.readthedocs.io/en/latest/authentication.html
