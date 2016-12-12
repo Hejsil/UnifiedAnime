@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Clients\Bases\RestBasedAnimeClient.cs" />
     <Compile Include="Clients\Browsers\AniList\AniListBrowser.cs" />
+    <Compile Include="Data\AniList\Character.cs" />
     <Compile Include="Clients\Browsers\HummingBirdV1\UnifiedHummingBirdV1Browser.cs" />
     <Compile Include="Clients\IAnimeProfile.cs" />
     <Compile Include="Clients\Browsers\HummingBirdV1\HummingBirdV1Browser.cs" />

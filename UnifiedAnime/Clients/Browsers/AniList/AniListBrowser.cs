@@ -49,7 +49,7 @@ namespace UnifiedAnime.Clients.Browsers.AniList
         public Response<Series[]> GetFavourites(int id) => GetFavourites(id.ToString());
         public Response<Series[]> GetFavourites(string displayName) => MakeAndExecute<Series[]>($"user/{displayName}/following", Method.GET);
 
-        public Response<SmallUser[]> SearchUsers(string query) => MakeAndExecute<SmallUser[]>($"user/search/{query}", Method.GET);
+        public Response<SmallUser[]> SearchUser(string query) => MakeAndExecute<SmallUser[]>($"user/search/{query}", Method.GET);
 
         public Response<Anime[]> GetAnimelist(int id) => GetAnimelist(id.ToString());
         public Response<Anime[]> GetAnimelist(string displayName) => MakeAndExecute<Anime[]>($"user/{displayName}/animelist", Method.GET);
@@ -72,6 +72,21 @@ namespace UnifiedAnime.Clients.Browsers.AniList
             return GetBrowse("anime", year, season, type, status, genres, excludedGenres, sort, airingData, fullPage, page);
         }
 
+        public Response<SmallSeries[]> GetBrowseManga(
+            int? year = null,
+            string season = null, // TODO: Season enum
+            MediaTypes? type = null,
+            AnimeStatus? status = null,
+            string[] genres = null, // TODO: Genre enum
+            string[] excludedGenres = null, // TODO: Genre enum
+            string sort = null, // TODO: Sort enum
+            bool? airingData = null,
+            bool? fullPage = null,
+            int? page = null)
+        {
+            return GetBrowse("manga", year, season, type, status, genres, excludedGenres, sort, airingData, fullPage, page);
+        }
+
         private Response<SmallSeries[]> GetBrowse(
             string seriesType,
             int? year = null,
@@ -88,10 +103,35 @@ namespace UnifiedAnime.Clients.Browsers.AniList
             var request = MakeRequest($"browse/{seriesType}", Method.GET);
 
             if (year != null)
-                request.AddParameter("year", year.ToString());
+                request.AddParameter("year", year);
             if (!string.IsNullOrEmpty(season))
-                request.AddParameter("season", year.ToString());
+                request.AddParameter("season", season);
+            if (type != null)
+                request.AddParameter("type", type);
+            if (status != null)
+                request.AddParameter("status", status);
+            if (genres != null && genres.Length > 0)
+                request.AddParameter("genres", string.Join(",", genres));
+            if (excludedGenres != null && excludedGenres.Length > 0)
+                request.AddParameter("genres_exclude", string.Join(",", excludedGenres));
+            if (sort != null)
+                request.AddParameter("sort", sort);
+            if (airingData != null)
+                request.AddParameter("airing_data", airingData);
+            if (fullPage != null)
+                request.AddParameter("full_page", fullPage);
+            if (page != null)
+                request.AddParameter("page", page);
+
+            return Execute<SmallSeries[]>(request);
         }
+
+        public Response<Anime[]> SearchAnime(string query) => SearchSeries<Anime>("anime", query);
+        public Response<Manga[]> SearchManga(string query) => SearchSeries<Manga>("manga", query);
+        public Response<Character[]> SearchCharacter(string query) => SearchSeries<Character>("character", query); // TODO: Small Character
+        private Response<T[]> SearchSeries<T>(string seriesType, string query) => MakeAndExecute<T[]>($"{seriesType}/search/{query}", Method.GET);
+
+
 
         /// <summary>
         /// https://anilist-api.readthedocs.io/en/latest/authentication.html
@@ -130,25 +170,11 @@ namespace UnifiedAnime.Clients.Browsers.AniList
             _clientCredentialsRefresher.Start();
         }
 
-        private new Response<T> MakeAndExecute<T>(string resource, Method method)
+        protected override IRestRequest MakeRequest(string resource, Method method)
         {
-            var request = MakeRequest(resource, method);
+            var request = base.MakeRequest(resource, method);
             request.AddParameter("access_token", _credentials?.AccessToken);
-            return Execute<T>(request);
-        }
-
-        private new Response MakeAndExecute(string resource, Method method)
-        {
-            var request = MakeRequest(resource, method);
-            request.AddParameter("access_token", _credentials?.AccessToken);
-            return Execute(request);
-        }
-
-        private new IRestResponse MakeAndRestExecute(string resource, Method method)
-        {
-            var request = MakeRequest(resource, method);
-            request.AddParameter("access_token", _credentials?.AccessToken);
-            return RestExecute(request);
+            return request;
         }
     }
 }

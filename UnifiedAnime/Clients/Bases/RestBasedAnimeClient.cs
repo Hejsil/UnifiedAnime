@@ -10,12 +10,12 @@ namespace UnifiedAnime.Clients.Bases
     {
         public abstract string Url { get; }
 
-        protected RestRequest MakeRequest(string resource, Method method) 
+        protected virtual IRestRequest MakeRequest(string resource, Method method) 
             => new RestRequest(resource, method) { JsonSerializer = NewtonsoftJsonSerializer.Default };
 
-        protected Response Execute(RestRequest request) =>  new Response(RestExecute(request));
+        protected Response Execute(IRestRequest request) =>  new Response(RestExecute(request));
 
-        protected Response<T> Execute<T>(RestRequest request)
+        protected Response<T> Execute<T>(IRestRequest request)
         {
             var response = RestExecute(request);
             return new Response<T>(
@@ -40,7 +40,7 @@ namespace UnifiedAnime.Clients.Bases
             return Execute<T>(request);
         }
 
-        protected IRestResponse RestExecute(RestRequest request)
+        protected IRestResponse RestExecute(IRestRequest request)
         {
             var client = new RestClient(Url);
             return client.Execute(request);
