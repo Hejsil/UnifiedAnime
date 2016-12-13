@@ -55,6 +55,7 @@
     <Compile Include="Data\AniList\AniListThread.cs" />
     <Compile Include="Data\AniList\Comment.cs" />
     <Compile Include="Data\AniList\Feed.cs" />
+    <Compile Include="Data\AniList\ListOrder.cs" />
     <Compile Include="Data\AniList\PageData.cs" />
     <Compile Include="Data\AniList\Review.cs" />
     <Compile Include="Data\AniList\SmallAnime.cs" />

@@ -16,7 +16,7 @@ namespace UnifiedAnime.Data.AniList
         public string About { get; set; }
 
         [JsonProperty("list_order")]
-        public int ListOrder { get; set; }
+        public ListOrder ListOrder { get; set; }
 
         [JsonProperty("adult_content")]
         public bool AdultContent { get; set; }

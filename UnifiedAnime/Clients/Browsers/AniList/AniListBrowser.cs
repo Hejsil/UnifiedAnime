@@ -22,6 +22,8 @@ namespace UnifiedAnime.Clients.Browsers.AniList
         private readonly Timer _clientCredentialsRefresher;
         private Credentials _credentials;
 
+        public bool IsAuthenticated { get; private set; }
+
         public AniListBrowser(string clientId, string clientSecret)
         {
             _clientId = clientId;
@@ -207,8 +209,9 @@ namespace UnifiedAnime.Clients.Browsers.AniList
         private void RefreshCredentials()
         {
             _clientCredentialsRefresher.Stop();
+            IsAuthenticated = GrantClientCredentials();
 
-            if (GrantClientCredentials())
+            if (IsAuthenticated)
                 StartTimer();
         }
 

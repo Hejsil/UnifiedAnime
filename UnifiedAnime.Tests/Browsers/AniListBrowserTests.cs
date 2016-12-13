@@ -1,20 +1,45 @@
 ﻿using NUnit.Framework;
+using Shouldly;
+using UnifiedAnime.Clients.Browsers.AniList;
+using UnifiedAnime.Data.AniList;
+using UnifiedAnime.Data.Common;
+using UnifiedAnime.Tests.Properties;
 
 namespace UnifiedAnime.Tests.Browsers
 {
     [TestFixture()]
     public class AniListBrowserTests
     {
-        [Test()]
-        public void AniListBrowserTest()
-        {
-            Assert.Fail();
-        }
+        public AniListBrowser Browser { get; set; } 
+            = new AniListBrowser(Resources.AniListClientId, Resources.AniListClientSecret);
 
         [Test()]
         public void GetUserTest()
         {
-            Assert.Fail();
+            var response = Browser.GetUser("hejsil");
+            response.Status.ShouldBe(ResponseStatus.Success);
+            response.Data.ShouldNotBeNull();
+
+            var user = response.Data;
+            user.About.ShouldBe("This is a test user for the library UnifiedAnime:\nhttps://github.com/Hejsil/UnifiedAnime");
+            user.AdultContent.ShouldBe(true);
+            user.AdvancedRating.ShouldBe(true);
+            user.AdvancedRatingNames.ShouldContain("TestRating1");
+            user.AdvancedRatingNames.ShouldContain("TestRating2");
+            user.AdvancedRatingNames.ShouldContain("TestRating3");
+            //user.AnimeTime.ShouldBe(1000); TODO: Figure out the actual time
+            user.CustomListAnime.ShouldContain("TestCustomAnimeList1");
+            user.CustomListAnime.ShouldContain("TestCustomAnimeList2");
+            user.CustomListAnime.ShouldContain("TestCustomAnimeList3");
+            user.CustomListManga.ShouldContain("TestCustomMangaList1");
+            user.CustomListManga.ShouldContain("TestCustomMangaList2");
+            user.CustomListManga.ShouldContain("TestCustomMangaList3");
+            user.DisplayName.ShouldBe("hejsil");
+            user.ImageUrlLge.ShouldBe("https://cdn.anilist.co/img/dir/user/reg/default.png");
+            user.ImageUrlMed.ShouldBe("https://cdn.anilist.co/img/dir/user/sml/default.png");
+            user.ImageUrlBanner.ShouldBe("https://cdn.anilist.co/img/dir/userbanner/84039-eOyAb7CU6LoL.png");
+            user.ListOrder.ShouldBe(ListOrder.Alphabet);
+            //user.MangaChap.ShouldBe(1000); TODO: Figure out the actual time
         }
 
         [Test()]

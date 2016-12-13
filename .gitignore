@@ -243,3 +243,5 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/UnifiedAnime.Tests/Properties/Resources.resx
+/UnifiedAnime.Tests/Properties/Resources.Designer.cs
