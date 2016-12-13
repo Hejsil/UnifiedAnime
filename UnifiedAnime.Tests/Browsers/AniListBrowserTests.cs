@@ -16,7 +16,7 @@ namespace UnifiedAnime.Tests.Browsers
         [Test()]
         public void GetUserTest()
         {
-            var response = Browser.GetUser("hejsil");
+            var response = Browser.GetUser("UnifiedAnimeTestUser");
             response.Status.ShouldBe(ResponseStatus.Success);
             response.Data.ShouldNotBeNull();
 
@@ -27,19 +27,21 @@ namespace UnifiedAnime.Tests.Browsers
             user.AdvancedRatingNames.ShouldContain("TestRating1");
             user.AdvancedRatingNames.ShouldContain("TestRating2");
             user.AdvancedRatingNames.ShouldContain("TestRating3");
-            //user.AnimeTime.ShouldBe(1000); TODO: Figure out the actual time
+            user.AnimeTime.ShouldBe(1571);
             user.CustomListAnime.ShouldContain("TestCustomAnimeList1");
             user.CustomListAnime.ShouldContain("TestCustomAnimeList2");
             user.CustomListAnime.ShouldContain("TestCustomAnimeList3");
+            user.CustomListAnime.ShouldNotContain("TestCustomAnimeList4");
             user.CustomListManga.ShouldContain("TestCustomMangaList1");
             user.CustomListManga.ShouldContain("TestCustomMangaList2");
             user.CustomListManga.ShouldContain("TestCustomMangaList3");
-            user.DisplayName.ShouldBe("hejsil");
+            user.CustomListManga.ShouldNotContain("TestCustomMangaList4");
+            user.DisplayName.ShouldBe("UnifiedAnimeTestUser");
             user.ImageUrlLge.ShouldBe("https://cdn.anilist.co/img/dir/user/reg/default.png");
             user.ImageUrlMed.ShouldBe("https://cdn.anilist.co/img/dir/user/sml/default.png");
             user.ImageUrlBanner.ShouldBe("https://cdn.anilist.co/img/dir/userbanner/84039-eOyAb7CU6LoL.png");
             user.ListOrder.ShouldBe(ListOrder.Alphabet);
-            //user.MangaChap.ShouldBe(1000); TODO: Figure out the actual time
+            user.MangaChap.ShouldBe(158);
         }
 
         [Test()]
