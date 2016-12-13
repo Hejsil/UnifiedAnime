@@ -7,11 +7,8 @@ using Newtonsoft.Json;
 
 namespace UnifiedAnime.Data.AniList
 {
-    public class SmallUser
+    public class SmallUser : AniListObject
     {
-        [JsonProperty("id")]
-        public int Id { get; set; }
-
         [JsonProperty("display_name")]
         public string DisplayName { get; set; }
 

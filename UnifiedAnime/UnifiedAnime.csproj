@@ -52,6 +52,19 @@
   <ItemGroup>
     <Compile Include="Clients\Bases\RestBasedAnimeClient.cs" />
     <Compile Include="Clients\Browsers\AniList\AniListBrowser.cs" />
+    <Compile Include="Data\AniList\AniListThread.cs" />
+    <Compile Include="Data\AniList\Comment.cs" />
+    <Compile Include="Data\AniList\Feed.cs" />
+    <Compile Include="Data\AniList\PageData.cs" />
+    <Compile Include="Data\AniList\Review.cs" />
+    <Compile Include="Data\AniList\SmallAnime.cs" />
+    <Compile Include="Data\AniList\SmallManga.cs" />
+    <Compile Include="Data\AniList\Studio.cs" />
+    <Compile Include="Data\AniList\AniListObject.cs" />
+    <Compile Include="Data\AniList\SmallCharacter.cs" />
+    <Compile Include="Data\AniList\SmallSeries.cs" />
+    <Compile Include="Data\AniList\SmallStaff.cs" />
+    <Compile Include="Data\AniList\Staff.cs" />
     <Compile Include="Data\AniList\Character.cs" />
     <Compile Include="Clients\Browsers\HummingBirdV1\UnifiedHummingBirdV1Browser.cs" />
     <Compile Include="Clients\IAnimeProfile.cs" />
@@ -66,9 +79,11 @@
     <Compile Include="Data\AniList\Credentials.cs" />
     <Compile Include="Data\AniList\Manga.cs" />
     <Compile Include="Data\AniList\MediaTypes.cs" />
-    <Compile Include="Data\AniList\Series.cs" />
-    <Compile Include="Data\AniList\SmallSeries.cs" />
     <Compile Include="Data\AniList\SmallUser.cs" />
+    <Compile Include="Data\AniList\Tag.cs" />
+    <Compile Include="Data\AniList\TaggedAnime.cs" />
+    <Compile Include="Data\AniList\TaggedManga.cs" />
+    <Compile Include="Data\AniList\TaggedObject.cs" />
     <Compile Include="Data\AniList\User.cs" />
     <Compile Include="Data\Common\AnimeAgeRating.cs" />
     <Compile Include="Data\Common\AnimeStatus.cs" />

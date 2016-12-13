@@ -29,9 +29,7 @@ namespace UnifiedAnime.Clients.Browsers.AniList
 
             _clientCredentialsRefresher = new Timer();
             _clientCredentialsRefresher.Elapsed += (sender, e) => RefreshCredentials();
-            
-            if (GrantClientCredentials())
-                StartTimer();
+            RefreshCredentials();
         }
 
         public Response<User> GetUser(int id) => GetUser(id.ToString());
@@ -46,8 +44,8 @@ namespace UnifiedAnime.Clients.Browsers.AniList
         public Response<SmallUser[]> GetFollowing(int id) => GetFollowing(id.ToString());
         public Response<SmallUser[]> GetFollowing(string displayName) => MakeAndExecute<SmallUser[]>($"user/{displayName}/following", Method.GET);
 
-        public Response<Series[]> GetFavourites(int id) => GetFavourites(id.ToString());
-        public Response<Series[]> GetFavourites(string displayName) => MakeAndExecute<Series[]>($"user/{displayName}/following", Method.GET);
+        public Response<Favorites> GetFavourites(int id) => GetFavourites(id.ToString());
+        public Response<Favorites> GetFavourites(string displayName) => MakeAndExecute<Favorites>($"user/{displayName}/favourites", Method.GET);
 
         public Response<SmallUser[]> SearchUser(string query) => MakeAndExecute<SmallUser[]>($"user/search/{query}", Method.GET);
 
@@ -126,12 +124,64 @@ namespace UnifiedAnime.Clients.Browsers.AniList
             return Execute<SmallSeries[]>(request);
         }
 
-        public Response<Anime[]> SearchAnime(string query) => SearchSeries<Anime>("anime", query);
-        public Response<Manga[]> SearchManga(string query) => SearchSeries<Manga>("manga", query);
-        public Response<Character[]> SearchCharacter(string query) => SearchSeries<Character>("character", query); // TODO: Small Character
-        private Response<T[]> SearchSeries<T>(string seriesType, string query) => MakeAndExecute<T[]>($"{seriesType}/search/{query}", Method.GET);
+        public Response<SmallAnime[]> SearchAnime(string query) => Search<SmallAnime>("anime", query);
+        public Response<SmallManga[]> SearchManga(string query) => Search<SmallManga>("manga", query);
+        public Response<SmallCharacter[]> SearchCharacter(string query) => Search<SmallCharacter>("character", query);
+        public Response<SmallStaff[]> SearchStaff(string query) => Search<SmallStaff>("staff", query);
+        public Response<Studio[]> SearchStudio(string query) => Search<Studio>("studio", query);
+        public Response<AniListThread[]> SearchThread(string query) => Search<AniListThread>("forum", query);
+        private Response<T[]> Search<T>(string seriesType, string query) where T : AniListObject =>
+            MakeAndExecute<T[]>($"{seriesType}/search/{query}", Method.GET);
+
+        public Response<Staff> GetStaff(int id) => MakeAndExecute<Staff>($"staff/{id}", Method.GET);
+        public Response<Staff> GetStaffPage(int id) => MakeAndExecute<Staff>($"staff/{id}/page", Method.GET);
+
+        public Response<Studio> GetStudio(int id) => MakeAndExecute<Studio>($"studio/{id}", Method.GET);
+        public Response<Studio> GetStudioPage(int id) => MakeAndExecute<Studio>($"studio/{id}/page", Method.GET);
+
+        public Response<Review> GetReview(int id) => MakeAndExecute<Review>($"anime/{id}/reviews", Method.GET);
+        public Response<Review[]> GetAnimeReviews(int id) => MakeAndExecute<Review[]>($"anime/review/{id}", Method.GET);
+        public Response<Review[]> GetMangaReviews(int id) => MakeAndExecute<Review[]>($"manga/review/{id}", Method.GET);
+        public Response<Review[]> GetUserReviews(int id) => GetUserReviews(id.ToString());
+        public Response<Review[]> GetUserReviews(string displayName) => MakeAndExecute<Review[]>($"user/{displayName}/reviews", Method.GET);
 
 
+        public Response<Feed> GetRecentThreads(int pageNumber)
+        {
+            var request = MakeRequest("forum/recent", Method.GET);
+            request.AddParameter("page", pageNumber);
+
+            return Execute<Feed>(request);
+        }
+
+        public Response<Feed> GetNewThreads(int pageNumber)
+        {
+            var request = MakeRequest("forum/new", Method.GET);
+            request.AddParameter("page", pageNumber);
+
+            return Execute<Feed>(request);
+        }
+
+        public Response<Feed> GetThreadsByTag(int pageNumber, 
+            int[] tags = null, 
+            int[] animes = null, 
+            int[] mangas = null)
+        {
+            var request = MakeRequest("forum/new", Method.GET);
+            request.AddParameter("page", pageNumber);
+
+            if (tags != null)
+                request.AddParameter("tags", string.Join(",", tags));
+            if (animes != null)
+                request.AddParameter("anime", string.Join(",", animes));
+            if (mangas != null)
+                request.AddParameter("manga", string.Join(",", mangas));
+
+            return Execute<Feed>(request);
+        }
+
+        public Response<AniListThread> GetThread(int id)
+            => MakeAndExecute<AniListThread>($"forum/thread/{id}", Method.GET);
 
         /// <summary>
         /// https://anilist-api.readthedocs.io/en/latest/authentication.html

@@ -8,11 +8,8 @@ using UnifiedAnime.Other.JsonConverters.AniList;
 
 namespace UnifiedAnime.Data.AniList
 {
-    public class Activity
+    public class Activity : AniListObject
     {
-        [JsonProperty("id")]
-        public int Id { get; set; }
-
         [JsonProperty("user_id")]
         public int UserId { get; set; }
 
@@ -36,7 +33,7 @@ namespace UnifiedAnime.Data.AniList
         public SmallUser[] Users { get; set; }
 
         [JsonProperty("series")]
-        public Series Series { get; set; }
+        public SmallSeries Series { get; set; }
 
         [JsonProperty("messenger")]
         public object Messenger { get; set; }
