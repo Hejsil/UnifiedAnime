@@ -10,7 +10,7 @@ namespace UnifiedAnime.Samples.HummingBird
 
         static void Main(string[] args)
         {
-            var browser = new AniListBrowser("***REMOVED***", "***REMOVED***");
+            var browser = new AniListBrowser("", "");
             var response1 = browser.GetFavourites("RogueTofu");
         }
     }
