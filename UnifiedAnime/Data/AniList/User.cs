@@ -34,7 +34,7 @@ namespace UnifiedAnime.Data.AniList
         // TODO: Each integer is some kind of rating type. Make an enum 
         //       and a converter to convert the integer to that rating type
         [JsonProperty("score_type")]
-        public int ScoreType { get; set; }
+        public ScoreSystem ScoreType { get; set; }
 
         [JsonProperty("custom_list_anime")]
         public string[] CustomListAnime { get; set; }

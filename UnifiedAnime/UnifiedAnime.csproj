@@ -58,6 +58,7 @@
     <Compile Include="Data\AniList\ListOrder.cs" />
     <Compile Include="Data\AniList\PageData.cs" />
     <Compile Include="Data\AniList\Review.cs" />
+    <Compile Include="Data\AniList\ScoreSystem.cs" />
     <Compile Include="Data\AniList\SmallAnime.cs" />
     <Compile Include="Data\AniList\SmallManga.cs" />
     <Compile Include="Data\AniList\Studio.cs" />
