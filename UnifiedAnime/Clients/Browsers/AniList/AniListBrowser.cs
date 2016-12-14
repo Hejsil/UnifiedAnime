@@ -17,21 +17,22 @@ namespace UnifiedAnime.Clients.Browsers.AniList
     {
         public override string Url => "https://anilist.co/api/";
 
-        private readonly string _clientId;
-        private readonly string _clientSecret;
-        private readonly Timer _clientCredentialsRefresher;
+        private string _clientId;
+        private string _clientSecret;
+        private Timer _clientCredentialsRefresher;
         private Credentials _credentials;
 
-        public bool IsAuthenticated { get; private set; }
-
-        public AniListBrowser(string clientId, string clientSecret)
+        public Response Authenticate(string clientId, string clientSecret)
         {
+            if (_clientCredentialsRefresher != null &&
+                _clientCredentialsRefresher.Enabled)
+                return new Response(ResponseStatus.Unknown); // TODO: Make new status
+
             _clientId = clientId;
             _clientSecret = clientSecret;
-
             _clientCredentialsRefresher = new Timer();
             _clientCredentialsRefresher.Elapsed += (sender, e) => RefreshCredentials();
-            RefreshCredentials();
+            return RefreshCredentials();
         }
 
         public Response<User> GetUser(int id) => GetUser(id.ToString());
@@ -188,31 +189,29 @@ namespace UnifiedAnime.Clients.Browsers.AniList
         /// <summary>
         /// https://anilist-api.readthedocs.io/en/latest/authentication.html
         /// </summary>
-        private bool GrantClientCredentials()
+        private Response<Credentials> GrantClientCredentials()
         {
             var request = MakeRequest("auth/access_token", Method.POST);
             request.AddParameter("grant_type", "client_credentials");
             request.AddParameter("client_id", _clientId);
             request.AddParameter("client_secret", _clientSecret);
 
-            var response = Execute<Credentials>(request);
+            return Execute<Credentials>(request);
+        }
 
-            // TODO: We might need better checks, but this is fine for now.
+        private Response RefreshCredentials()
+        {
+            _clientCredentialsRefresher.Stop();
+            _clientCredentialsRefresher.Enabled = false;
+            var response = GrantClientCredentials();
+
             if (response.Status == ResponseStatus.Success)
             {
                 _credentials = response.Data;
-                return true;
-            }
-            return false;
-        }
-
-        private void RefreshCredentials()
-        {
-            _clientCredentialsRefresher.Stop();
-            IsAuthenticated = GrantClientCredentials();
-
-            if (IsAuthenticated)
                 StartTimer();
+            }
+
+            return response;
         }
 
         private void StartTimer()
@@ -220,6 +219,7 @@ namespace UnifiedAnime.Clients.Browsers.AniList
             // We refresh 10 seconds before our credentials expire, just to make sure
             // that our cridentials are always valid.
             _clientCredentialsRefresher.Interval = TimeSpan.FromSeconds(_credentials.ExpiresIn - 10).TotalMilliseconds;
+            _clientCredentialsRefresher.Enabled = true;
             _clientCredentialsRefresher.Start();
         }
 

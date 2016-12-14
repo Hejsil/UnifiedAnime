@@ -70,7 +70,7 @@
     <Compile Include="Clients\Browsers\HummingBirdV1\UnifiedHummingBirdV1Browser.cs" />
     <Compile Include="Clients\IAnimeProfile.cs" />
     <Compile Include="Clients\Browsers\HummingBirdV1\HummingBirdV1Browser.cs" />
-    <Compile Include="Clients\Profiles\AniList\AniListBrowser.cs" />
+    <Compile Include="Clients\Profiles\AniList\AniListProfile.cs" />
     <Compile Include="Clients\Profiles\HummingBirdV1\HummingBirdV1Profile.cs" />
     <Compile Include="Clients\Profiles\HummingBirdV1\UnifiedHummingBirdV1Profile.cs" />
     <Compile Include="Collections\Map.cs" />
