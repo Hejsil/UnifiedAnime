@@ -52,11 +52,11 @@ namespace UnifiedAnime.Clients.Browsers.AniList
 
         public Response<SmallUser[]> SearchUser(string query) => MakeAndExecute<SmallUser[]>($"user/search/{query}", Method.GET);
 
-        public Response<Anime[]> GetAnimelist(int id) => GetAnimelist(id.ToString());
-        public Response<Anime[]> GetAnimelist(string displayName) => MakeAndExecute<Anime[]>($"user/{displayName}/animelist", Method.GET);
+        public Response<BigUser> GetAnimelist(int id) => GetAnimelist(id.ToString());
+        public Response<BigUser> GetAnimelist(string displayName) => MakeAndExecute<BigUser>($"user/{displayName}/animelist", Method.GET);
 
-        public Response<Manga[]> GetMangalist(int id) => GetMangalist(id.ToString());
-        public Response<Manga[]> GetMangalist(string displayName) => MakeAndExecute<Manga[]>($"user/{displayName}/mangalist", Method.GET);
+        public Response<BigUser> GetMangalist(int id) => GetMangalist(id.ToString());
+        public Response<BigUser> GetMangalist(string displayName) => MakeAndExecute<BigUser>($"user/{displayName}/mangalist", Method.GET);
 
         public Response<SmallSeries[]> GetBrowseAnime(
             int? year = null,

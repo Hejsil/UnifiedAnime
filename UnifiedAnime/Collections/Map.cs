@@ -46,14 +46,14 @@ namespace MoreCollections
         /// <typeparam name="T4">Second key type.</typeparam>
         public class Indexer<T3, T4> : IEnumerable<T3>
         {
-            private Dictionary<T3, T4> dictionary;
+            private readonly Dictionary<T3, T4> _dictionary;
             /// <summary>
             /// Creates new instance from a dictionary.
             /// </summary>
             /// <param name="dictionary">Association dictionary.</param>
             public Indexer(Dictionary<T3, T4> dictionary)
             {
-                this.dictionary = dictionary;
+                _dictionary = dictionary;
             }
 
             /// <summary>
@@ -63,8 +63,8 @@ namespace MoreCollections
             /// <returns></returns>
             public T4 this[T3 index]
             {
-                get { return dictionary[index]; }
-                set { dictionary[index] = value; }
+                get { return _dictionary[index]; }
+                set { _dictionary[index] = value; }
             }
 
             /// <summary>
@@ -75,7 +75,7 @@ namespace MoreCollections
             /// <returns>Returns true if the specified key exists, otherwise returns false.</returns>
             public bool TryGetValue(T3 index, out T4 value)
             {
-                return dictionary.TryGetValue(index, out value);
+                return _dictionary.TryGetValue(index, out value);
             }
 
             /// <summary>
@@ -85,7 +85,7 @@ namespace MoreCollections
             /// <returns>Returns true if the specified key exists otherwise returns false.</returns>
             public bool Contains(T3 index)
             {
-                return dictionary.ContainsKey(index);
+                return _dictionary.ContainsKey(index);
             }
 
             /// <summary>
@@ -94,29 +94,29 @@ namespace MoreCollections
             /// <returns>Collection enumerator.</returns>
             public IEnumerator<T3> GetEnumerator()
             {
-                return dictionary.Keys.GetEnumerator();
+                return _dictionary.Keys.GetEnumerator();
             }
 
             /// <summary>
             /// Return the enumerator that iterates through the collection.
             /// </summary>
             /// <returns>Collection enumerator.</returns>
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+            IEnumerator IEnumerable.GetEnumerator()
             {
-                return this.GetEnumerator();
+                return GetEnumerator();
             }
         }
 
-        private Dictionary<T1, T2> forward = new Dictionary<T1, T2>();
-        private Dictionary<T2, T1> reverse = new Dictionary<T2, T1>();
+        private readonly Dictionary<T1, T2> _forward = new Dictionary<T1, T2>();
+        private readonly Dictionary<T2, T1> _reverse = new Dictionary<T2, T1>();
 
         /// <summary>
         /// Initializes a new instance of <see cref="MoreCollections.Map{T1, T2}"/>.
         /// </summary>
         public Map()
         {
-            this.Forward = new Indexer<T1, T2>(forward);
-            this.Reverse = new Indexer<T2, T1>(reverse);
+            Forward = new Indexer<T1, T2>(_forward);
+            Reverse = new Indexer<T2, T1>(_reverse);
         }
 
         /// <summary>
@@ -126,8 +126,8 @@ namespace MoreCollections
         /// <param name="t2"></param>
         public void Add(T1 t1, T2 t2)
         {
-            forward.Add(t1, t2);
-            reverse.Add(t2, t1);
+            _forward.Add(t1, t2);
+            _reverse.Add(t2, t1);
         }
 
         /// <summary>
@@ -137,12 +137,12 @@ namespace MoreCollections
         /// <returns>True if the assocaitons exists, false otherwise.</returns>
         public bool TryRemove(T1 t1)
         {
-            if (!forward.ContainsKey(t1))
+            if (!_forward.ContainsKey(t1))
                 return false;
 
-            var val = forward[t1];
-            forward.Remove(t1);
-            reverse.Remove(val);
+            var val = _forward[t1];
+            _forward.Remove(t1);
+            _reverse.Remove(val);
             return true;
         }
 
@@ -153,12 +153,12 @@ namespace MoreCollections
         /// <returns>True if the assocaitons exists, false otherwise.</returns>
         public bool TryRemove(T2 t2)
         {
-            if (!reverse.ContainsKey(t2))
+            if (!_reverse.ContainsKey(t2))
                 return false;
 
-            var val = reverse[t2];
-            reverse.Remove(t2);
-            forward.Remove(val);
+            var val = _reverse[t2];
+            _reverse.Remove(t2);
+            _forward.Remove(val);
             return true;
         }
 
@@ -176,8 +176,8 @@ namespace MoreCollections
         /// </summary>
         public void Clear()
         {
-            forward.Clear();
-            reverse.Clear();
+            _forward.Clear();
+            _reverse.Clear();
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace MoreCollections
         /// <returns>Enumerator.</returns>
         public IEnumerator<KeyValuePair<T1, T2>> GetEnumerator()
         {
-            return forward.GetEnumerator();
+            return _forward.GetEnumerator();
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace MoreCollections
         /// <returns>Enumerator.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return forward.GetEnumerator();
+            return _forward.GetEnumerator();
         }
     }
 }

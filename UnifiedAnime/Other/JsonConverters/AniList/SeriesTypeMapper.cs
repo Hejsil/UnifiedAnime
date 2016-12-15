@@ -8,12 +8,12 @@ using UnifiedAnime.Data.AniList;
 
 namespace UnifiedAnime.Other.JsonConverters.AniList
 {
-    public class ActivityTypeConverter : TypeToTypeMapper<string, ActivityType>
+    public class SeriesTypeMapper : TypeToTypeMapper<string, SeriesType>
     {
-        protected override Map<string, ActivityType> Map { get; } = new Map<string, ActivityType>()
+        protected override Map<string, SeriesType> Map { get; } = new Map<string, SeriesType>
         {
-            { "list", ActivityType.List },
-            { "text", ActivityType.Text }
+            { "anime", SeriesType.Anime },
+            { "manga", SeriesType.Manga }
         };
     }
 }

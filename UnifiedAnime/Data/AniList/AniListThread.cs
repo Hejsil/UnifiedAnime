@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using UnifiedAnime.Other.JsonConverters.AniList;
 
 namespace UnifiedAnime.Data.AniList
 {
@@ -14,10 +15,10 @@ namespace UnifiedAnime.Data.AniList
         public int UserId { get; set; }
 
         [JsonProperty("title")]
-        public string Title { get; set; }
+        public DateTime Title { get; set; }
 
         [JsonProperty("body")]
-        public string Body { get; set; }
+        public DateTime Body { get; set; }
 
         [JsonProperty("sticky")]
         public bool Sticky { get; set; }
@@ -30,14 +31,14 @@ namespace UnifiedAnime.Data.AniList
 
         [JsonProperty("last_reply_user")]
         public int LastReplyUser { get; set; }
-
-        // TODO: Make DateTime
+        
         [JsonProperty("deleted_at")]
-        public string DeletedAt { get; set; }
-
-        // TODO: Make DateTime
+        [JsonConverter(typeof(DateTimeConverter))]
+        public DateTime DeletedAt { get; set; }
+        
         [JsonProperty("created_at")]
-        public string CreatedAt { get; set; }
+        [JsonConverter(typeof(DateTimeConverter))]
+        public DateTime CreatedAt { get; set; }
 
         [JsonProperty("reply_count")]
         public int ReplyCount { get; set; }
@@ -58,7 +59,7 @@ namespace UnifiedAnime.Data.AniList
         public TaggedAnime[] TagsAnime { get; set; }
 
         [JsonProperty("tags_manga")]
-        public object[] TagsManga { get; set; }
+        public TaggedManga[] TagsManga { get; set; }
 
         [JsonProperty("user")]
         public SmallUser Creator { get; set; }

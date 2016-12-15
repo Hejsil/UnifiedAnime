@@ -81,7 +81,7 @@ namespace UnifiedAnime.Tests.Browsers
             var follower = followers[0];
             follower.DisplayName.ShouldBe("hejsil");
             follower.ImageUrlLge.ShouldBe("https://cdn.anilist.co/img/dir/user/reg/72340-aKJVAlZWuTRE.png");
-            follower.ImageUrlMed.ShouldBe("https://cdn.anilist.co/img/dir/user/reg/72340-aKJVAlZWuTRE.png");
+            follower.ImageUrlMed.ShouldBe("https://cdn.anilist.co/img/dir/user/sml/72340-aKJVAlZWuTRE.png");
         }
 
         [TestCase("UnifiedAnimeTestUser")]
@@ -97,7 +97,7 @@ namespace UnifiedAnime.Tests.Browsers
             var follower = followers[0];
             follower.DisplayName.ShouldBe("hejsil");
             follower.ImageUrlLge.ShouldBe("https://cdn.anilist.co/img/dir/user/reg/72340-aKJVAlZWuTRE.png");
-            follower.ImageUrlMed.ShouldBe("https://cdn.anilist.co/img/dir/user/reg/72340-aKJVAlZWuTRE.png");
+            follower.ImageUrlMed.ShouldBe("https://cdn.anilist.co/img/dir/user/sml/72340-aKJVAlZWuTRE.png");
         }
 
         [TestCase("UnifiedAnimeTestUser")]
@@ -108,7 +108,16 @@ namespace UnifiedAnime.Tests.Browsers
             response.Status.ShouldBe(ResponseStatus.Success);
             response.Data.ShouldNotBeNull();
 
-            // TODO: Make this when have the AniList account at hand
+            var favorites = response.Data;
+            favorites.Anime.Length.ShouldBe(1);
+            favorites.Manga.ShouldBeNull();
+            favorites.Character.ShouldBeNull();
+            favorites.Staff.ShouldBeNull();
+
+            var favAnimes = favorites.Anime;
+            favAnimes[0].TitleEnglish.ShouldBe("Steins;Gate");
+
+            // TODO: Should probably cover more
         }
 
         [Test()]
@@ -130,7 +139,23 @@ namespace UnifiedAnime.Tests.Browsers
         [TestCase(84039)]
         public void GetAnimelistTest(object displayName)
         {
-            Assert.Fail();
+            var response = Browser.GetAnimelist(displayName.ToString());
+            response.Status.ShouldBe(ResponseStatus.Success);
+            response.Data.ShouldNotBeNull();
+
+            var user = response.Data;
+            user.SeriesList.ShouldNotBeNull();
+            var list = user.SeriesList;
+            list.Completed.Length.ShouldBe(1);
+            list.Dropped.Length.ShouldBe(1);
+            list.OnHold.Length.ShouldBe(1);
+            list.PlanToWatch.Length.ShouldBe(1);
+            list.Watching.Length.ShouldBe(1);
+
+            var completed = list.Completed;
+            completed.ShouldContain(entry => entry.Anime.TitleEnglish == "Death Note");
+
+            // TODO: Extensive tests here
         }
 
         [TestCase("UnifiedAnimeTestUser")]

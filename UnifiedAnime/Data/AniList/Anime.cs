@@ -4,57 +4,42 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using UnifiedAnime.Data.Common;
+using UnifiedAnime.Other.JsonConverters.AniList;
 
 namespace UnifiedAnime.Data.AniList
 {
-    public class Favorites
-    {
-        [JsonProperty("anime")]
-        public SmallAnime[] Anime { get; set; }
-
-        [JsonProperty("manga")]
-        public SmallManga[] Manga { get; set; }
-
-        [JsonProperty("character")]
-        public SmallCharacter[] Character { get; set; }
-
-        [JsonProperty("staff")]
-        public Staff[] Staff { get; set; }
-    }
-
     public class Anime : SmallAnime
     {
         [JsonProperty("duration")]
         public int? Duration { get; set; }
 
         // TODO: https://anilist-api.readthedocs.io/en/latest/series.html
-
         [JsonProperty("youtube_id")]
         public string YoutubeId { get; set; }
 
         [JsonProperty("hashtag")]
         public string Hashtag { get; set; }
         
-        // TODO: https://anilist-api.readthedocs.io/en/latest/series.html
         [JsonProperty("source")]
-        public string Source { get; set; }
+        [JsonConverter(typeof(AnimeSourceMapper))]
+        public AnimeSource Source { get; set; }
 
         // TODO: https://anilist-api.readthedocs.io/en/latest/series.html
         [JsonProperty("airing_stats")]
         public object[] AiringStats { get; set; }
+        
+        // NOTE: The api states that this is deprecated, so we wont save it.
+        //[JsonProperty("start_date")]
+        //public string StartDate { get; set; }
 
-
-        // TODO: https://anilist-api.readthedocs.io/en/latest/series.html
-        [JsonProperty("start_date")]
-        public string StartDate { get; set; }
-
-        // TODO: https://anilist-api.readthedocs.io/en/latest/series.html
-        [JsonProperty("end_date")]
-        public string EndDate { get; set; }
-
-        // TODO: https://anilist-api.readthedocs.io/en/latest/series.html
+        // NOTE: The api states that this is deprecated, so we wont save it.
+        //[JsonProperty("end_date")]
+        //public string EndDate { get; set; }
+        
         [JsonProperty("season")]
-        public int? Season { get; set; }
+        [JsonConverter(typeof(SeasonAndYearConveter))]
+        public SeasonAndYear Season { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }
@@ -63,12 +48,12 @@ namespace UnifiedAnime.Data.AniList
         public bool Favourite { get; set; }
 
         [JsonProperty("image_url_banner")]
-        public object ImageUrlBanner { get; set; }
+        public string ImageUrlBanner { get; set; }
 
         [JsonProperty("score_distribution")]
-        public object[] ScoreDistribution { get; set; }
+        public ScoreDistribution[] ScoreDistribution { get; set; }
 
         [JsonProperty("list_stats")]
-        public object[] ListStats { get; set; }
+        public ListStats[] ListStats { get; set; }
     }
 }

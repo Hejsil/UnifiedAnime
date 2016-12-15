@@ -1,12 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
+using UnifiedAnime.Other;
+using UnifiedAnime.Other.JsonConverters.AniList;
 
 namespace UnifiedAnime.Data.AniList
 {
     public class SmallSeries : AniListObject
     {
-        // TODO: https://anilist-api.readthedocs.io/en/latest/series.html
         [JsonProperty("series_type")]
-        public string SeriesType { get; set; }
+        [JsonConverter(typeof(SeriesTypeMapper))]
+        public SeriesType SeriesType { get; set; }
 
         [JsonProperty("title_romaji")]
         public string TitleRomaji { get; set; }
@@ -21,10 +24,12 @@ namespace UnifiedAnime.Data.AniList
         public MediaTypes Type { get; set; }
 
         [JsonProperty("start_date_fuzzy")]
-        public int? StartDateFuzzy { get; set; }
+        [JsonConverter(typeof(FuzzyDatesConverter))]
+        public DateTime StartDateFuzzy { get; set; }
 
         [JsonProperty("end_date_fuzzy")]
-        public int? EndDateFuzzy { get; set; }
+        [JsonConverter(typeof(FuzzyDatesConverter))]
+        public DateTime EndDateFuzzy { get; set; }
 
         [JsonProperty("synonyms")]
         public string[] Synonyms { get; set; }
@@ -51,6 +56,7 @@ namespace UnifiedAnime.Data.AniList
         public string ImageUrlLge { get; set; }
 
         [JsonProperty("updated_at")]
-        public int UpdatedAt { get; set; }
+        [JsonConverter(typeof(UnixTimestampConveter))]
+        public DateTime UpdatedAt { get; set; }
     }
 }

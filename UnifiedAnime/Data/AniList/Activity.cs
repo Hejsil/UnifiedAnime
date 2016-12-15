@@ -17,7 +17,7 @@ namespace UnifiedAnime.Data.AniList
         public int ReplyCount { get; set; }
 
         [JsonProperty("activity_type")]
-        [JsonConverter(typeof(ActivityTypeConverter))]
+        [JsonConverter(typeof(ActivityTypeMapper))]
         public ActivityType ActivityType { get; set; }
 
         [JsonProperty("status")]

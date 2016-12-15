@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using UnifiedAnime.Other.JsonConverters.AniList;
 
 namespace UnifiedAnime.Data.AniList
 {
@@ -12,20 +13,17 @@ namespace UnifiedAnime.Data.AniList
         [JsonProperty("total_volumes")]
         public int TotalVolumes { get; set; }
 
-        // TODO: https://anilist-api.readthedocs.io/en/latest/series.html
+        // NOTE: The api states that this is deprecated, so we wont save it.
+        //[JsonProperty("start_date")]
+        //public string StartDate { get; set; }
 
+        // NOTE: The api states that this is deprecated, so we wont save it.
+        //[JsonProperty("end_date")]
+        //public string EndDate { get; set; }
 
-        // TODO: https://anilist-api.readthedocs.io/en/latest/series.html
-        [JsonProperty("start_date")]
-        public string StartDate { get; set; }
-
-        // TODO: https://anilist-api.readthedocs.io/en/latest/series.html
-        [JsonProperty("end_date")]
-        public string EndDate { get; set; }
-
-        // TODO: https://anilist-api.readthedocs.io/en/latest/series.html
         [JsonProperty("season")]
-        public int? Season { get; set; }
+        [JsonConverter(typeof(SeasonAndYearConveter))]
+        public SeasonAndYear Season { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }
@@ -37,9 +35,9 @@ namespace UnifiedAnime.Data.AniList
         public object ImageUrlBanner { get; set; }
 
         [JsonProperty("score_distribution")]
-        public object[] ScoreDistribution { get; set; }
+        public ScoreDistribution[] ScoreDistribution { get; set; }
 
         [JsonProperty("list_stats")]
-        public object[] ListStats { get; set; }
+        public ListStats[] ListStats { get; set; }
     }
 }
