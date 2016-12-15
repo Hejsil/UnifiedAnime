@@ -104,9 +104,9 @@ Response<Anime[]> data4 = browse3.GetSearchAnime("Flip Flappers");
 - [ ] Implement AniList
     * [ ] Browser
     * [ ] Profile
-- [x] ~~~Implement HummingBird~~~ 
-    * [x] ~~~Browser~~~
-    * [x] ~~~Profile~~~
+- [x] ~~Implement HummingBird~~
+    * [x] ~~Browser~~
+    * [x] ~~Profile~~
 - [ ] Implement Kitsu
     * [ ] Browser
     * [ ] Profile
