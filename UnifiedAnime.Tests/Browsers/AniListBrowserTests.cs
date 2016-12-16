@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Linq;
+using NUnit.Framework;
 using Shouldly;
 using UnifiedAnime.Clients.Browsers.AniList;
 using UnifiedAnime.Data.AniList;
@@ -143,19 +145,36 @@ namespace UnifiedAnime.Tests.Browsers
             response.Status.ShouldBe(ResponseStatus.Success);
             response.Data.ShouldNotBeNull();
 
-            var user = response.Data;
-            user.SeriesList.ShouldNotBeNull();
-            var list = user.SeriesList;
-            list.Completed.Length.ShouldBe(1);
-            list.Dropped.Length.ShouldBe(1);
-            list.OnHold.Length.ShouldBe(1);
-            list.PlanToWatch.Length.ShouldBe(1);
-            list.Watching.Length.ShouldBe(1);
+            var entries = response.Data;
+            entries.ShouldNotBeNull();
+            
+            entries.ShouldContain(entry => entry.Anime.TitleEnglish == "Attack on Titan");
+            var entry1 = entries.First(entry => entry.Anime.TitleEnglish == "Attack on Titan");
+            entry1.ListStatus.ShouldBe(AnimeEntryStatus.Watching);
+            entry1.EpisodesWatched.ShouldBe(15);
+            entry1.Rewatched.ShouldBe(0);
+            entry1.Score.ShouldBe(3);
+            entry1.ScoreRaw.ShouldBe(50);
+            // entry1.Priority.ShouldBe(); // TODO: Add this when i actually know what it is used for
+            entry1.Private.ShouldBe(false);
+            entry1.HiddenDefault.ShouldBe(false);
+            entry1.Notes.ShouldBe("This is a test note");
+            entry1.AdvancedRatingScores.Length.ShouldBe(3);
+            entry1.AdvancedRatingScores[0].ShouldBe(2);
+            entry1.AdvancedRatingScores[1].ShouldBe(4);
+            entry1.AdvancedRatingScores[2].ShouldBe(0);
+            entry1.CustomLists.ShouldContain(1);
+            entry1.CustomLists.ShouldNotContain(2);
+            entry1.CustomLists.ShouldNotContain(3);
+            entry1.StartedOn.ShouldBe(new DateTime(2015, 12, 1)); 
+            entry1.FinishedOn.ShouldBe(new DateTime(2015, 12, 5)); 
 
-            var completed = list.Completed;
-            completed.ShouldContain(entry => entry.Anime.TitleEnglish == "Death Note");
 
-            // TODO: Extensive tests here
+
+            entries.ShouldContain(entry => entry.Anime.TitleEnglish == "Death Note");
+            entries.ShouldContain(entry => entry.Anime.TitleEnglish == "Steins;Gate");
+            entries.ShouldContain(entry => entry.Anime.TitleEnglish == "Angel Beats!");
+            entries.ShouldContain(entry => entry.Anime.TitleEnglish == "Sword Art Online");
         }
 
         [TestCase("UnifiedAnimeTestUser")]

@@ -1,6 +1,6 @@
 ﻿namespace UnifiedAnime.Data.Common
 {
-    public enum EntryStatus
+    public enum AnimeEntryStatus
     {
         Watching,
         PlanToWatch,

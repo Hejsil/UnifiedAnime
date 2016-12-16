@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using Newtonsoft.Json;
 using RestSharp;
 using UnifiedAnime.Clients.Bases;
 using UnifiedAnime.Data.AniList;
 using UnifiedAnime.Data.Common;
+using UnifiedAnime.Other.JsonConverters.AniList;
 using ResponseStatus = UnifiedAnime.Data.Common.ResponseStatus;
 
 namespace UnifiedAnime.Clients.Browsers.AniList
@@ -51,12 +53,16 @@ namespace UnifiedAnime.Clients.Browsers.AniList
         public Response<Favorites> GetFavourites(string displayName) => MakeAndExecute<Favorites>($"user/{displayName}/favourites", Method.GET);
 
         public Response<SmallUser[]> SearchUser(string query) => MakeAndExecute<SmallUser[]>($"user/search/{query}", Method.GET);
+        
+        public Response<AnimeEntry[]> GetAnimelist(int id) => GetAnimelist(id.ToString());
+        public Response<AnimeEntry[]> GetAnimelist(string displayName)
+        {
+            var response = MakeAndRestExecute($"user/{displayName}/animelist", Method.GET);
+            return new Response<AnimeEntry[]>(response, JsonConvert.DeserializeObject<AnimeEntry[]>(response.Content, new AnimeListConverter()));
+        }
 
-        public Response<BigUser> GetAnimelist(int id) => GetAnimelist(id.ToString());
-        public Response<BigUser> GetAnimelist(string displayName) => MakeAndExecute<BigUser>($"user/{displayName}/animelist", Method.GET);
-
-        public Response<BigUser> GetMangalist(int id) => GetMangalist(id.ToString());
-        public Response<BigUser> GetMangalist(string displayName) => MakeAndExecute<BigUser>($"user/{displayName}/mangalist", Method.GET);
+        public Response<BigUserWithMangaList> GetMangalist(int id) => GetMangalist(id.ToString());
+        public Response<BigUserWithMangaList> GetMangalist(string displayName) => MakeAndExecute<BigUserWithMangaList>($"user/{displayName}/mangalist", Method.GET);
 
         public Response<SmallSeries[]> GetBrowseAnime(
             int? year = null,

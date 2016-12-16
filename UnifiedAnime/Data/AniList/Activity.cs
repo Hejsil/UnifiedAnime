@@ -35,6 +35,7 @@ namespace UnifiedAnime.Data.AniList
         [JsonProperty("series")]
         public SmallSeries Series { get; set; }
 
+        // TODO: Figure out type
         [JsonProperty("messenger")]
         public object Messenger { get; set; }
     }

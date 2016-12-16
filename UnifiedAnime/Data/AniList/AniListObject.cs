@@ -2,7 +2,7 @@
 
 namespace UnifiedAnime.Data.AniList
 {
-    public class AniListObject
+    public abstract class AniListObject
     {
         [JsonProperty("id")]
         public int Id { get; set; }

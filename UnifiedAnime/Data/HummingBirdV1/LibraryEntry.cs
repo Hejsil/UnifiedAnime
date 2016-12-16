@@ -37,8 +37,8 @@ namespace UnifiedAnime.Data.HummingBirdV1
         public bool NotesPresent { get; set; }
 
         [JsonProperty("status")]
-        [JsonConverter(typeof(EntryStatusMapper))]
-        public EntryStatus Status { get; set; }
+        [JsonConverter(typeof(AnimeEntryStatusMapper))]
+        public AnimeEntryStatus Status { get; set; }
 
         [JsonProperty("private")]
         public bool Private { get; set; }

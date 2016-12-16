@@ -29,8 +29,8 @@ namespace UnifiedAnime.Data.HummingBirdV1
         public UserMini FollowedUser { get; set; }
         
         [JsonProperty("new_status")]
-        [JsonConverter(typeof(EntryStatusMapper))]
-        public EntryStatus NewStatus { get; set; }
+        [JsonConverter(typeof(AnimeEntryStatusMapper))]
+        public AnimeEntryStatus NewStatus { get; set; }
 
         [JsonProperty("created_at")]
         public DateTime CreatedAt { get; set; }

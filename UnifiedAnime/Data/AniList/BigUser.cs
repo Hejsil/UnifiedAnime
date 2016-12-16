@@ -2,6 +2,7 @@
 
 namespace UnifiedAnime.Data.AniList
 {
+    // NOTE: This class is not used for anything right now, but it is data that can be extracted from AniList.
     public class BigUser : User
     {
         [JsonProperty("forum_homepage")]
@@ -24,8 +25,5 @@ namespace UnifiedAnime.Data.AniList
 
         [JsonProperty("css")]
         public string[] Css { get; set; }
-
-        [JsonProperty("lists")]
-        public SeriesList SeriesList { get; set; }
     }
 }

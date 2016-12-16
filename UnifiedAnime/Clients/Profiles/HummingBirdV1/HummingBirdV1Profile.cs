@@ -39,7 +39,7 @@ namespace UnifiedAnime.Clients.Profiles.HummingBirdV1
         /// <returns></returns>
         public Response<LibraryEntry> AddOrUpdateEntry(
                 int id, // required
-                EntryStatus? status = null, // optional
+                AnimeEntryStatus? status = null, // optional
                 bool? privacy = null, // optional
                 double? rating = null, // optional
                 double? saneRatingUpdate = null, // optional
@@ -55,7 +55,7 @@ namespace UnifiedAnime.Clients.Profiles.HummingBirdV1
 
             if (status != null)
             {
-                var result = new EntryStatusMapper().Type2ToType1((EntryStatus)status);
+                var result = new AnimeEntryStatusMapper().Type2ToType1((AnimeEntryStatus)status);
                 request.AddParameter("status", result);
             }
 

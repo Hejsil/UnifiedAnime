@@ -43,13 +43,13 @@ namespace UnifiedAnime.Clients.Browsers.HummingBirdV1
         /// <param name="username"></param>
         /// <param name="animeStatus"></param>
         /// <returns></returns>
-        public Response<LibraryEntry[]> GetLibrary(string username, EntryStatus? animeStatus = null)
+        public Response<LibraryEntry[]> GetLibrary(string username, AnimeEntryStatus? animeStatus = null)
         {
             var request = MakeRequest($"/users/{username}/library", Method.GET);
 
             if (animeStatus != null)
             {
-                var result = new EntryStatusMapper().Type2ToType1((EntryStatus)animeStatus);
+                var result = new AnimeEntryStatusMapper().Type2ToType1((AnimeEntryStatus)animeStatus);
                 request.AddParameter("status", result);
             }
 

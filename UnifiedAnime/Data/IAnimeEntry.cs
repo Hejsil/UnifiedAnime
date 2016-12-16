@@ -8,7 +8,7 @@ namespace UnifiedAnime.Data
 
         int Id { get; }
 
-        EntryStatus Status { get; set; }
+        AnimeEntryStatus Status { get; set; }
 
         int EpisodesWatched { get; set; }
 
