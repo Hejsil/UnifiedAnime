@@ -1,4 +1,4 @@
-#region Licence and Terms
+﻿#region Licence and Terms
 // MoreCollections
 // https://github.com/more-dotnet/more-collections
 //

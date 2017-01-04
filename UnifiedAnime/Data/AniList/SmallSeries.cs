@@ -21,7 +21,8 @@ namespace UnifiedAnime.Data.AniList
         public string TitleJapanese { get; set; }
 
         [JsonProperty("type")]
-        public MediaTypes Type { get; set; }
+        [JsonConverter(typeof(MediaTypeMapper))]
+        public MediaType Type { get; set; }
 
         [JsonProperty("start_date_fuzzy")]
         [JsonConverter(typeof(FuzzyDatesConverter))]

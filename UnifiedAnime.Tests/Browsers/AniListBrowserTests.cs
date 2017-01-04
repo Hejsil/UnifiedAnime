@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
 using Shouldly;
@@ -181,49 +182,184 @@ namespace UnifiedAnime.Tests.Browsers
         [TestCase(84039)]
         public void GetMangalistTest(object displayName)
         {
-            Assert.Fail();
+            var response = Browser.GetMangalist(displayName.ToString());
+            response.Status.ShouldBe(ResponseStatus.Success);
+            response.Data.ShouldNotBeNull();
+
+            var entries = response.Data;
+            entries.ShouldNotBeNull();
+
+            entries.ShouldContain(entry => entry.Manga.TitleEnglish == "Berserk");
+            var entry1 = entries.First(entry => entry.Manga.TitleEnglish == "Berserk");
+            entry1.ListStatus.ShouldBe(MangaEntryStatus.Completed);
+            entry1.ChaptersRead.ShouldBe(6);
+            entry1.VolumesRead.ShouldBe(1);
+            entry1.Score.ShouldBe(3);
+            entry1.ScoreRaw.ShouldBe(50);
+            // entry1.Priority.ShouldBe(); // TODO: Add this when i actually know what it is used for
+            entry1.Private.ShouldBe(false);
+            entry1.HiddenDefault.ShouldBe(false);
+            entry1.Notes.ShouldBe("This is a test note");
+            entry1.AdvancedRatingScores.Length.ShouldBe(3);
+            entry1.AdvancedRatingScores[0].ShouldBe(2);
+            entry1.AdvancedRatingScores[1].ShouldBe(4);
+            entry1.AdvancedRatingScores[2].ShouldBe(0);
+            entry1.CustomLists.ShouldContain(1);
+            entry1.CustomLists.ShouldNotContain(2);
+            entry1.CustomLists.ShouldNotContain(3);
+            entry1.StartedOn.ShouldBe(new DateTime(2015, 12, 1));
+            entry1.FinishedOn.ShouldBe(new DateTime(2015, 12, 5));
+            
+
+
+            entries.ShouldContain(entry => entry.Manga.TitleEnglish == "Goodnight Punpun");
+            entries.ShouldContain(entry => entry.Manga.TitleEnglish == "One Piece");
+            entries.ShouldContain(entry => entry.Manga.TitleEnglish == "Yotsuba&!");
+            entries.ShouldContain(entry => entry.Manga.TitleEnglish == "Fullmetal Alchemist");
         }
 
-        [Test()]
-        public void GetBrowseAnimeTest()
+        [TestCase(2013, Season.Spring, MediaType.TV, SortingMethod.StartDateDescending,
+            "The Eccentric Family",
+            "Yuuto-kun ga Iku",
+            "Kingdom 2",
+            "Odoriko Clinoppe",
+            "Inazuma Eleven Go: Galaxy",
+            "Pokemon Best Wishes! Season 2: Dekorora Adventure")]
+        public void GetBrowseAnimeTest(int year, Season season, MediaType type, SortingMethod sortingMethod, params string[] firstAnimes)
         {
-            Assert.Fail();
+            var response = Browser.GetBrowseAnime(year: year, season: season, type: type, sortingMethod: sortingMethod);
+            response.Status.ShouldBe(ResponseStatus.Success);
+            response.Data.ShouldNotBeNull();
+
+            var animes = response.Data;
+            animes.ShouldNotBeNull();
+
+            for (int i = 0; i < firstAnimes.Length; i++)
+            {
+                animes[i].TitleEnglish.ShouldBe(firstAnimes[i]);
+            }
         }
 
-        [Test()]
-        public void GetBrowseMangaTest()
+        [TestCase(2013, MediaType.Manga, SortingMethod.StartDateDescending,
+            "The Sea, You, and the Sun",
+            "Gendai Majo Zukan",
+            "Gabriel DropOut",
+            "A Certain Scientific Accelerator",
+            "Kantai Collection -Kan Colle- Shimakaze Whirlwind Girl",
+            "Bocchiman")]
+        public void GetBrowseMangaTest(int year, MediaType type, SortingMethod sortingMethod, params string[] firstMangas)
         {
-            Assert.Fail();
+            var response = Browser.GetBrowseManga(year: year, type: type, sortingMethod: sortingMethod);
+            response.Status.ShouldBe(ResponseStatus.Success);
+            response.Data.ShouldNotBeNull();
+
+            var mangas = response.Data;
+            mangas.ShouldNotBeNull();
+
+            for (int i = 0; i < firstMangas.Length; i++)
+            {
+                mangas[i].TitleEnglish.ShouldBe(firstMangas[i]);
+            }
         }
 
-        [Test()]
-        public void SearchAnimeTest()
+        [TestCase("clannad",
+            "Clannad The Motion Picture",
+            "Clannad",
+            "Clannad: Another World, Tomoyo Chapter",
+            "Clannad After Story",
+            "Clannad: Another World, Kyou Chapter")]
+        public void SearchAnimeTest(string animeName, params string[] resultNames)
         {
-            Assert.Fail();
+            var response = Browser.SearchAnime(animeName);
+            response.Status.ShouldBe(ResponseStatus.Success);
+            response.Data.ShouldNotBeNull();
+
+            var animes = response.Data;
+            animes.ShouldNotBeNull();
+
+            foreach (var result in resultNames)
+            {
+               animes.ShouldContain(anime => anime.TitleEnglish == result); 
+            }
         }
 
-        [Test()]
-        public void SearchMangaTest()
+        [TestCase("clannad",
+            "Clannad",
+            "Tomoyo After ~Dear Shining Memories~",
+            "Clannad 4-koma Manga Gekijyou",
+            "CLANNAD Official Another Story",
+            "Clannad: Tomoyo Dearest")]
+        public void SearchMangaTest(string mangaName, params string[] resultNames)
         {
-            Assert.Fail();
+            var response = Browser.SearchManga(mangaName);
+            response.Status.ShouldBe(ResponseStatus.Success);
+            response.Data.ShouldNotBeNull();
+
+            var mangas = response.Data;
+            mangas.ShouldNotBeNull();
+
+            foreach (var result in resultNames)
+            {
+                mangas.ShouldContain(manga => manga.TitleEnglish == result);
+            }
         }
 
-        [Test()]
-        public void SearchCharacterTest()
+        [TestCase("fuko",
+            "Fuko Omuro",
+            "Fuko Ibuki",
+            "Fuko Kuzuha",
+            "Fuko Laramie",
+            "Fuko Izumi")]
+        public void SearchCharacterTest(string characterName, params string[] resultNames)
         {
-            Assert.Fail();
+            var response = Browser.SearchCharacter(characterName);
+            response.Status.ShouldBe(ResponseStatus.Success);
+            response.Data.ShouldNotBeNull();
+
+            var characters = response.Data;
+            characters.ShouldNotBeNull();
+
+            foreach (var result in resultNames)
+            {
+                characters.ShouldContain(character => character.NameFirst + " " + character.NameLast == result);
+            }
         }
 
-        [Test()]
-        public void SearchStaffTest()
+        [TestCase("hanasaki",
+            "Akira Hanasaki",
+            "Kiyomi Hanasaki",
+            "Iori Hanasaki")]
+        public void SearchStaffTest(string staffName, params string[] resultNames)
         {
-            Assert.Fail();
+            var response = Browser.SearchStaff(staffName);
+            response.Status.ShouldBe(ResponseStatus.Success);
+            response.Data.ShouldNotBeNull();
+
+            var staff = response.Data;
+            staff.ShouldNotBeNull();
+
+            foreach (var result in resultNames)
+            {
+                staff.ShouldContain(s => s.NameFirst + " " + s.NameLast == result);
+            }
         }
 
-        [Test()]
-        public void SearchStudioTest()
+        [TestCase("kyoto",
+            "Kyoto Animation",
+            "Kyotoma")]
+        public void SearchStudioTest(string studioName, params string[] resultNames)
         {
-            Assert.Fail();
+            var response = Browser.SearchStudio(studioName);
+            response.Status.ShouldBe(ResponseStatus.Success);
+            response.Data.ShouldNotBeNull();
+
+            var studios = response.Data;
+            studios.ShouldNotBeNull();
+
+            foreach (var result in resultNames)
+            {
+                studios.ShouldContain(studio => studio.StudioName == result);
+            }
         }
 
         [Test()]

@@ -61,48 +61,52 @@ namespace UnifiedAnime.Clients.Browsers.AniList
             return new Response<AnimeEntry[]>(response, JsonConvert.DeserializeObject<AnimeEntry[]>(response.Content, new AnimeListConverter()));
         }
 
-        public Response<BigUserWithMangaList> GetMangalist(int id) => GetMangalist(id.ToString());
-        public Response<BigUserWithMangaList> GetMangalist(string displayName) => MakeAndExecute<BigUserWithMangaList>($"user/{displayName}/mangalist", Method.GET);
+        public Response<MangaEntry[]> GetMangalist(int id) => GetMangalist(id.ToString());
+        public Response<MangaEntry[]> GetMangalist(string displayName)
+        {
+            var response = MakeAndRestExecute($"user/{displayName}/mangalist", Method.GET);
+            return new Response<MangaEntry[]>(response, JsonConvert.DeserializeObject<MangaEntry[]>(response.Content, new MangaListConverter()));
+        }
 
         public Response<SmallSeries[]> GetBrowseAnime(
             int? year = null,
-            string season = null, // TODO: Season enum
-            MediaTypes? type = null,
+            Season? season = null,
+            MediaType? type = null,
             AnimeStatus? status = null,
             string[] genres = null, // TODO: Genre enum
             string[] excludedGenres = null, // TODO: Genre enum
-            string sort = null, // TODO: Sort enum
+            SortingMethod? sortingMethod = null,
             bool? airingData = null,
             bool? fullPage = null,
             int? page = null)
         {
-            return GetBrowse("anime", year, season, type, status, genres, excludedGenres, sort, airingData, fullPage, page);
+            return GetBrowse("anime", year, season, type, status, genres, excludedGenres, sortingMethod, airingData, fullPage, page);
         }
 
         public Response<SmallSeries[]> GetBrowseManga(
             int? year = null,
-            string season = null, // TODO: Season enum
-            MediaTypes? type = null,
+            Season? season = null,
+            MediaType? type = null,
             AnimeStatus? status = null,
             string[] genres = null, // TODO: Genre enum
             string[] excludedGenres = null, // TODO: Genre enum
-            string sort = null, // TODO: Sort enum
+            SortingMethod? sortingMethod = null,
             bool? airingData = null,
             bool? fullPage = null,
             int? page = null)
         {
-            return GetBrowse("manga", year, season, type, status, genres, excludedGenres, sort, airingData, fullPage, page);
+            return GetBrowse("manga", year, season, type, status, genres, excludedGenres, sortingMethod, airingData, fullPage, page);
         }
 
         private Response<SmallSeries[]> GetBrowse(
             string seriesType,
             int? year = null,
-            string season = null, // TODO: Season enum
-            MediaTypes? type = null,
+            Season? season = null,
+            MediaType? type = null,
             AnimeStatus? status = null,
             string[] genres = null, // TODO: Genre enum
             string[] excludedGenres = null, // TODO: Genre enum
-            string sort = null, // TODO: Sort enum
+            SortingMethod? sortingMethod = null,
             bool? airingData = null,
             bool? fullPage = null,
             int? page = null)
@@ -111,8 +115,8 @@ namespace UnifiedAnime.Clients.Browsers.AniList
 
             if (year != null)
                 request.AddParameter("year", year);
-            if (!string.IsNullOrEmpty(season))
-                request.AddParameter("season", season);
+            if (season != null)
+                request.AddParameter("season", new SeasonMapper().Type2ToType1((Season)season));
             if (type != null)
                 request.AddParameter("type", type);
             if (status != null)
@@ -121,8 +125,8 @@ namespace UnifiedAnime.Clients.Browsers.AniList
                 request.AddParameter("genres", string.Join(",", genres));
             if (excludedGenres != null && excludedGenres.Length > 0)
                 request.AddParameter("genres_exclude", string.Join(",", excludedGenres));
-            if (sort != null)
-                request.AddParameter("sort", sort);
+            if (sortingMethod != null)
+                request.AddParameter("sort", new SortMapper().Type2ToType1((SortingMethod)sortingMethod));
             if (airingData != null)
                 request.AddParameter("airing_data", airingData);
             if (fullPage != null)

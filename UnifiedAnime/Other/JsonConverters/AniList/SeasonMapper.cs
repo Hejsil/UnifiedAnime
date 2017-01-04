@@ -9,19 +9,14 @@ using UnifiedAnime.Data.Common;
 
 namespace UnifiedAnime.Other.JsonConverters.AniList
 {
-    /// <summary>
-    /// Because most anime sites will probably have some reprensentation of a season,
-    /// we can't just hardcode <see cref="Season"/> to be the numbers of AniList
-    /// </summary>
-    public class SeasonMapper : TypeToTypeMapper<int, Season>
+    public class SeasonMapper : TypeToTypeMapper<string, Season>
     {
-        protected override Map<int, Season> Map { get; } = new Map<int, Season>
+        protected override Map<string, Season> Map { get; } = new Map<string, Season>
         {
-            // TODO: Ensure the order is correct
-            { 1, Season.Winter },
-            { 2, Season.Spring },
-            { 3, Season.Summer },
-            { 4, Season.Fall },
+            { "winter", Season.Winter },
+            { "spring", Season.Spring },
+            { "summer", Season.Summer },
+            { "fall", Season.Fall },
         };
     }
 }

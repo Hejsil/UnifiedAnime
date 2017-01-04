@@ -19,7 +19,7 @@ namespace UnifiedAnime.Other.JsonConverters.AniList
             if (season == null)
                 writer.WriteNull();
             else
-                writer.WriteValue((season.Year * YearDivider) + new SeasonMapper().Type2ToType1(season.Season));
+                writer.WriteValue((season.Year * YearDivider) + new IntSeasonMapper().Type2ToType1(season.Season));
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -29,7 +29,7 @@ namespace UnifiedAnime.Other.JsonConverters.AniList
 
             var value = (int)reader.Value;
             var year = value / YearDivider;
-            var season = new SeasonMapper().Type1ToType2(value - (year * YearDivider));
+            var season = new IntSeasonMapper().Type1ToType2(value - (year * YearDivider));
 
             return new SeasonAndYear {Season = season, Year = year};
         }

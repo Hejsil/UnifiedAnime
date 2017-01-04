@@ -74,6 +74,7 @@
     <Compile Include="Data\AniList\SeriesType.cs" />
     <Compile Include="Data\AniList\SmallAnime.cs" />
     <Compile Include="Data\AniList\SmallManga.cs" />
+    <Compile Include="Data\AniList\SortingMethod.cs" />
     <Compile Include="Data\AniList\Stats.cs" />
     <Compile Include="Data\AniList\StatusDistributions.cs" />
     <Compile Include="Data\AniList\Studio.cs" />
@@ -95,7 +96,7 @@
     <Compile Include="Data\AniList\Anime.cs" />
     <Compile Include="Data\AniList\Credentials.cs" />
     <Compile Include="Data\AniList\Manga.cs" />
-    <Compile Include="Data\AniList\MediaTypes.cs" />
+    <Compile Include="Data\AniList\MediaType.cs" />
     <Compile Include="Data\AniList\SmallUser.cs" />
     <Compile Include="Data\AniList\Tag.cs" />
     <Compile Include="Data\AniList\TaggedAnime.cs" />
@@ -129,13 +130,18 @@
     <Compile Include="Data\IAnimeInfo.cs" />
     <Compile Include="Clients\IAnimeBrowser.cs" />
     <Compile Include="Other\JsonConverters\AniList\ActivityTypeMapper.cs" />
+    <Compile Include="Other\JsonConverters\AniList\MediaTypeMapper.cs" />
+    <Compile Include="Other\JsonConverters\AniList\SortMapper.cs" />
+    <Compile Include="Other\JsonConverters\AniList\SeasonMapper.cs" />
+    <Compile Include="Other\JsonConverters\AniList\MangaEntryStatusMapper.cs" />
+    <Compile Include="Other\JsonConverters\AniList\MangaListConverter.cs" />
     <Compile Include="Other\JsonConverters\AniList\AnimeListConverter.cs" />
     <Compile Include="Other\JsonConverters\AniList\AnimeSourceMapper.cs" />
     <Compile Include="Other\JsonConverters\AniList\DateTimeConverter.cs" />
     <Compile Include="Other\JsonConverters\AniList\FuzzyDatesConverter.cs" />
     <Compile Include="Other\JsonConverters\AniList\AnimeEntryStatusMapper.cs" />
     <Compile Include="Other\JsonConverters\AniList\SeasonAndYearConveter.cs" />
-    <Compile Include="Other\JsonConverters\AniList\SeasonMapper.cs" />
+    <Compile Include="Other\JsonConverters\AniList\IntSeasonMapper.cs" />
     <Compile Include="Other\JsonConverters\AniList\SeriesTypeMapper.cs" />
     <Compile Include="Other\JsonConverters\AniList\TitleLanguageMapper.cs" />
     <Compile Include="Other\JsonConverters\TypeToTypeMapper.cs" />

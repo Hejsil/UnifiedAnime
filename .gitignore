@@ -245,3 +245,5 @@ ModelManifest.xml
 .fake/
 /UnifiedAnime.Tests/Properties/Resources.resx
 /UnifiedAnime.Tests/Properties/Resources.Designer.cs
+/UnifiedAnime.Samples.Anilist/Properties/Resources.resx
+/UnifiedAnime.Samples.Anilist/Properties/Resources.Designer.cs

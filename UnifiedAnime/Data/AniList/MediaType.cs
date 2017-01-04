@@ -9,7 +9,7 @@ namespace UnifiedAnime.Data.AniList
     /// <summary>
     /// https://anilist-api.readthedocs.io/en/latest/series.html#media-types
     /// </summary>
-    public enum MediaTypes
+    public enum MediaType
     {
         TV = 0,
         TVShort = 1,

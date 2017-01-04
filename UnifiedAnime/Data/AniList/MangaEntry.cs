@@ -1,12 +1,14 @@
 ﻿using Newtonsoft.Json;
+using UnifiedAnime.Data.Common;
+using UnifiedAnime.Other.JsonConverters.AniList;
 
 namespace UnifiedAnime.Data.AniList
 {
     public class MangaEntry : SeriesEntry
     {
-        // TODO: Use enum
         [JsonProperty("list_status")]
-        public string ListStatus { get; set; }
+        [JsonConverter(typeof(MangaEntryStatusMapper))]
+        public MangaEntryStatus ListStatus { get; set; }
 
         [JsonProperty("chapters_read")]
         public int ChaptersRead { get; set; }
