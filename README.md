@@ -71,7 +71,7 @@ if (response.Status == ResponseStatus.Success)
 
 A whole system, for keeping multible sites up to date, could be implemented like this.
 
-So inferface are great, but a generic intefaces can cover everything. Some sites might have something specific that the interface can't incorparate. None inferface versions of each client can therefor also be instantiated.
+So inferface are great, but a generic intefaces can't cover everything. Some sites might have something specific that the interface can't incorparate. None inferface versions of each client can therefor also be instantiated.
 
 ```csharp
 var browser1 = new HummingBirdV1Browser();
