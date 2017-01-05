@@ -227,7 +227,7 @@ namespace UnifiedAnime.Tests.Browsers
             "Pokemon Best Wishes! Season 2: Dekorora Adventure")]
         public void GetBrowseAnimeTest(int year, Season season, MediaType type, SortingMethod sortingMethod, params string[] firstAnimes)
         {
-            var response = Browser.GetBrowseAnime(year: year, season: season, type: type, sortingMethod: sortingMethod);
+            var response = Browser.BrowseAnime(year: year, season: season, type: type, sortingMethod: sortingMethod);
             response.Status.ShouldBe(ResponseStatus.Success);
             response.Data.ShouldNotBeNull();
 
@@ -249,7 +249,7 @@ namespace UnifiedAnime.Tests.Browsers
             "Bocchiman")]
         public void GetBrowseMangaTest(int year, MediaType type, SortingMethod sortingMethod, params string[] firstMangas)
         {
-            var response = Browser.GetBrowseManga(year: year, type: type, sortingMethod: sortingMethod);
+            var response = Browser.BrowseManga(year: year, type: type, sortingMethod: sortingMethod);
             response.Status.ShouldBe(ResponseStatus.Success);
             response.Data.ShouldNotBeNull();
 

@@ -19,22 +19,28 @@ namespace UnifiedAnime.Clients.Browsers.AniList
     {
         public override string Url => "https://anilist.co/api/";
 
-        private string _clientId;
-        private string _clientSecret;
+        private readonly string _clientId;
+        private readonly string _clientSecret;
         private Timer _clientCredentialsRefresher;
         private Credentials _credentials;
 
-        public Response Authenticate(string clientId, string clientSecret)
+        public AniListBrowser(string clientId, string clientSecret)
         {
-            if (_clientCredentialsRefresher != null &&
-                _clientCredentialsRefresher.Enabled)
-                return new Response(ResponseStatus.Unknown); // TODO: Make new status
-
             _clientId = clientId;
             _clientSecret = clientSecret;
-            _clientCredentialsRefresher = new Timer();
-            _clientCredentialsRefresher.Elapsed += (sender, e) => RefreshCredentials();
-            return RefreshCredentials();
+        }
+
+        public Response Authenticate()
+        {
+            var response = GrantClientCredentials();
+            
+            if (response.Status == ResponseStatus.Success)
+            {
+                _credentials = response.Data;
+                StartTimer();
+            }
+
+            return response;
         }
 
         public Response<User> GetUser(int id) => GetUser(id.ToString());
@@ -68,7 +74,7 @@ namespace UnifiedAnime.Clients.Browsers.AniList
             return new Response<MangaEntry[]>(response, JsonConvert.DeserializeObject<MangaEntry[]>(response.Content, new MangaListConverter()));
         }
 
-        public Response<SmallSeries[]> GetBrowseAnime(
+        public Response<SmallSeries[]> BrowseAnime(
             int? year = null,
             Season? season = null,
             MediaType? type = null,
@@ -80,10 +86,10 @@ namespace UnifiedAnime.Clients.Browsers.AniList
             bool? fullPage = null,
             int? page = null)
         {
-            return GetBrowse("anime", year, season, type, status, genres, excludedGenres, sortingMethod, airingData, fullPage, page);
+            return Browse("anime", year, season, type, status, genres, excludedGenres, sortingMethod, airingData, fullPage, page);
         }
 
-        public Response<SmallSeries[]> GetBrowseManga(
+        public Response<SmallSeries[]> BrowseManga(
             int? year = null,
             Season? season = null,
             MediaType? type = null,
@@ -95,10 +101,10 @@ namespace UnifiedAnime.Clients.Browsers.AniList
             bool? fullPage = null,
             int? page = null)
         {
-            return GetBrowse("manga", year, season, type, status, genres, excludedGenres, sortingMethod, airingData, fullPage, page);
+            return Browse("manga", year, season, type, status, genres, excludedGenres, sortingMethod, airingData, fullPage, page);
         }
 
-        private Response<SmallSeries[]> GetBrowse(
+        private Response<SmallSeries[]> Browse(
             string seriesType,
             int? year = null,
             Season? season = null,
@@ -226,6 +232,8 @@ namespace UnifiedAnime.Clients.Browsers.AniList
 
         private void StartTimer()
         {
+            _clientCredentialsRefresher = new Timer();
+            _clientCredentialsRefresher.Elapsed += (sender, e) => RefreshCredentials();
             // We refresh 10 seconds before our credentials expire, just to make sure
             // that our cridentials are always valid.
             _clientCredentialsRefresher.Interval = TimeSpan.FromSeconds(_credentials.ExpiresIn - 10).TotalMilliseconds;
