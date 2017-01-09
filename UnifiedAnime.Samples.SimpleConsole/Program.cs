@@ -30,7 +30,7 @@ namespace UnifiedAnime.Samples.SimpleConsole
             profile.Authenticate(username, password);
             var response = profile.Get();
 
-            if (response.Status == ResponseStatus.Success)
+            if (response.Status == UnifiedStatus.Success)
             {
                 var animeEntries = response.Data;
 

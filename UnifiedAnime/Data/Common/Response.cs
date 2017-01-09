@@ -7,12 +7,12 @@ namespace UnifiedAnime.Data.Common
     {
         #region Properties
         
-        public ResponseStatus Status { get; }
+        public UnifiedStatus Status { get; }
         public string Message { get; }
 
         #endregion
 
-        public Response(ResponseStatus status, string message = null)
+        public Response(UnifiedStatus status, string message = null)
         {
             Status = status;
             Message = message;
@@ -22,7 +22,7 @@ namespace UnifiedAnime.Data.Common
         {
             if (restResponse.ResponseStatus == RestSharp.ResponseStatus.TimedOut)
             {
-                Status = ResponseStatus.TimedOut;
+                Status = UnifiedStatus.TimedOut;
                 return;
             }
 
@@ -30,16 +30,16 @@ namespace UnifiedAnime.Data.Common
             {
                 case HttpStatusCode.Created:
                 case HttpStatusCode.OK:
-                    Status = ResponseStatus.Success;
+                    Status = UnifiedStatus.Success;
                     break;
                 case HttpStatusCode.InternalServerError:
-                    Status = ResponseStatus.InternalServerError;
+                    Status = UnifiedStatus.InternalServerError;
                     break;
                 case HttpStatusCode.Unauthorized:
-                    Status = ResponseStatus.Unauthorized;
+                    Status = UnifiedStatus.Unauthorized;
                     break;
                 default:
-                    Status = ResponseStatus.Unknown;
+                    Status = UnifiedStatus.Unknown;
                     Message = "Unified anime should never give this response.";
                     break;
             }
@@ -50,7 +50,7 @@ namespace UnifiedAnime.Data.Common
     {
         public T Data { get; }
 
-        public Response(ResponseStatus status, T data, string message = null) 
+        public Response(UnifiedStatus status, T data, string message = null) 
             : base(status, message)
         {
             Data = data;

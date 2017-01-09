@@ -11,7 +11,6 @@ using UnifiedAnime.Clients.Bases;
 using UnifiedAnime.Data.AniList;
 using UnifiedAnime.Data.Common;
 using UnifiedAnime.Other.JsonConverters.AniList;
-using ResponseStatus = UnifiedAnime.Data.Common.ResponseStatus;
 
 namespace UnifiedAnime.Clients.Browsers.AniList
 {
@@ -34,7 +33,7 @@ namespace UnifiedAnime.Clients.Browsers.AniList
         {
             var response = GrantClientCredentials();
             
-            if (response.Status == ResponseStatus.Success)
+            if (response.Status == UnifiedStatus.Success)
             {
                 _credentials = response.Data;
                 StartTimer();
@@ -158,7 +157,8 @@ namespace UnifiedAnime.Clients.Browsers.AniList
         public Response<Studio> GetStudio(int id) => MakeAndExecute<Studio>($"studio/{id}", Method.GET);
         public Response<Studio> GetStudioPage(int id) => MakeAndExecute<Studio>($"studio/{id}/page", Method.GET);
 
-        public Response<Review> GetReview(int id) => MakeAndExecute<Review>($"anime/{id}/reviews", Method.GET);
+        public Response<Review> GetAnimeReview(int id) => MakeAndExecute<Review>($"anime/{id}/reviews", Method.GET);
+        public Response<Review> GetMangaReview(int id) => MakeAndExecute<Review>($"manga/{id}/reviews", Method.GET);
         public Response<Review[]> GetAnimeReviews(int id) => MakeAndExecute<Review[]>($"anime/review/{id}", Method.GET);
         public Response<Review[]> GetMangaReviews(int id) => MakeAndExecute<Review[]>($"manga/review/{id}", Method.GET);
         public Response<Review[]> GetUserReviews(int id) => GetUserReviews(id.ToString());
@@ -166,20 +166,10 @@ namespace UnifiedAnime.Clients.Browsers.AniList
 
 
         public Response<Feed> GetRecentThreads(int pageNumber)
-        {
-            var request = MakeRequest("forum/recent", Method.GET);
-            request.AddParameter("page", pageNumber);
-
-            return Execute<Feed>(request);
-        }
+            => MakeAndExecute<Feed>("forum/recent", Method.GET, "page", pageNumber);
 
         public Response<Feed> GetNewThreads(int pageNumber)
-        {
-            var request = MakeRequest("forum/new", Method.GET);
-            request.AddParameter("page", pageNumber);
-
-            return Execute<Feed>(request);
-        }
+            => MakeAndExecute<Feed>("forum/new", Method.GET, "page", pageNumber);
 
         public Response<Feed> GetThreadsByTag(int pageNumber, 
             int[] tags = null, 
@@ -206,28 +196,25 @@ namespace UnifiedAnime.Clients.Browsers.AniList
         /// https://anilist-api.readthedocs.io/en/latest/authentication.html
         /// </summary>
         private Response<Credentials> GrantClientCredentials()
-        {
-            var request = MakeRequest("auth/access_token", Method.POST);
-            request.AddParameter("grant_type", "client_credentials");
-            request.AddParameter("client_id", _clientId);
-            request.AddParameter("client_secret", _clientSecret);
+            => MakeAndExecute<Credentials>("auth/access_token", Method.POST,
+                new Parameters
+                {
+                    { "grant_type", "client_credentials" },
+                    { "client_id", _clientId },
+                    { "client_secret", _clientSecret },
+                });
 
-            return Execute<Credentials>(request);
-        }
-
-        private Response RefreshCredentials()
+        private void RefreshCredentials()
         {
             _clientCredentialsRefresher.Stop();
             _clientCredentialsRefresher.Enabled = false;
             var response = GrantClientCredentials();
 
-            if (response.Status == ResponseStatus.Success)
+            if (response.Status == UnifiedStatus.Success)
             {
                 _credentials = response.Data;
                 StartTimer();
             }
-
-            return response;
         }
 
         private void StartTimer()

@@ -50,8 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clients\Bases\Parameters.cs" />
     <Compile Include="Clients\Bases\RestBasedAnimeClient.cs" />
     <Compile Include="Clients\Browsers\AniList\AniListBrowser.cs" />
+    <Compile Include="Data\AniList\ReviewRating.cs" />
     <Compile Include="Data\AniList\AniListThread.cs" />
     <Compile Include="Data\AniList\AnimeEntry.cs" />
     <Compile Include="Data\AniList\AnimeStatusDistribution.cs" />
@@ -109,7 +111,7 @@
     <Compile Include="Data\Common\AnimeEntryStatus.cs" />
     <Compile Include="Data\Common\MangaEntryStatus.cs" />
     <Compile Include="Data\Common\Response.cs" />
-    <Compile Include="Data\Common\ResponseStatus.cs" />
+    <Compile Include="Data\Common\UnifiedStatus.cs" />
     <Compile Include="Data\Common\Season.cs" />
     <Compile Include="Data\Common\ShowType.cs" />
     <Compile Include="Data\HummingBirdV1\Favorite.cs" />

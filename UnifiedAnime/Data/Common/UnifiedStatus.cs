@@ -1,6 +1,6 @@
 ﻿namespace UnifiedAnime.Data.Common
 {
-    public enum ResponseStatus
+    public enum UnifiedStatus
     {
         Success,
         TimedOut,
