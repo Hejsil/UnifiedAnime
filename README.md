@@ -102,7 +102,7 @@ Response<Anime[]> data4 = browse3.GetSearchAnime("Flip Flappers");
 
 ## Medium priority
 - [ ] Implement AniList
-    * [ ] Browser
+    * [x] Browser
     * [ ] Profile
 - [x] ~~Implement HummingBird~~
     * [x] ~~Browser~~
