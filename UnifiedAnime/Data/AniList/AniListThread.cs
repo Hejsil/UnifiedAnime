@@ -15,10 +15,10 @@ namespace UnifiedAnime.Data.AniList
         public int UserId { get; set; }
 
         [JsonProperty("title")]
-        public DateTime Title { get; set; }
+        public string Title { get; set; }
 
         [JsonProperty("body")]
-        public DateTime Body { get; set; }
+        public string Body { get; set; }
 
         [JsonProperty("sticky")]
         public bool Sticky { get; set; }
@@ -33,11 +33,11 @@ namespace UnifiedAnime.Data.AniList
         public int LastReplyUser { get; set; }
         
         [JsonProperty("deleted_at")]
-        [JsonConverter(typeof(DateTimeConverter))]
+        [JsonConverter(typeof(FullDateTimeConverter))]
         public DateTime DeletedAt { get; set; }
         
         [JsonProperty("created_at")]
-        [JsonConverter(typeof(DateTimeConverter))]
+        [JsonConverter(typeof(FullDateTimeConverter))]
         public DateTime CreatedAt { get; set; }
 
         [JsonProperty("reply_count")]

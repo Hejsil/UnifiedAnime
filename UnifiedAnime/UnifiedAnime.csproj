@@ -53,6 +53,11 @@
     <Compile Include="Clients\Bases\Parameters.cs" />
     <Compile Include="Clients\Bases\RestBasedAnimeClient.cs" />
     <Compile Include="Clients\Browsers\AniList\AniListBrowser.cs" />
+    <Compile Include="Data\AniList\AnimeList.cs" />
+    <Compile Include="Data\AniList\AnimeReview.cs" />
+    <Compile Include="Data\AniList\BigUserMangaList.cs" />
+    <Compile Include="Data\AniList\BigUserAnimeList.cs" />
+    <Compile Include="Data\AniList\MangaReview.cs" />
     <Compile Include="Data\AniList\ReviewRating.cs" />
     <Compile Include="Data\AniList\AniListThread.cs" />
     <Compile Include="Data\AniList\AnimeEntry.cs" />
@@ -105,6 +110,7 @@
     <Compile Include="Data\AniList\TaggedManga.cs" />
     <Compile Include="Data\AniList\TaggedObject.cs" />
     <Compile Include="Data\AniList\User.cs" />
+    <Compile Include="Data\AniList\UserReviews.cs" />
     <Compile Include="Data\Common\AnimeAgeRating.cs" />
     <Compile Include="Data\Common\AnimeSource.cs" />
     <Compile Include="Data\Common\AnimeStatus.cs" />
@@ -132,6 +138,8 @@
     <Compile Include="Data\IAnimeInfo.cs" />
     <Compile Include="Clients\IAnimeBrowser.cs" />
     <Compile Include="Other\JsonConverters\AniList\ActivityTypeMapper.cs" />
+    <Compile Include="Other\JsonConverters\AniList\NullableDateTimeConverter.cs" />
+    <Compile Include="Other\JsonConverters\AniList\ThreadSearchConverter.cs" />
     <Compile Include="Other\JsonConverters\AniList\MediaTypeMapper.cs" />
     <Compile Include="Other\JsonConverters\AniList\SortMapper.cs" />
     <Compile Include="Other\JsonConverters\AniList\SeasonMapper.cs" />
@@ -139,7 +147,7 @@
     <Compile Include="Other\JsonConverters\AniList\MangaListConverter.cs" />
     <Compile Include="Other\JsonConverters\AniList\AnimeListConverter.cs" />
     <Compile Include="Other\JsonConverters\AniList\AnimeSourceMapper.cs" />
-    <Compile Include="Other\JsonConverters\AniList\DateTimeConverter.cs" />
+    <Compile Include="Other\JsonConverters\AniList\FullDateTimeConverter.cs" />
     <Compile Include="Other\JsonConverters\AniList\FuzzyDatesConverter.cs" />
     <Compile Include="Other\JsonConverters\AniList\AnimeEntryStatusMapper.cs" />
     <Compile Include="Other\JsonConverters\AniList\SeasonAndYearConveter.cs" />

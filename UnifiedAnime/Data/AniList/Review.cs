@@ -28,9 +28,6 @@ namespace UnifiedAnime.Data.AniList
         [JsonProperty("score")]
         public int Score { get; set; }
 
-        [JsonProperty("anime")]
-        public SmallAnime Anime { get; set; }
-
         [JsonProperty("user")]
         public SmallUser User { get; set; }
     }

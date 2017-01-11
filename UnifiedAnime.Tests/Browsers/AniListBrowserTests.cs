@@ -23,13 +23,16 @@ namespace UnifiedAnime.Tests.Browsers
         [Test()]
         public void AniListBrowserTest()
         {
-            Assert.Fail();
+            var browser = new AniListBrowser(Resources.AniListClientId, Resources.AniListClientSecret);
+            Assert.AreEqual("https://anilist.co/api/", browser.Url);
         }
 
         [Test()]
         public void AuthenticateTest()
         {
-            Assert.Fail();
+            var browser = new AniListBrowser(Resources.AniListClientId, Resources.AniListClientSecret);
+            var response = browser.Authenticate();
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
         }
         
         [TestCase("UnifiedAnimeTestUser")]
@@ -37,17 +40,17 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetUserTest(object displayName)
         {
             var response = Browser.GetUser(displayName.ToString());
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var user = response.Data;
-            Assert.AreEqual(user.About, "This is a test user for the library UnifiedAnime:\nhttps://github.com/Hejsil/UnifiedAnime");
-            Assert.AreEqual(user.AdultContent, true);
-            Assert.AreEqual(user.AdvancedRating, true);
+            Assert.AreEqual("This is a test user for the library UnifiedAnime:\nhttps://github.com/Hejsil/UnifiedAnime", user.About);
+            Assert.AreEqual(true, user.AdultContent);
+            Assert.AreEqual(true, user.AdvancedRating);
             Assert.Contains("TestRating1", user.AdvancedRatingNames);
             Assert.Contains("TestRating2", user.AdvancedRatingNames);
             Assert.Contains("TestRating3", user.AdvancedRatingNames);
-            Assert.AreEqual(user.AnimeTime, 1571);
+            Assert.AreEqual(1571, user.AnimeTime);
             Assert.Contains("TestCustomAnimeList1", user.CustomListAnime);
             Assert.Contains("TestCustomAnimeList2", user.CustomListAnime);
             Assert.Contains("TestCustomAnimeList3", user.CustomListAnime);
@@ -56,15 +59,15 @@ namespace UnifiedAnime.Tests.Browsers
             Assert.Contains("TestCustomMangaList2", user.CustomListManga);
             Assert.Contains("TestCustomMangaList3", user.CustomListManga);
             Assert.IsFalse(user.CustomListManga.Contains("TestCustomMangaList4"));
-            Assert.AreEqual(user.DisplayName, "UnifiedAnimeTestUser");
-            Assert.AreEqual(user.Id, 84039);
-            Assert.AreEqual(user.ImageUrlBanner, "https://cdn.anilist.co/img/dir/userbanner/84039-eOyAb7CU6LoL.png");
-            Assert.AreEqual(user.ImageUrlLge, "https://cdn.anilist.co/img/dir/user/reg/default.png");
-            Assert.AreEqual(user.ImageUrlMed, "https://cdn.anilist.co/img/dir/user/sml/default.png");
-            Assert.AreEqual(user.ListOrder, ListOrder.Alphabet);
-            Assert.AreEqual(user.Notifications, 0);
-            Assert.AreEqual(user.ScoreType, ScoreSystem.Star5);
-            //Assert.AreEqual(user.MangaChap, 158); TODO: Don't know why this fails
+            Assert.AreEqual("UnifiedAnimeTestUser", user.DisplayName);
+            Assert.AreEqual(84039, user.Id);
+            Assert.AreEqual("https://cdn.anilist.co/img/dir/userbanner/84039-eOyAb7CU6LoL.png", user.ImageUrlBanner);
+            Assert.AreEqual("https://cdn.anilist.co/img/dir/user/reg/default.png", user.ImageUrlLge);
+            Assert.AreEqual("https://cdn.anilist.co/img/dir/user/sml/default.png", user.ImageUrlMed);
+            Assert.AreEqual(ListOrder.Alphabet, user.ListOrder);
+            Assert.AreEqual(0, user.Notifications);
+            Assert.AreEqual(ScoreSystem.Star5, user.ScoreType);
+            Assert.AreEqual(158, user.MangaChap);
         }
 
         [TestCase("UnifiedAnimeTestUser")]
@@ -72,11 +75,11 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetActivityTest(object displayName)
         {
             var response = Browser.GetActivity(displayName.ToString());
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var activities = response.Data;
-            Assert.AreEqual(activities.Length, 16);
+            Assert.AreEqual(16, activities.Length);
 
             // TODO: This will be hard to test, because the activity might change all the time,
             //       and i don't want to fix it every time it happens.
@@ -87,15 +90,15 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetFollowersTest(object displayName)
         {
             var response = Browser.GetFollowers(displayName.ToString());
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var followers = response.Data;
-            Assert.AreEqual(followers.Length, 1);
+            Assert.AreEqual(1, followers.Length);
             var follower = followers[0];
-            Assert.AreEqual(follower.DisplayName, "hejsil");
-            Assert.AreEqual(follower.ImageUrlLge, "https://cdn.anilist.co/img/dir/user/reg/72340-aKJVAlZWuTRE.png");
-            Assert.AreEqual(follower.ImageUrlMed, "https://cdn.anilist.co/img/dir/user/sml/72340-aKJVAlZWuTRE.png");
+            Assert.AreEqual("hejsil", follower.DisplayName);
+            Assert.AreEqual("https://cdn.anilist.co/img/dir/user/reg/72340-aKJVAlZWuTRE.png", follower.ImageUrlLge);
+            Assert.AreEqual("https://cdn.anilist.co/img/dir/user/sml/72340-aKJVAlZWuTRE.png", follower.ImageUrlMed);
         }
 
         [TestCase("UnifiedAnimeTestUser")]
@@ -103,15 +106,15 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetFollowingTest(object displayName)
         {
             var response = Browser.GetFollowing(displayName.ToString());
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var followers = response.Data;
-            Assert.AreEqual(followers.Length, 1);
+            Assert.AreEqual(1, followers.Length);
             var follower = followers[0];
-            Assert.AreEqual(follower.DisplayName, "hejsil");
-            Assert.AreEqual(follower.ImageUrlLge, "https://cdn.anilist.co/img/dir/user/reg/72340-aKJVAlZWuTRE.png");
-            Assert.AreEqual(follower.ImageUrlMed, "https://cdn.anilist.co/img/dir/user/sml/72340-aKJVAlZWuTRE.png");
+            Assert.AreEqual("hejsil", follower.DisplayName);
+            Assert.AreEqual("https://cdn.anilist.co/img/dir/user/reg/72340-aKJVAlZWuTRE.png", follower.ImageUrlLge);
+            Assert.AreEqual("https://cdn.anilist.co/img/dir/user/sml/72340-aKJVAlZWuTRE.png", follower.ImageUrlMed);
         }
 
         [TestCase("UnifiedAnimeTestUser")]
@@ -119,17 +122,17 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetFavouritesTest(object displayName)
         {
             var response = Browser.GetFavourites(displayName.ToString());
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var favorites = response.Data;
-            Assert.AreEqual(favorites.Anime.Length, 1);
+            Assert.AreEqual(1, favorites.Anime.Length);
             Assert.Null(favorites.Manga);
             Assert.Null(favorites.Character);
             Assert.Null(favorites.Staff);
 
             var favAnimes = favorites.Anime;
-            Assert.AreEqual(favAnimes[0].TitleEnglish, "Steins;Gate");
+            Assert.AreEqual("Steins;Gate", favAnimes[0].TitleEnglish);
 
             // TODO: Should probably cover more
         }
@@ -138,15 +141,43 @@ namespace UnifiedAnime.Tests.Browsers
         public void SearchUserTest()
         {
             var response = Browser.SearchUser("UnifiedAnimeTestUser");
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var users = response.Data;
-            Assert.AreEqual(users.Length, 1);
+            Assert.AreEqual(1, users.Length);
             var user = users[0];
-            Assert.AreEqual(user.DisplayName, "UnifiedAnimeTestUser");
-            Assert.AreEqual(user.ImageUrlLge, "https://cdn.anilist.co/img/dir/user/reg/default.png");
-            Assert.AreEqual(user.ImageUrlMed, "https://cdn.anilist.co/img/dir/user/sml/default.png");
+            Assert.AreEqual("UnifiedAnimeTestUser", user.DisplayName);
+            Assert.AreEqual("https://cdn.anilist.co/img/dir/user/reg/default.png", user.ImageUrlLge);
+            Assert.AreEqual("https://cdn.anilist.co/img/dir/user/sml/default.png", user.ImageUrlMed);
+        }
+
+        private void CheckAnimeEntry(AnimeEntry entry, string title, AnimeEntryStatus status, int episodesWatched, int rewatched, int score,
+            int priority, bool isPrivate, bool hiddenDefault, string notes, int[] advancedRatingScores, int[] customeLists,
+            DateTime? startedOn, DateTime? endedOn)
+        {
+            Assert.NotNull(entry);
+            Assert.AreEqual(title, entry.Anime.TitleEnglish);
+            Assert.AreEqual(status, entry.ListStatus);
+            Assert.AreEqual(episodesWatched, entry.EpisodesWatched);
+            Assert.AreEqual(rewatched, entry.Rewatched);
+            Assert.AreEqual(score, entry.Score);
+            Assert.AreEqual(priority, entry.Priority); // NOTE: Don't know what this is actually used for, but it seems to always be 0
+            Assert.AreEqual(isPrivate, entry.Private);
+            Assert.AreEqual(hiddenDefault, entry.HiddenDefault);
+            Assert.AreEqual(notes, entry.Notes);
+
+            Assert.AreEqual(advancedRatingScores.Length, entry.AdvancedRatingScores.Length);
+            for (var i = 0; i < advancedRatingScores.Length; i++)
+                Assert.AreEqual(advancedRatingScores[i], entry.AdvancedRatingScores[i]);
+
+            // TODO: Gotta figure out how the custom list system actually works
+            //Assert.AreEqual(customeLists.Length, entry.CustomLists.Length);
+            //foreach (var list in customeLists)
+            //    Assert.True(entry.CustomLists.Contains(list));
+            
+            Assert.AreEqual(startedOn, entry.StartedOn);
+            Assert.AreEqual(endedOn, entry.FinishedOn);
         }
 
         [TestCase("UnifiedAnimeTestUser")]
@@ -154,39 +185,125 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetAnimelistTest(object displayName)
         {
             var response = Browser.GetAnimelist(displayName.ToString());
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
+            Assert.NotNull(response.Data.AnimeList);
+            Assert.NotNull(response.Data.AnimeList.Completed);
+            Assert.NotNull(response.Data.AnimeList.Dropped);
+            Assert.NotNull(response.Data.AnimeList.OnHold);
+            Assert.NotNull(response.Data.AnimeList.PlanToWatch);
+            Assert.NotNull(response.Data.AnimeList.Watching);
 
-            var entries = response.Data;
-            Assert.NotNull(entries);
+            var animelist = response.Data.AnimeList;
+            
+            Assert.AreEqual(1, animelist.Completed.Length);
+            Assert.AreEqual(1, animelist.Dropped.Length);
+            Assert.AreEqual(1, animelist.OnHold.Length);
+            Assert.AreEqual(1, animelist.PlanToWatch.Length);
+            Assert.AreEqual(1, animelist.Watching.Length);
+            
+            CheckAnimeEntry(animelist.Completed[0], 
+                title: "Death Note",
+                status: AnimeEntryStatus.Completed,
+                episodesWatched: 37,
+                rewatched: 0,
+                score: 2,
+                priority: 0,
+                isPrivate: false,
+                hiddenDefault: false,
+                notes: "Desu Noto",
+                advancedRatingScores: new[] { 1, 2, 3 },
+                customeLists: new[] { 3 },
+                startedOn: new DateTime(2012, 01, 06), 
+                endedOn: new DateTime(2013, 11, 22));
+            
+            CheckAnimeEntry(animelist.Dropped[0],
+                title: "Angel Beats!",
+                status: AnimeEntryStatus.Dropped,
+                episodesWatched: 8,
+                rewatched: 0,
+                score: 3, // TODO: Double on site, help!
+                priority: 0,
+                isPrivate: false,
+                hiddenDefault: false,
+                notes: ":)",
+                advancedRatingScores: new[] { 5, 4, 2 },
+                customeLists: new[] { 1 },
+                startedOn: new DateTime(2001, 04, 06),
+                endedOn: null);
+            
+            CheckAnimeEntry(animelist.OnHold[0],
+                title: "Steins;Gate",
+                status: AnimeEntryStatus.OnHold,
+                episodesWatched: 7,
+                rewatched: 0,
+                score: 5,
+                priority: 0,
+                isPrivate: false,
+                hiddenDefault: false,
+                notes: "No advanced score",
+                advancedRatingScores: new int[0], 
+                customeLists: new int[0],
+                startedOn: null,
+                endedOn: null);
+            
+            CheckAnimeEntry(animelist.PlanToWatch[0],
+                title: "Sword Art Online",
+                status: AnimeEntryStatus.PlanToWatch,
+                episodesWatched: 0,
+                rewatched: 0,
+                score: 1,
+                priority: 0,
+                isPrivate: false,
+                hiddenDefault: false,
+                notes: null,
+                advancedRatingScores: new int[0],
+                customeLists: new int[0],
+                startedOn: null,
+                endedOn: null);
+            
+            CheckAnimeEntry(animelist.Watching[0],
+                title: "Attack on Titan",
+                status: AnimeEntryStatus.Watching,
+                episodesWatched: 15,
+                rewatched: 0,
+                score: 3,
+                priority: 0,
+                isPrivate: false,
+                hiddenDefault: false,
+                notes: "This is a test note",
+                advancedRatingScores: new[] { 2, 4, 0 },
+                customeLists: new[] { 1 },
+                startedOn: new DateTime(2015, 12, 1),
+                endedOn: new DateTime(2015, 12, 5));
+        }
 
-            Assert.IsTrue(entries.Any(entry => entry.Anime.TitleEnglish == "Attack on Titan"));
-            var entry1 = entries.First(entry => entry.Anime.TitleEnglish == "Attack on Titan");
-            Assert.AreEqual(entry1.ListStatus, AnimeEntryStatus.Watching);
-            Assert.AreEqual(entry1.EpisodesWatched, 15);
-            Assert.AreEqual(entry1.Rewatched, 0);
-            Assert.AreEqual(entry1.Score, 3);
-            Assert.AreEqual(entry1.ScoreRaw, 50);
-            // Assert.AreEqual(entry1.Priority, ); // TODO: Add this when i actually know what it is used for
-            Assert.AreEqual(entry1.Private, false);
-            Assert.AreEqual(entry1.HiddenDefault, false);
-            Assert.AreEqual(entry1.Notes, "This is a test note");
-            Assert.AreEqual(entry1.AdvancedRatingScores.Length, 3);
-            Assert.AreEqual(entry1.AdvancedRatingScores[0], 2);
-            Assert.AreEqual(entry1.AdvancedRatingScores[1], 4);
-            Assert.AreEqual(entry1.AdvancedRatingScores[2], 0);
-            Assert.Contains(1, entry1.CustomLists);
-            Assert.IsFalse(entry1.CustomLists.Contains(2));
-            Assert.IsFalse(entry1.CustomLists.Contains(3));
-            Assert.AreEqual(entry1.StartedOn, new DateTime(2015, 12, 1));
-            Assert.AreEqual(entry1.FinishedOn, new DateTime(2015, 12, 5));
+        private void CheckMangaEntry(MangaEntry entry, string title, MangaEntryStatus status, int chaptersRead, int volumesRead,
+            int score, int priority, bool isPrivate, bool hiddenDefault, string notes,
+            int[] advancedRatingScores, int[] customLists, DateTime? startedOn, DateTime? endedOn)
+        {
+            Assert.NotNull(entry);
+            Assert.AreEqual(title, entry.Manga.TitleEnglish);
+            Assert.AreEqual(status, entry.ListStatus);
+            Assert.AreEqual(chaptersRead, entry.ChaptersRead);
+            Assert.AreEqual(volumesRead, entry.VolumesRead);
+            Assert.AreEqual(score, entry.Score);
+            Assert.AreEqual(priority, entry.Priority); // NOTE: Don't know what this is actually used for, but it seems to always be 0
+            Assert.AreEqual(isPrivate, entry.Private);
+            Assert.AreEqual(hiddenDefault, entry.HiddenDefault);
+            Assert.AreEqual(notes, entry.Notes);
 
+            Assert.AreEqual(advancedRatingScores.Length, entry.AdvancedRatingScores.Length);
+            for (var i = 0; i < advancedRatingScores.Length; i++)
+                Assert.AreEqual(advancedRatingScores[i], entry.AdvancedRatingScores[i]);
 
+            // TODO: Gotta figure out how the custom list system actually works
+            //Assert.AreEqual(customLists.Length, entry.CustomLists.Length);
+            //foreach (var list in customLists)
+            //    Assert.True(entry.CustomLists.Contains(list));
 
-            Assert.IsTrue(entries.Any(entry => entry.Anime.TitleEnglish == "Death Note"));
-            Assert.IsTrue(entries.Any(entry => entry.Anime.TitleEnglish == "Steins;Gate"));
-            Assert.IsTrue(entries.Any(entry => entry.Anime.TitleEnglish == "Angel Beats!"));
-            Assert.IsTrue(entries.Any(entry => entry.Anime.TitleEnglish == "Sword Art Online"));
+            Assert.AreEqual(startedOn, entry.StartedOn);
+            Assert.AreEqual(endedOn, entry.FinishedOn);
         }
 
         [TestCase("UnifiedAnimeTestUser")]
@@ -194,39 +311,97 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetMangalistTest(object displayName)
         {
             var response = Browser.GetMangalist(displayName.ToString());
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
+            Assert.NotNull(response.Data.MangaList);
+            Assert.NotNull(response.Data.MangaList.Completed);
+            Assert.NotNull(response.Data.MangaList.Dropped);
+            Assert.NotNull(response.Data.MangaList.OnHold);
+            Assert.NotNull(response.Data.MangaList.PlanToRead);
+            Assert.NotNull(response.Data.MangaList.Reading);
 
-            var entries = response.Data;
-            Assert.NotNull(entries);
+            var mangalist = response.Data.MangaList;
 
-            Assert.IsTrue(entries.Any(entry => entry.Manga.TitleEnglish == "Berserk"));
-            var entry1 = entries.First(entry => entry.Manga.TitleEnglish == "Berserk");
-            Assert.AreEqual(entry1.ListStatus, MangaEntryStatus.Completed);
-            Assert.AreEqual(entry1.ChaptersRead, 6);
-            Assert.AreEqual(entry1.VolumesRead, 1);
-            Assert.AreEqual(entry1.Score, 3);
-            Assert.AreEqual(entry1.ScoreRaw, 50);
-            // Assert.AreEqual(entry1.Priority, ); // TODO: Add this when i actually know what it is used for
-            Assert.AreEqual(entry1.Private, false);
-            Assert.AreEqual(entry1.HiddenDefault, false);
-            Assert.AreEqual(entry1.Notes, "This is a test note");
-            Assert.AreEqual(entry1.AdvancedRatingScores.Length, 3);
-            Assert.AreEqual(entry1.AdvancedRatingScores[0], 2);
-            Assert.AreEqual(entry1.AdvancedRatingScores[1], 4);
-            Assert.AreEqual(entry1.AdvancedRatingScores[2], 0);
-            Assert.Contains(1, entry1.CustomLists);
-            Assert.IsFalse(entry1.CustomLists.Contains(2));
-            Assert.IsFalse(entry1.CustomLists.Contains(3));
-            Assert.AreEqual(entry1.StartedOn, new DateTime(2015, 12, 1));
-            Assert.AreEqual(entry1.FinishedOn, new DateTime(2015, 12, 5));
+            Assert.AreEqual(1, mangalist.Completed.Length);
+            Assert.AreEqual(1, mangalist.Dropped.Length);
+            Assert.AreEqual(1, mangalist.OnHold.Length);
+            Assert.AreEqual(1, mangalist.PlanToRead.Length);
+            Assert.AreEqual(1, mangalist.Reading.Length);
 
+            CheckMangaEntry(mangalist.Completed[0], 
+                title: "Goodnight Punpun",
+                status: MangaEntryStatus.Completed, 
+                chaptersRead: 147,
+                volumesRead: 0,
+                score: 2,
+                priority: 0,
+                isPrivate: false,
+                hiddenDefault: false,
+                notes: null,
+                advancedRatingScores: new[] { 1, 2, 3 },
+                customLists: new int[0],
+                startedOn: null, 
+                endedOn: null);
 
+            CheckMangaEntry(mangalist.Dropped[0],
+                title: "Yotsuba&!",
+                status: MangaEntryStatus.Dropped,
+                chaptersRead: 2,
+                volumesRead: 0,
+                score: 1,
+                priority: 0,
+                isPrivate: false,
+                hiddenDefault: false,
+                notes: null,
+                advancedRatingScores: new int[0],
+                customLists: new int[0],
+                startedOn: null,
+                endedOn: null);
 
-            Assert.IsTrue(entries.Any(entry => entry.Manga.TitleEnglish == "Goodnight Punpun"));
-            Assert.IsTrue(entries.Any(entry => entry.Manga.TitleEnglish == "One Piece"));
-            Assert.IsTrue(entries.Any(entry => entry.Manga.TitleEnglish == "Yotsuba&!"));
-            Assert.IsTrue(entries.Any(entry => entry.Manga.TitleEnglish == "Fullmetal Alchemist"));
+            CheckMangaEntry(mangalist.OnHold[0],
+                title: "One Piece",
+                status: MangaEntryStatus.OnHold,
+                chaptersRead: 3,
+                volumesRead: 0,
+                score: 3,
+                priority: 0,
+                isPrivate: false,
+                hiddenDefault: false,
+                notes: null,
+                advancedRatingScores: new int[0],
+                customLists: new int[0],
+                startedOn: null,
+                endedOn: null);
+
+            CheckMangaEntry(mangalist.PlanToRead[0],
+                title: "Fullmetal Alchemist",
+                status: MangaEntryStatus.PlanToRead,
+                chaptersRead: 0,
+                volumesRead: 0,
+                score: 4,
+                priority: 0,
+                isPrivate: false,
+                hiddenDefault: false,
+                notes: null,
+                advancedRatingScores: new int[0],
+                customLists: new int[0],
+                startedOn: null,
+                endedOn: null);
+
+            CheckMangaEntry(mangalist.Reading[0],
+                title: "Berserk",
+                status: MangaEntryStatus.Reading,
+                chaptersRead: 6,
+                volumesRead: 1,
+                score: 3,
+                priority: 0,
+                isPrivate: false,
+                hiddenDefault: false,
+                notes: "This is a test note",
+                advancedRatingScores: new[] { 3, 2, 4 },
+                customLists: new[] { 1 },
+                startedOn: new DateTime(2015, 12, 01), 
+                endedOn: new DateTime(2015, 12, 05));
         }
 
         [TestCase(2013, Season.Spring, MediaType.TV, SortingMethod.StartDateDescending,
@@ -239,7 +414,7 @@ namespace UnifiedAnime.Tests.Browsers
         public void BrowseAnimeTest(int year, Season season, MediaType type, SortingMethod sortingMethod, params string[] firstAnimes)
         {
             var response = Browser.BrowseAnime(year: year, season: season, type: type, sortingMethod: sortingMethod);
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var animes = response.Data;
@@ -247,7 +422,7 @@ namespace UnifiedAnime.Tests.Browsers
 
             for (var i = 0; i < firstAnimes.Length; i++)
             {
-                Assert.AreEqual(animes[i].TitleEnglish, firstAnimes[i]);
+                Assert.AreEqual(firstAnimes[i], animes[i].TitleEnglish);
             }
         }
 
@@ -261,7 +436,7 @@ namespace UnifiedAnime.Tests.Browsers
         public void BrowseMangaTest(int year, MediaType type, SortingMethod sortingMethod, params string[] firstMangas)
         {
             var response = Browser.BrowseManga(year: year, type: type, sortingMethod: sortingMethod);
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var mangas = response.Data;
@@ -269,7 +444,7 @@ namespace UnifiedAnime.Tests.Browsers
 
             for (var i = 0; i < firstMangas.Length; i++)
             {
-                Assert.AreEqual(mangas[i].TitleEnglish, firstMangas[i]);
+                Assert.AreEqual(firstMangas[i], mangas[i].TitleEnglish);
             }
         }
 
@@ -282,7 +457,7 @@ namespace UnifiedAnime.Tests.Browsers
         public void SearchAnimeTest(string animeName, params string[] resultNames)
         {
             var response = Browser.SearchAnime(animeName);
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var animes = response.Data;
@@ -303,7 +478,7 @@ namespace UnifiedAnime.Tests.Browsers
         public void SearchMangaTest(string mangaName, params string[] resultNames)
         {
             var response = Browser.SearchManga(mangaName);
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var mangas = response.Data;
@@ -324,7 +499,7 @@ namespace UnifiedAnime.Tests.Browsers
         public void SearchCharacterTest(string characterName, params string[] resultNames)
         {
             var response = Browser.SearchCharacter(characterName);
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var characters = response.Data;
@@ -343,7 +518,7 @@ namespace UnifiedAnime.Tests.Browsers
         public void SearchStaffTest(string staffName, params string[] resultNames)
         {
             var response = Browser.SearchStaff(staffName);
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var staff = response.Data;
@@ -361,7 +536,7 @@ namespace UnifiedAnime.Tests.Browsers
         public void SearchStudioTest(string studioName, params string[] resultNames)
         {
             var response = Browser.SearchStudio(studioName);
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var studios = response.Data;
@@ -378,7 +553,7 @@ namespace UnifiedAnime.Tests.Browsers
         {
             // HACK: Don't really know how to test this, as thread are ever changing
             var response = Browser.SearchThread("Attack On Titan");
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var threads = response.Data;
@@ -391,31 +566,24 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetStaffTest()
         {
             var response = Browser.GetStaff(95185);
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var staff = response.Data;
             Assert.NotNull(staff);
 
-            //Assert.AreEqual(staff.Dob, ); TODO: Figure these out
-            Assert.AreEqual(staff.Info, 
-@"<b>Height</b>: 156 cm<br>
-<b>Blood type</b>: AB<br>
-<b>Radio Page</b>: http://www.joqr.co.jp/blog/hanazawa/<br>
-The Office Osawa talent agency represents her.<br>
-<b>Interesting facts</b>:<br>
-- She was invited to AFA 2010 on stage.<br>
-- She used to be a junior idol in Akiba where hundreds of people came to watch her, which is how she got her breakthrough for her acting career in commercials, before becoming a seiyuu.");
-            //Assert.AreEqual(staff.NameFirstJapanese, "Kana"); TODO: Figure these out
-            //Assert.AreEqual(staff.NameLastJapanese, "Kana"); TODO: Figure these out
-            //Assert.AreEqual(staff.Website, ); TODO: Figure these out
-            Assert.AreEqual(staff.Id, 95185);
-            Assert.AreEqual(staff.ImageUrlLge, "https://cdn.anilist.co/img/dir/person/reg/185.jpg");
-            Assert.AreEqual(staff.ImageUrlMed, "https://cdn.anilist.co/img/dir/person/med/185.jpg");
-            Assert.AreEqual(staff.Language, "Japanese");
-            Assert.AreEqual(staff.NameFirst, "Kana");
-            Assert.AreEqual(staff.NameFirst, "Hanazawa");
-            //Assert.AreEqual(staff.Role, ); TODO: Figure these out
+            //Assert.AreEqual(, staff.Dob); TODO: Figure these out
+            //Assert.AreEqual(, staff.Info); This is just a bother to check
+            //Assert.AreEqual("Kana", staff.NameFirstJapanese); TODO: Figure these out
+            //Assert.AreEqual("Kana", staff.NameLastJapanese); TODO: Figure these out
+            //Assert.AreEqual(, staff.Website); TODO: Figure these out
+            Assert.AreEqual(95185, staff.Id);
+            Assert.AreEqual("https://cdn.anilist.co/img/dir/person/reg/185.jpg", staff.ImageUrlLge);
+            Assert.AreEqual("https://cdn.anilist.co/img/dir/person/med/185.jpg", staff.ImageUrlMed);
+            Assert.AreEqual("Japanese", staff.Language);
+            Assert.AreEqual("Kana", staff.NameFirst);
+            Assert.AreEqual("Hanazawa", staff.NameLast);
+            //Assert.AreEqual(, staff.Role); TODO: Figure these out
         }
 
         [Test()]
@@ -423,46 +591,39 @@ The Office Osawa talent agency represents her.<br>
         {
             // HACK: What difference is this from GetStaff?
             var response = Browser.GetStaffPage(95185);
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var staff = response.Data;
             Assert.NotNull(staff);
 
-            //Assert.AreEqual(staff.Dob, ); TODO: Figure these out
-            Assert.AreEqual(staff.Info,
-@"<b>Height</b>: 156 cm<br>
-<b>Blood type</b>: AB<br>
-<b>Radio Page</b>: http://www.joqr.co.jp/blog/hanazawa/<br>
-The Office Osawa talent agency represents her.<br>
-<b>Interesting facts</b>:<br>
-- She was invited to AFA 2010 on stage.<br>
-- She used to be a junior idol in Akiba where hundreds of people came to watch her, which is how she got her breakthrough for her acting career in commercials, before becoming a seiyuu.");
-            //Assert.AreEqual(staff.NameFirstJapanese, "Kana"); TODO: Figure these out
-            //Assert.AreEqual(staff.NameLastJapanese, "Kana"); TODO: Figure these out
-            //Assert.AreEqual(staff.Website, ); TODO: Figure these out
-            Assert.AreEqual(staff.Id, 95185);
-            Assert.AreEqual(staff.ImageUrlLge, "https://cdn.anilist.co/img/dir/person/reg/185.jpg");
-            Assert.AreEqual(staff.ImageUrlMed, "https://cdn.anilist.co/img/dir/person/med/185.jpg");
-            Assert.AreEqual(staff.Language, "Japanese");
-            Assert.AreEqual(staff.NameFirst, "Kana");
-            Assert.AreEqual(staff.NameFirst, "Hanazawa");
-            //Assert.AreEqual(staff.Role, ); TODO: Figure these out
+            //Assert.AreEqual(, staff.Dob); TODO: Figure these out
+            //Assert.AreEqual(, staff.Info); This is just a bother to check
+            //Assert.AreEqual("Kana", staff.NameFirstJapanese); TODO: Figure these out
+            //Assert.AreEqual("Kana", staff.NameLastJapanese); TODO: Figure these out
+            //Assert.AreEqual(, staff.Website); TODO: Figure these out
+            Assert.AreEqual(95185, staff.Id);
+            Assert.AreEqual("https://cdn.anilist.co/img/dir/person/reg/185.jpg", staff.ImageUrlLge);
+            Assert.AreEqual("https://cdn.anilist.co/img/dir/person/med/185.jpg", staff.ImageUrlMed);
+            Assert.AreEqual("Japanese", staff.Language);
+            Assert.AreEqual("Kana", staff.NameFirst);
+            Assert.AreEqual("Hanazawa", staff.NameLast);
+            //Assert.AreEqual(, staff.Role); TODO: Figure these out
         }
 
         [Test()]
         public void GetStudioTest()
         {
             var response = Browser.GetStudio(2);
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var studio = response.Data;
             Assert.NotNull(studio);
 
-            //Assert.AreEqual(studio.MainStudio, ); TODO: Figure these out
-            Assert.AreEqual(studio.StudioName, "Kyoto Animation");
-            //Assert.AreEqual(//studio.StudioWiki, ); TODO: Figure these out
+            //Assert.AreEqual(, studio.MainStudio); TODO: Figure these out
+            Assert.AreEqual("Kyoto Animation", studio.StudioName);
+            //Assert.AreEqual(, //studio.StudioWiki); TODO: Figure these out
         }
 
         [Test()]
@@ -470,92 +631,128 @@ The Office Osawa talent agency represents her.<br>
         {
             // HACK: What difference is this from GetStudio?
             var response = Browser.GetStudioPage(2);
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var studio = response.Data;
             Assert.NotNull(studio);
 
-            //Assert.AreEqual(//studio.MainStudio, ); TODO: Figure these out
-            Assert.AreEqual(studio.StudioName, "Kyoto Animation");
-            //Assert.AreEqual(//studio.StudioWiki, ); TODO: Figure these out
+            //Assert.AreEqual(, //studio.MainStudio); TODO: Figure these out
+            Assert.AreEqual("Kyoto Animation", studio.StudioName);
+            //Assert.AreEqual(, //studio.StudioWiki); TODO: Figure these out
         }
 
         [Test()]
         public void GetAnimeReviewTest()
         {
             var response = Browser.GetAnimeReview(2131);
-            Assert.AreEqual(response.Status, UnifiedStatus.Success);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
             Assert.NotNull(response.Data);
 
             var review = response.Data;
-            Assert.NotNull(review);
 
-            Assert.AreEqual(review.Anime.TitleEnglish, "Sound! Euphonium 2");
-            Assert.AreEqual(review.Date, "Dec 29, 2016"); // TODO: Fix date datatype
-            Assert.AreEqual(review.Private, 0); // TODO: Use bool datatype
-            Assert.AreEqual(review.Rating, 80); // TODO: Rating vs Score?
-            Assert.AreEqual(review.Score, 80); // TODO: Rating vs Score?
-            //Assert.AreEqual(review.RatingAmount, ); TODO: What is this?
-            Assert.AreEqual(review.Summary, "Sound! S2 takes the stage set-up by S1 and tells a compelling story about hardships of performing and growing up");
-            Assert.AreEqual(review.User.DisplayName, "WillQ");
-            //Assert.AreEqual(review.UserRating, ); TODO: What is this ?
-            Assert.AreEqual(review.Id, 2131);
+            Assert.AreEqual("Sound! Euphonium 2", review.Anime.TitleEnglish);
+            //Assert.AreEqual(2016", review.Date, "Dec 29); // TODO: Fix date datatype
+            Assert.AreEqual(0, review.Private); // TODO: Use bool datatype
+            //Assert.AreEqual(80, review.Rating); // TODO: Rating vs Score?
+            Assert.AreEqual(80, review.Score);
+            //Assert.AreEqual(, review.RatingAmount); TODO: What is this?
+            Assert.AreEqual("Sound! S2 takes the stage set-up by S1 and tells a compelling story about hardships of performing and growing up", review.Summary);
+            Assert.AreEqual("WillQ", review.User.DisplayName);
+            //Assert.AreEqual(, review.UserRating); TODO: What is this ?
+            Assert.AreEqual(2131, review.Id);
             
         }
 
         [Test()]
         public void GetMangaReviewTest()
         {
-            Assert.Fail();
+            var response = Browser.GetMangaReview(2116);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
+            Assert.NotNull(response.Data);
+
+            var review = response.Data;
+
+            Assert.AreEqual("Evil Blade", review.Manga.TitleEnglish);
+            //Assert.AreEqual(2016", review.Date, "Dec 29); // TODO: Fix date datatype
+            Assert.AreEqual(0, review.Private); // TODO: Use bool datatype
+            //Assert.AreEqual(80, review.Rating); // TODO: Rating vs Score?
+            Assert.AreEqual(78, review.Score);
+            //Assert.AreEqual(, review.RatingAmount); TODO: What is this?
+            Assert.AreEqual("So much potential, but the author doesn't seem to be inrested in't", review.Summary);
+            Assert.AreEqual("Nipoking", review.User.DisplayName);
+            //Assert.AreEqual(, review.UserRating); TODO: What is this ?
+            Assert.AreEqual(2116, review.Id);
         }
 
         [Test()]
         public void GetAnimeReviewsTest()
         {
-            Assert.Fail();
+            // 2167 is Clannad
+            var response = Browser.GetAnimeReviews(2167);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
+            Assert.NotNull(response.Data);
+            Assert.Greater(response.Data.Length, 0);
+            // TODO: Maybe more
         }
 
         [Test()]
         public void GetMangaReviewsTest()
         {
-            Assert.Fail();
+            // 30002 is Evil Blade
+            var response = Browser.GetMangaReviews(30070);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
+            Assert.NotNull(response.Data);
+            Assert.Greater(response.Data.Length, 0);
+            // TODO: Maybe more
         }
 
-        [Test()]
-        public void GetUserReviewsTest()
+        [TestCase("WillQ")]
+        [TestCase("WillQ")] // TODO: Use id
+        public void GetUserReviewsTest(object displayName)
         {
-            Assert.Fail();
-        }
-
-        [Test()]
-        public void GetUserReviewsTest1()
-        {
-            Assert.Fail();
+            var response = Browser.GetUserReviews(displayName.ToString());
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
+            Assert.NotNull(response.Data);
+            Assert.NotNull(response.Data.AnimeReviews);
+            Assert.NotNull(response.Data.MangaReviews);
+            // TODO: Maybe more
         }
 
         [Test()]
         public void GetRecentThreadsTest()
         {
-            Assert.Fail();
+            var response = Browser.GetRecentThreads(0);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
+            Assert.NotNull(response.Data);
+            // TODO: Maybe more
         }
 
         [Test()]
         public void GetNewThreadsTest()
         {
-            Assert.Fail();
+            var response = Browser.GetNewThreads(0);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
+            Assert.NotNull(response.Data);
+            // TODO: Maybe more
         }
 
         [Test()]
         public void GetThreadsByTagTest()
         {
-            Assert.Fail();
+            var response = Browser.GetThreadsByTag(0);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
+            Assert.NotNull(response.Data);
+            // TODO: Maybe more
         }
 
         [Test()]
         public void GetThreadTest()
         {
-            Assert.Fail();
+            var response = Browser.GetThread(1802);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
+            Assert.NotNull(response.Data);
+            // TODO: Maybe more
         }
     }
 }

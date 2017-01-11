@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using UnifiedAnime.Other.JsonConverters.AniList;
 
 namespace UnifiedAnime.Data.AniList
 {
@@ -37,9 +38,11 @@ namespace UnifiedAnime.Data.AniList
         public int[] CustomLists { get; set; }
         
         [JsonProperty("started_on")]
+        [JsonConverter(typeof(NullableDateTimeConverter))]
         public DateTime? StartedOn { get; set; }
         
         [JsonProperty("finished_on")]
+        [JsonConverter(typeof(NullableDateTimeConverter))]
         public DateTime? FinishedOn { get; set; }
 
         [JsonProperty("added_time")]

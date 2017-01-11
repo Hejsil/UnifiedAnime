@@ -59,19 +59,14 @@ namespace UnifiedAnime.Clients.Browsers.AniList
 
         public Response<SmallUser[]> SearchUser(string query) => MakeAndExecute<SmallUser[]>($"user/search/{query}", Method.GET);
         
-        public Response<AnimeEntry[]> GetAnimelist(int id) => GetAnimelist(id.ToString());
-        public Response<AnimeEntry[]> GetAnimelist(string displayName)
-        {
-            var response = MakeAndRestExecute($"user/{displayName}/animelist", Method.GET);
-            return new Response<AnimeEntry[]>(response, JsonConvert.DeserializeObject<AnimeEntry[]>(response.Content, new AnimeListConverter()));
-        }
+        public Response<BigUserAnimeList> GetAnimelist(int id) => GetAnimelist(id.ToString());
 
-        public Response<MangaEntry[]> GetMangalist(int id) => GetMangalist(id.ToString());
-        public Response<MangaEntry[]> GetMangalist(string displayName)
-        {
-            var response = MakeAndRestExecute($"user/{displayName}/mangalist", Method.GET);
-            return new Response<MangaEntry[]>(response, JsonConvert.DeserializeObject<MangaEntry[]>(response.Content, new MangaListConverter()));
-        }
+        public Response<BigUserAnimeList> GetAnimelist(string displayName)
+            => MakeAndExecute<BigUserAnimeList>($"user/{displayName}/animelist", Method.GET);
+
+        public Response<BigUserMangaList> GetMangalist(int id) => GetMangalist(id.ToString());
+        public Response<BigUserMangaList> GetMangalist(string displayName)
+            => MakeAndExecute<BigUserMangaList>($"user/{displayName}/mangalist", Method.GET);
 
         public Response<SmallSeries[]> BrowseAnime(
             int? year = null,
@@ -147,7 +142,13 @@ namespace UnifiedAnime.Clients.Browsers.AniList
         public Response<SmallCharacter[]> SearchCharacter(string query) => Search<SmallCharacter>("character", query);
         public Response<SmallStaff[]> SearchStaff(string query) => Search<SmallStaff>("staff", query);
         public Response<Studio[]> SearchStudio(string query) => Search<Studio>("studio", query);
-        public Response<AniListThread[]> SearchThread(string query) => Search<AniListThread>("forum", query);
+
+        public Response<AniListThread[]> SearchThread(string query)
+        {
+            var response = MakeAndRestExecute($"forum/search/{query}", Method.GET);
+            return new Response<AniListThread[]>(response, JsonConvert.DeserializeObject<AniListThread[]>(response.Content, new ThreadSearchConverter()));
+        }
+
         private Response<T[]> Search<T>(string seriesType, string query) where T : AniListObject =>
             MakeAndExecute<T[]>($"{seriesType}/search/{query}", Method.GET);
 
@@ -157,12 +158,12 @@ namespace UnifiedAnime.Clients.Browsers.AniList
         public Response<Studio> GetStudio(int id) => MakeAndExecute<Studio>($"studio/{id}", Method.GET);
         public Response<Studio> GetStudioPage(int id) => MakeAndExecute<Studio>($"studio/{id}/page", Method.GET);
 
-        public Response<Review> GetAnimeReview(int id) => MakeAndExecute<Review>($"anime/{id}/reviews", Method.GET);
-        public Response<Review> GetMangaReview(int id) => MakeAndExecute<Review>($"manga/{id}/reviews", Method.GET);
-        public Response<Review[]> GetAnimeReviews(int id) => MakeAndExecute<Review[]>($"anime/review/{id}", Method.GET);
-        public Response<Review[]> GetMangaReviews(int id) => MakeAndExecute<Review[]>($"manga/review/{id}", Method.GET);
-        public Response<Review[]> GetUserReviews(int id) => GetUserReviews(id.ToString());
-        public Response<Review[]> GetUserReviews(string displayName) => MakeAndExecute<Review[]>($"user/{displayName}/reviews", Method.GET);
+        public Response<AnimeReview> GetAnimeReview(int id) => MakeAndExecute<AnimeReview>($"anime/review/{id}", Method.GET);
+        public Response<MangaReview> GetMangaReview(int id) => MakeAndExecute<MangaReview>($"manga/review/{id}", Method.GET);
+        public Response<AnimeReview[]> GetAnimeReviews(int id) => MakeAndExecute<AnimeReview[]>($"anime/{id}/reviews", Method.GET);
+        public Response<MangaReview[]> GetMangaReviews(int id) => MakeAndExecute<MangaReview[]>($"manga/{id}/reviews", Method.GET);
+        public Response<UserReviews> GetUserReviews(int id) => GetUserReviews(id.ToString());
+        public Response<UserReviews> GetUserReviews(string displayName) => MakeAndExecute<UserReviews>($"user/{displayName}/reviews", Method.GET);
 
 
         public Response<Feed> GetRecentThreads(int pageNumber)
