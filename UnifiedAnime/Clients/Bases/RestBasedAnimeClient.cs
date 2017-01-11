@@ -66,7 +66,8 @@ namespace UnifiedAnime.Clients.Bases
         protected IRestResponse RestExecute(IRestRequest request)
         {
             var client = new RestClient(Url);
-            return client.Execute(request);
+            var result = client.Execute(request);
+            return result;
         }
 
         protected IRestResponse MakeAndRestExecute(string resource, Method method)

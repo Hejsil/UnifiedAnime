@@ -16,7 +16,7 @@ namespace UnifiedAnime.Clients.Profiles.AniList
         public override string Url => "https://anilist.co/api/";
 
         public string AuthenticationLink
-            => $@"{Url}auth/authorize?client_id={_clientId}&grant_type=authorization_pin&response_type=pin";
+            => $@"{Url}auth/authorize?grant_type=authorization_pin&client_id={_clientId}&response_type=pin";
 
         private readonly string _clientId;
         private readonly string _clientSecret;

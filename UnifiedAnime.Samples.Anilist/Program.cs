@@ -15,8 +15,6 @@ namespace UnifiedAnime.Samples.Anilist
         static void Main(string[] args)
         {
             var profile = new AniListProfile(Resources.AniListClientId, Resources.AniListClientSecret);
-            var response = profile.AuthenticationLink;
-
 
             //var browser = new AniListBrowser(Resources.AniListClientId, Resources.AniListClientSecret);
             //browser.Authenticate();
