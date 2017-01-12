@@ -18,25 +18,16 @@ namespace UnifiedAnime.Tests.Profiles
         {
             Browser = new AniListBrowser(Resources.AniListClientId, Resources.AniListClientSecret);
             Browser.Authorize();
-
-            Profile = new AniListProfile(Resources.AniListClientId, Resources.AniListClientSecret);
-            Profile.Authenticate(Resources.AniListCode);
         }
 
         [Test()]
         public void AniListProfileTest()
         {
-            var profile = new AniListProfile(Resources.AniListClientId, Resources.AniListClientSecret);
-            Assert.AreEqual("https://anilist.co/api/", profile.Url);
-            Assert.AreEqual("https://anilist.co/api/auth/authorize?grant_type=authorization_pin&client_id=hejsil-jkbgm&response_type=pin", profile.AuthenticationLink);
         }
 
         [Test()]
         public void AuthenticateTest()
         {
-            var profile = new AniListProfile(Resources.AniListClientId, Resources.AniListClientSecret);
-            var response = profile.Authenticate(Resources.AniListCode);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
         }
 
         [Test()]

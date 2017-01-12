@@ -19,9 +19,6 @@ namespace UnifiedAnime.Samples.SimpleConsole
                 case "HummingBird":
                     profile = new UnifiedHummingBirdV1Profile();
                     break;
-                case "AniList":
-                    profile = new UnifiedAniListProfile();
-                    break;
                 default:
                     Console.WriteLine($"Site not supported: {site}");
                     return;
