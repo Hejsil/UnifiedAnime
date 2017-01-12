@@ -57,6 +57,7 @@
     <Compile Include="Data\AniList\AnimeReview.cs" />
     <Compile Include="Data\AniList\BigUserMangaList.cs" />
     <Compile Include="Data\AniList\BigUserAnimeList.cs" />
+    <Compile Include="Data\AniList\Genre.cs" />
     <Compile Include="Data\AniList\MangaReview.cs" />
     <Compile Include="Data\AniList\ReviewRating.cs" />
     <Compile Include="Data\AniList\AniListThread.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Data\IAnimeEntry.cs" />
     <Compile Include="Data\IAnimeInfo.cs" />
     <Compile Include="Clients\IAnimeBrowser.cs" />
+    <Compile Include="Other\JsonConverters\AniList\GenreMapper.cs" />
     <Compile Include="Other\JsonConverters\AniList\ActivityTypeMapper.cs" />
     <Compile Include="Other\JsonConverters\AniList\NullableDateTimeConverter.cs" />
     <Compile Include="Other\JsonConverters\AniList\ThreadSearchConverter.cs" />

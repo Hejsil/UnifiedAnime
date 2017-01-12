@@ -17,7 +17,7 @@ namespace UnifiedAnime.Tests.Profiles
         public AniListProfileTests()
         {
             Browser = new AniListBrowser(Resources.AniListClientId, Resources.AniListClientSecret);
-            Browser.Authenticate();
+            Browser.Authorize();
 
             Profile = new AniListProfile(Resources.AniListClientId, Resources.AniListClientSecret);
             Profile.Authenticate(Resources.AniListCode);

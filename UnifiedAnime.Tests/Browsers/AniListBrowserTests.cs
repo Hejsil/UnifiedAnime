@@ -17,7 +17,7 @@ namespace UnifiedAnime.Tests.Browsers
         public AniListBrowserTests()
         {
             Browser = new AniListBrowser(Resources.AniListClientId, Resources.AniListClientSecret);
-            Browser.Authenticate();
+            Browser.Authorize();
         }
 
         [Test()]
@@ -31,7 +31,7 @@ namespace UnifiedAnime.Tests.Browsers
         public void AuthenticateTest()
         {
             var browser = new AniListBrowser(Resources.AniListClientId, Resources.AniListClientSecret);
-            var response = browser.Authenticate();
+            var response = browser.Authorize();
             Assert.AreEqual(UnifiedStatus.Success, response.Status);
         }
         

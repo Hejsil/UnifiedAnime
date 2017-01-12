@@ -11,34 +11,70 @@ using UnifiedAnime.Other.JsonConverters.AniList;
 
 namespace UnifiedAnime.Clients.Profiles.AniList
 {
+    [Obsolete("This profile does not work yet.")]
     public class AniListProfile : RestBasedAnimeClient
     {
         public override string Url => "https://anilist.co/api/";
 
-        public string AuthenticationLink
+        public string AuthenticationPinLink
             => $@"{Url}auth/authorize?grant_type=authorization_pin&client_id={_clientId}&response_type=pin";
+
+        public string AuthenticationCodeLink
+            => $@"{Url}auth/authorize?grant_type=authorization_code&client_id={_clientId}&redirect_uri={_redirectUri}&response_type=code";
 
         private readonly string _clientId;
         private readonly string _clientSecret;
+        private readonly string _redirectUri;
         private Timer _clientCredentialsRefresher;
         private Credentials _credentials;
 
-        public AniListProfile(string clientId, string clientSecret)
+        public AniListProfile(string clientId, string clientSecret, string redirectUri)
         {
+            if (clientId == null)
+                throw new ArgumentNullException(nameof(clientId));
+            if (clientSecret == null)
+                throw new ArgumentNullException(nameof(clientSecret));
+            if (redirectUri == null)
+                throw new ArgumentNullException(nameof(redirectUri));
+
             _clientId = clientId;
             _clientSecret = clientSecret;
+            _redirectUri = redirectUri;
         }
 
-        public Response Authenticate(string authorizationPin)
+        public Response AuthenticateWithPin(string pin)
         {
-            var response = MakeAndExecute<Credentials>("auth/access_token", Method.POST,
-                new Parameters
-                {
-                    { "grant_type", "authorization_pin" },
-                    { "client_id", _clientId },
-                    { "client_secret", _clientSecret },
-                    { "code", authorizationPin }
-                });
+            // NOTE: We use the base.MakeRequest here, because no access token should be added, when requesting and access token
+            var request = base.MakeRequest("auth/access_token", Method.POST);
+            request.AddParameter("grant_type", "authorization_pin");
+            request.AddParameter("client_id", _clientId);
+            request.AddParameter("client_secret", _clientSecret);
+            request.AddParameter("code", pin);
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            var response = Execute<Credentials>(request);
+
+            if (response.Status == UnifiedStatus.Success)
+            {
+                _credentials = response.Data;
+                StartTimer();
+            }
+
+            return response;
+        }
+
+        public Response AuthenticateWithCode(string code)
+        {
+            // NOTE: We use the base.MakeRequest here, because no access token should be added, when requesting and access token
+            var request = base.MakeRequest("auth/access_token", Method.POST);
+            request.AddParameter("grant_type", "authorization_code");
+            request.AddParameter("client_id", _clientId);
+            request.AddParameter("client_secret", _clientSecret);
+            request.AddParameter("redirect_uri", _redirectUri);
+            request.AddParameter("code", code);
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            var response = Execute<Credentials>(request);
 
             if (response.Status == UnifiedStatus.Success)
             {
@@ -324,7 +360,8 @@ namespace UnifiedAnime.Clients.Profiles.AniList
         protected override IRestRequest MakeRequest(string resource, Method method)
         {
             var request = base.MakeRequest(resource, method);
-            request.AddParameter("access_token", _credentials?.AccessToken);
+            request.AddHeader("Authorization", _credentials?.AccessToken);
+            request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             return request;
         }
     }

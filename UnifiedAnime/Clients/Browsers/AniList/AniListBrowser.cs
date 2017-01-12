@@ -14,8 +14,16 @@ using UnifiedAnime.Other.JsonConverters.AniList;
 
 namespace UnifiedAnime.Clients.Browsers.AniList
 {
+    /// <summary>
+    /// A browser for the site https://anilist.co/.
+    /// This browser can access everything from the site that is accessible without user authentication.
+    /// For a full list, take a look at the official AniList API: https://anilist-api.readthedocs.io/en/latest/index.html
+    /// </summary>
     public class AniListBrowser : RestBasedAnimeClient
     {
+        /// <summary>
+        /// The url used to access the API.
+        /// </summary>
         public override string Url => "https://anilist.co/api/";
 
         private readonly string _clientId;
@@ -23,13 +31,28 @@ namespace UnifiedAnime.Clients.Browsers.AniList
         private Timer _clientCredentialsRefresher;
         private Credentials _credentials;
 
+        /// <summary>
+        /// Initialize a new instance of <see cref="AniListBrowser"/> with a client id and secret.
+        /// The id and secret can be optained by creating a client: https://anilist.co/settings/developer.
+        /// <remarks>
+        /// Do not share your Client Secret.
+        /// </remarks>
+        /// </summary>
+        /// <param name="clientId">The Client ID</param>
+        /// <param name="clientSecret">The Client Secret</param>
         public AniListBrowser(string clientId, string clientSecret)
         {
             _clientId = clientId;
             _clientSecret = clientSecret;
         }
 
-        public Response Authenticate()
+        /// <summary>
+        /// Authorize the <see cref="AniListBrowser"/>. This will give access to all the methods this class provides.
+        /// The <see cref="AniListBrowser"/> automaticly re-authorize when needed, so this method should only ever be called
+        /// once, unless it fails.
+        /// </summary>
+        /// <returns>A <see cref="Response"/> containing data for error handling.</returns>
+        public Response Authorize()
         {
             var response = GrantClientCredentials();
             
@@ -42,76 +65,161 @@ namespace UnifiedAnime.Clients.Browsers.AniList
             return response;
         }
 
+        /// <summary>
+        /// Get a <see cref="User"/> by its id on AniList.
+        /// </summary>
+        /// <param name="id">The id of the user.</param>
+        /// <returns>A <see cref="Response"/> containing data for error handling, and the actual return data.</returns>
         public Response<User> GetUser(int id) => GetUser(id.ToString());
+
+        /// <summary>
+        /// Get a <see cref="User"/> by its display name on AniList.
+        /// </summary>
+        /// <param name="displayName">The display name of the user.</param>
+        /// <returns>A <see cref="Response"/> containing data for error handling, and the actual return data.</returns>
         public Response<User> GetUser(string displayName) => MakeAndExecute<User>($"user/{displayName}", Method.GET);
 
-        public Response<Activity[]> GetActivity(int id) => GetActivity(id.ToString());
-        public Response<Activity[]> GetActivity(string displayName) => MakeAndExecute<Activity[]>($"user/{displayName}/activity", Method.GET);
+        /// <summary>
+        /// Get all activities a user has on a page.
+        /// </summary>
+        /// <param name="id">The id of the user.</param>
+        /// <param name="pageNumber">The page that should be returned.</param>
+        /// <returns>A <see cref="Response"/> containing data for error handling, and the actual return data.</returns>
+        public Response<Activity[]> GetActivity(int id, int pageNumber = 0) => GetActivity(id.ToString(), pageNumber);
 
+        /// <summary>
+        /// Get all activities a user has on a page.
+        /// </summary>
+        /// <param name="displayName">The display name of the user.</param>
+        /// <param name="pageNumber">The page that should be returned.</param>
+        /// <returns>A <see cref="Response"/> containing data for error handling, and the actual return data.</returns>
+        public Response<Activity[]> GetActivity(string displayName, int pageNumber = 0) => 
+            MakeAndExecute<Activity[]>($"user/{displayName}/activity", Method.GET, "page", pageNumber);
+        
+        /// <summary>
+        /// Get all the users that follow a user.
+        /// </summary>
+        /// <param name="id">The id of the user.</param>
+        /// <returns>A <see cref="Response"/> containing data for error handling, and the actual return data.</returns>
         public Response<SmallUser[]> GetFollowers(int id) => GetFollowers(id.ToString());
+
+        /// <summary>
+        /// Get all the users that follow a user.
+        /// </summary>
+        /// <param name="displayName">The display name of the user.</param>
+        /// <returns>A <see cref="Response"/> containing data for error handling, and the actual return data.</returns>
         public Response<SmallUser[]> GetFollowers(string displayName) => MakeAndExecute<SmallUser[]>($"user/{displayName}/followers", Method.GET);
 
+        /// <summary>
+        /// Get all the users a user is following.
+        /// </summary>
+        /// <param name="id">The id of the user.</param>
+        /// <returns>A <see cref="Response"/> containing data for error handling, and the actual return data.</returns>
         public Response<SmallUser[]> GetFollowing(int id) => GetFollowing(id.ToString());
+
+        /// <summary>
+        /// Get all the users a user is following.
+        /// </summary>
+        /// <param name="displayName">The display name of the user.</param>
+        /// <returns>A <see cref="Response"/> containing data for error handling, and the actual return data.</returns>
         public Response<SmallUser[]> GetFollowing(string displayName) => MakeAndExecute<SmallUser[]>($"user/{displayName}/following", Method.GET);
 
+        /// <summary>
+        /// Get a users favorite animes, mangas, characters and staff.
+        /// </summary>
+        /// <param name="id">The id of the user.</param>
+        /// <returns>A <see cref="Response"/> containing data for error handling, and the actual return data.</returns>
         public Response<Favorites> GetFavourites(int id) => GetFavourites(id.ToString());
+
+        /// <summary>
+        /// Get a users favorite animes, mangas, characters and staff.
+        /// </summary>
+        /// <param name="displayName">The display name of the user.</param>
+        /// <returns>A <see cref="Response"/> containing data for error handling, and the actual return data.</returns>
         public Response<Favorites> GetFavourites(string displayName) => MakeAndExecute<Favorites>($"user/{displayName}/favourites", Method.GET);
 
+        /// <summary>
+        /// Search for a user.
+        /// </summary>
+        /// <param name="query">The query used to search.</param>
+        /// <returns>A <see cref="Response"/> containing data for error handling, and the actual return data.</returns>
         public Response<SmallUser[]> SearchUser(string query) => MakeAndExecute<SmallUser[]>($"user/search/{query}", Method.GET);
-        
+
+        /// <summary>
+        /// Get all user data including the users anime list.
+        /// </summary>
+        /// <param name="id">The id of the user.</param>
+        /// <returns>A <see cref="Response"/> containing data for error handling, and the actual return data.</returns>
         public Response<BigUserAnimeList> GetAnimelist(int id) => GetAnimelist(id.ToString());
 
+        /// <summary>
+        /// Get all user data including the users anime list.
+        /// </summary>
+        /// <param name="displayName">The display name of the user.</param>
+        /// <returns>A <see cref="Response"/> containing data for error handling, and the actual return data.</returns>
         public Response<BigUserAnimeList> GetAnimelist(string displayName)
             => MakeAndExecute<BigUserAnimeList>($"user/{displayName}/animelist", Method.GET);
-
+        
+        /// <summary>
+        /// Get all user data including the users manga list.
+        /// </summary>
+        /// <param name="id">The id of the user.</param>
+        /// <returns>A <see cref="Response"/> containing data for error handling, and the actual return data.</returns>
         public Response<BigUserMangaList> GetMangalist(int id) => GetMangalist(id.ToString());
+
+        /// <summary>
+        /// Get all user data including the users manga list.
+        /// </summary>
+        /// <param name="displayName">The display name of the user.</param>
+        /// <returns>A <see cref="Response"/> containing data for error handling, and the actual return data.</returns>
         public Response<BigUserMangaList> GetMangalist(string displayName)
             => MakeAndExecute<BigUserMangaList>($"user/{displayName}/mangalist", Method.GET);
 
-        public Response<SmallSeries[]> BrowseAnime(
+        public Response<SmallAnime[]> BrowseAnime(
             int? year = null,
             Season? season = null,
             MediaType? type = null,
             AnimeStatus? status = null,
-            string[] genres = null, // TODO: Genre enum
-            string[] excludedGenres = null, // TODO: Genre enum
+            IEnumerable<Genre> genres = null,
+            IEnumerable<Genre> excludedGenres = null,
             SortingMethod? sortingMethod = null,
             bool? airingData = null,
             bool? fullPage = null,
             int? page = null)
         {
-            return Browse("anime", year, season, type, status, genres, excludedGenres, sortingMethod, airingData, fullPage, page);
+            return Browse<SmallAnime>("anime", year, season, type, status, genres, excludedGenres, sortingMethod, airingData, fullPage, page);
         }
 
-        public Response<SmallSeries[]> BrowseManga(
+        public Response<SmallManga[]> BrowseManga(
             int? year = null,
             Season? season = null,
             MediaType? type = null,
             AnimeStatus? status = null,
-            string[] genres = null, // TODO: Genre enum
-            string[] excludedGenres = null, // TODO: Genre enum
+            IEnumerable<Genre> genres = null,
+            IEnumerable<Genre> excludedGenres = null,
             SortingMethod? sortingMethod = null,
             bool? airingData = null,
             bool? fullPage = null,
             int? page = null)
         {
-            return Browse("manga", year, season, type, status, genres, excludedGenres, sortingMethod, airingData, fullPage, page);
+            return Browse<SmallManga>("manga", year, season, type, status, genres, excludedGenres, sortingMethod, airingData, fullPage, page);
         }
 
-        private Response<SmallSeries[]> Browse(
+        private Response<T[]> Browse<T>(
             string seriesType,
             int? year = null,
             Season? season = null,
             MediaType? type = null,
             AnimeStatus? status = null,
-            string[] genres = null, // TODO: Genre enum
-            string[] excludedGenres = null, // TODO: Genre enum
+            IEnumerable<Genre> genres = null, // TODO: Genre enum
+            IEnumerable<Genre> excludedGenres = null, // TODO: Genre enum
             SortingMethod? sortingMethod = null,
             bool? airingData = null,
             bool? fullPage = null,
             int? page = null)
         {
             var request = MakeRequest($"browse/{seriesType}", Method.GET);
+            var genreConverter = new GenreMapper();
 
             if (year != null)
                 request.AddParameter("year", year);
@@ -121,10 +229,20 @@ namespace UnifiedAnime.Clients.Browsers.AniList
                 request.AddParameter("type", type);
             if (status != null)
                 request.AddParameter("status", status);
-            if (genres != null && genres.Length > 0)
-                request.AddParameter("genres", string.Join(",", genres));
-            if (excludedGenres != null && excludedGenres.Length > 0)
-                request.AddParameter("genres_exclude", string.Join(",", excludedGenres));
+            if (genres != null)
+            {
+                var genresArray = genres as Genre[] ?? genres.ToArray();
+                if (genresArray.Any())
+                    request.AddParameter("genres", string.Join(",", genresArray.Select(genre => genreConverter.Type2ToType1(genre))));
+                
+            }
+            if (excludedGenres != null)
+            {
+                var genresArray = excludedGenres as Genre[] ?? excludedGenres.ToArray();
+                if (genresArray.Any())
+                    request.AddParameter("genres_exclude", string.Join(",", genresArray.Select(genre => genreConverter.Type2ToType1(genre))));
+
+            }
             if (sortingMethod != null)
                 request.AddParameter("sort", new SortMapper().Type2ToType1((SortingMethod)sortingMethod));
             if (airingData != null)
@@ -134,7 +252,7 @@ namespace UnifiedAnime.Clients.Browsers.AniList
             if (page != null)
                 request.AddParameter("page", page);
 
-            return Execute<SmallSeries[]>(request);
+            return Execute<T[]>(request);
         }
 
         public Response<SmallAnime[]> SearchAnime(string query) => Search<SmallAnime>("anime", query);
@@ -197,13 +315,15 @@ namespace UnifiedAnime.Clients.Browsers.AniList
         /// https://anilist-api.readthedocs.io/en/latest/authentication.html
         /// </summary>
         private Response<Credentials> GrantClientCredentials()
-            => MakeAndExecute<Credentials>("auth/access_token", Method.POST,
-                new Parameters
-                {
-                    { "grant_type", "client_credentials" },
-                    { "client_id", _clientId },
-                    { "client_secret", _clientSecret },
-                });
+        {
+            // NOTE: We use the base.MakeRequest here, because no access token should be added, when requesting and access token
+            var request = base.MakeRequest("auth/access_token", Method.POST);
+            request.AddParameter("grant_type", "client_credentials");
+            request.AddParameter("client_id", _clientId);
+            request.AddParameter("client_secret", _clientSecret);
+
+            return Execute<Credentials>(request);
+        }
 
         private void RefreshCredentials()
         {
