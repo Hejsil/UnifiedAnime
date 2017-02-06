@@ -11,22 +11,20 @@ using UnifiedAnime.Other.JsonConverters.AniList;
 
 namespace UnifiedAnime.Clients.Profiles.AniList
 {
-    [Obsolete("This profile does not work yet.")]
     public class AniListProfile : RestBasedAnimeClient
     {
         public override string Url => "https://anilist.co/api/";
 
         public string AuthenticationPinLink
             => $@"{Url}auth/authorize?grant_type=authorization_pin&client_id={_clientId}&response_type=pin";
-
         public string AuthenticationCodeLink
             => $@"{Url}auth/authorize?grant_type=authorization_code&client_id={_clientId}&redirect_uri={_redirectUri}&response_type=code";
+
+        public Credentials Credentials { get; set; }
 
         private readonly string _clientId;
         private readonly string _clientSecret;
         private readonly string _redirectUri;
-        private Timer _clientCredentialsRefresher;
-        private Credentials _credentials;
 
         public AniListProfile(string clientId, string clientSecret, string redirectUri)
         {
@@ -55,10 +53,7 @@ namespace UnifiedAnime.Clients.Profiles.AniList
             var response = Execute<Credentials>(request);
 
             if (response.Status == UnifiedStatus.Success)
-            {
-                _credentials = response.Data;
-                StartTimer();
-            }
+                Credentials = response.Data;
 
             return response;
         }
@@ -77,10 +72,24 @@ namespace UnifiedAnime.Clients.Profiles.AniList
             var response = Execute<Credentials>(request);
 
             if (response.Status == UnifiedStatus.Success)
-            {
-                _credentials = response.Data;
-                StartTimer();
-            }
+                Credentials = response.Data;
+
+            return response;
+        }
+
+        public Response RefreshCredentials()
+        {
+            var response = MakeAndExecute<Credentials>("auth/access_token", Method.POST,
+                new Parameters
+                {
+                    { "grant_type", "refresh_token" },
+                    { "client_id", _clientId },
+                    { "client_secret", _clientSecret },
+                    { "code", Credentials.RefreshToken },
+                });
+
+            if (response.Status == UnifiedStatus.Success)
+                Credentials = response.Data;
 
             return response;
         }
@@ -323,44 +332,10 @@ namespace UnifiedAnime.Clients.Profiles.AniList
                 { "comment", comment }
             });
 
-
-
-        private void RefreshCredentials(string refreshToken)
-        {
-            _clientCredentialsRefresher.Stop();
-            _clientCredentialsRefresher.Enabled = false;
-
-            var response = MakeAndExecute<Credentials>("auth/access_token", Method.POST,
-                new Parameters
-                {
-                    { "grant_type", "refresh_token" },
-                    { "client_id", _clientId },
-                    { "client_secret", _clientSecret },
-                    { "code", refreshToken },
-                });
-
-            if (response.Status == UnifiedStatus.Success)
-            {
-                _credentials = response.Data;
-                StartTimer();
-            }
-        }
-
-        private void StartTimer()
-        {
-            _clientCredentialsRefresher = new Timer();
-            _clientCredentialsRefresher.Elapsed += (sender, e) => RefreshCredentials(_credentials.RefreshToken);
-            // We refresh 10 seconds before our credentials expire, just to make sure
-            // that our cridentials are always valid.
-            _clientCredentialsRefresher.Interval = TimeSpan.FromSeconds(_credentials.ExpiresIn - 10).TotalMilliseconds;
-            _clientCredentialsRefresher.Enabled = true;
-            _clientCredentialsRefresher.Start();
-        }
-
         protected override IRestRequest MakeRequest(string resource, Method method)
         {
             var request = base.MakeRequest(resource, method);
-            request.AddHeader("Authorization", _credentials?.AccessToken);
+            request.AddHeader("Authorization", $"{Credentials.TokenType} {Credentials?.AccessToken}");
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
             return request;
         }

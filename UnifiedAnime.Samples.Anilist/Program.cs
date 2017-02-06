@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnifiedAnime.Clients.Browsers.AniList;
 using UnifiedAnime.Clients.Profiles.AniList;
+using UnifiedAnime.Data.AniList;
 using UnifiedAnime.Data.Common;
 using UnifiedAnime.Samples.Anilist.Properties;
 
@@ -17,6 +18,7 @@ namespace UnifiedAnime.Samples.Anilist
     {
         static void Main(string[] args)
         {
+            var profile = new AniListProfile(Resources.AniListClientId, Resources.AniListClientSecret, "");
         }
     }
 }

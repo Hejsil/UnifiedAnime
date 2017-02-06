@@ -1,9 +1,14 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using UnifiedAnime.Clients.Browsers.AniList;
 using UnifiedAnime.Clients.Profiles.AniList;
+using UnifiedAnime.Data.AniList;
 using UnifiedAnime.Data.Common;
+using UnifiedAnime.Other;
 using UnifiedAnime.Tests.Properties;
 
 namespace UnifiedAnime.Tests.Profiles
@@ -17,7 +22,12 @@ namespace UnifiedAnime.Tests.Profiles
         public AniListProfileTests()
         {
             Browser = new AniListBrowser(Resources.AniListClientId, Resources.AniListClientSecret);
-            Browser.Authorize();
+            var response = Browser.Authorize();
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
+
+            Profile = new AniListProfile(Resources.AniListClientId, Resources.AniListClientSecret, "");
+            response = Profile.AuthenticateWithPin(Resources.AniListProfilePin);
+            Assert.AreEqual(UnifiedStatus.Success, response.Status);
         }
 
         [Test()]
@@ -58,7 +68,26 @@ namespace UnifiedAnime.Tests.Profiles
         [Test()]
         public void CreateActivityMessageTest()
         {
-            Assert.Fail();
+            const string testMessage =
+                "This status was added during a test. It should have been removed once the test has been completed.";
+
+            {
+                var response = Profile.CreateActivityMessage(testMessage, Browser.GetUser("hejsil").Data.Id);
+                Assert.AreEqual(UnifiedStatus.Success, response.Status);
+            }
+            {
+                var response = Browser.GetActivity("hejsil");
+                Assert.AreEqual(UnifiedStatus.Success, response.Status);
+                Assert.NotNull(response.Data);
+
+                var activities = response.Data.Where(act => act.Value == testMessage).ToArray();
+                Assert.AreEqual(activities.Length, 1);
+
+                foreach (var act in activities)
+                {
+                    Profile.RemoveActivity(act.Id);
+                }
+            }
         }
 
         [Test()]
