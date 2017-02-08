@@ -9,72 +9,75 @@ namespace UnifiedAnime.Clients.Bases
 {
     public abstract class RestBasedAnimeClient
     {
-        public abstract string Url { get; }
+        private readonly RestClient _client;
+        
+        public RestBasedAnimeClient(string url)
+        {
+            _client = new RestClient(url);
+        }
 
-        protected virtual IRestRequest MakeRequest(string resource, Method method) 
+        protected virtual IRestRequest MakeRequest(string resource, Method method)
             => new RestRequest(resource, method) { JsonSerializer = NewtonsoftJsonSerializer.Default };
 
-        protected Response Execute(IRestRequest request) =>  new Response(RestExecute(request));
+        protected IRestRequest MakeRequest(string resource, Method method, Parameters parameters)
+            => MakeRequest(resource, method, (IEnumerable<Parameter>)parameters);
 
-        protected Response<T> Execute<T>(IRestRequest request)
+        protected IRestRequest MakeRequest(string resource, Method method, params Parameter[] parameters)
+            => MakeRequest(resource, method, (IEnumerable<Parameter>)parameters);
+
+        protected IRestRequest MakeRequest(string resource, Method method, string parameterName, object parameterValue)
+            => MakeRequest(resource, method, new Parameter { Name = parameterName, Value = parameterValue });
+
+        protected IRestRequest MakeRequest(string resource, Method method, IEnumerable<Parameter> parameters)
         {
-            var response = RestExecute(request);
-            return new Response<T>(
-                response, 
-                JsonConvert.DeserializeObject<T>(response.Content,
+            var request = MakeRequest(resource, method);
+
+            if (parameters != null)
+            {
+                foreach (var parameter in parameters)
+                    request.AddParameter(parameter.Name, parameter.Value);
+            }
+
+            return request;
+        }
+
+        protected IRestResponse Execute(IRestRequest request) => _client.Execute(request);
+        protected (T Data, IRestResponse RestResponse) Execute<T>(IRestRequest request)
+        {
+            var response = Execute(request);
+            var data = JsonConvert.DeserializeObject<T>(response.Content,
                     new JsonSerializerSettings
                     {
                         NullValueHandling = NullValueHandling.Ignore,
                         MissingMemberHandling = MissingMemberHandling.Ignore
-                    }));
+                    });
+
+            return (data, response);
         }
 
-        protected Response MakeAndExecute(string resource, Method method, Parameters parameters) => MakeAndExecute(resource, method, (IEnumerable<Parameter>)parameters);
-        protected Response MakeAndExecute(string resource, Method method, params Parameter[] parameters) => MakeAndExecute(resource, method, (IEnumerable<Parameter>)parameters);
-        protected Response MakeAndExecute(string resource, Method method, string parameterName, object parameterValue) => MakeAndExecute(resource, method, new Parameter { Name = parameterName, Value = parameterValue });
+        protected IRestResponse MakeAndExecute(string resource, Method method, Parameters parameters) 
+            => MakeAndExecute(resource, method, (IEnumerable<Parameter>)parameters);
 
-        protected Response MakeAndExecute(string resource, Method method, IEnumerable<Parameter> parameters = null)
-        {
-            var request = MakeRequest(resource, method);
+        protected IRestResponse MakeAndExecute(string resource, Method method, params Parameter[] parameters) 
+            => MakeAndExecute(resource, method, (IEnumerable<Parameter>)parameters);
 
-            if (parameters != null)
-            {
-                foreach (var parameter in parameters)
-                    request.AddParameter(parameter.Name, parameter.Value);
-            }
+        protected IRestResponse MakeAndExecute(string resource, Method method, string parameterName, object parameterValue) 
+            => MakeAndExecute(resource, method, new Parameter { Name = parameterName, Value = parameterValue });
 
-            return Execute(request);
-        }
+        protected IRestResponse MakeAndExecute(string resource, Method method, IEnumerable<Parameter> parameters = null) 
+            => Execute(MakeRequest(resource, method, parameters));
+
         
-        protected Response<T> MakeAndExecute<T>(string resource, Method method, Parameters parameters) => MakeAndExecute<T>(resource, method, (IEnumerable<Parameter>)parameters);
-        protected Response<T> MakeAndExecute<T>(string resource, Method method, params Parameter[] parameters) => MakeAndExecute<T>(resource, method, (IEnumerable<Parameter>)parameters);
-        protected Response<T> MakeAndExecute<T>(string resource, Method method, string parameterName, object parameterValue) => MakeAndExecute<T>(resource, method, new Parameter { Name = parameterName, Value = parameterValue });
+        protected (T Data, IRestResponse RestResponse) MakeAndExecute<T>(string resource, Method method, Parameters parameters) 
+            => MakeAndExecute<T>(resource, method, (IEnumerable<Parameter>)parameters);
 
-        protected Response<T> MakeAndExecute<T>(string resource, Method method, IEnumerable<Parameter> parameters = null)
-        {
-            var request = MakeRequest(resource, method);
+        protected (T Data, IRestResponse RestResponse) MakeAndExecute<T>(string resource, Method method, params Parameter[] parameters) 
+            => MakeAndExecute<T>(resource, method, (IEnumerable<Parameter>)parameters);
 
-            if (parameters != null)
-            {
-                foreach (var parameter in parameters)
-                    request.AddParameter(parameter.Name, parameter.Value);
-            }
+        protected (T Data, IRestResponse RestResponse) MakeAndExecute<T>(string resource, Method method, string parameterName, object parameterValue) 
+            => MakeAndExecute<T>(resource, method, new Parameter { Name = parameterName, Value = parameterValue });
 
-            return Execute<T>(request);
-        }
-
-        protected IRestResponse RestExecute(IRestRequest request)
-        {
-            var client = new RestClient(Url);
-            var result = client.Execute(request);
-            return result;
-        }
-
-        protected IRestResponse MakeAndRestExecute(string resource, Method method)
-        {
-            var request = MakeRequest(resource, method);
-            return RestExecute(request);
-        }
-
+        protected (T Data, IRestResponse RestResponse) MakeAndExecute<T>(string resource, Method method, IEnumerable<Parameter> parameters = null)
+            => Execute<T>(MakeRequest(resource, method, parameters));
     }
 }

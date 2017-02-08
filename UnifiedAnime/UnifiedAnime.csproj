@@ -42,6 +42,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -92,12 +95,8 @@
     <Compile Include="Data\AniList\SmallStaff.cs" />
     <Compile Include="Data\AniList\Staff.cs" />
     <Compile Include="Data\AniList\Character.cs" />
-    <Compile Include="Clients\Browsers\HummingBirdV1\UnifiedHummingBirdV1Browser.cs" />
     <Compile Include="Clients\IAnimeProfile.cs" />
-    <Compile Include="Clients\Browsers\HummingBirdV1\HummingBirdV1Browser.cs" />
     <Compile Include="Clients\Profiles\AniList\AniListProfile.cs" />
-    <Compile Include="Clients\Profiles\HummingBirdV1\HummingBirdV1Profile.cs" />
-    <Compile Include="Clients\Profiles\HummingBirdV1\UnifiedHummingBirdV1Profile.cs" />
     <Compile Include="Collections\Map.cs" />
     <Compile Include="Data\AniList\Activity.cs" />
     <Compile Include="Data\AniList\ActivityType.cs" />
@@ -117,24 +116,9 @@
     <Compile Include="Data\Common\AnimeStatus.cs" />
     <Compile Include="Data\Common\AnimeEntryStatus.cs" />
     <Compile Include="Data\Common\MangaEntryStatus.cs" />
-    <Compile Include="Data\Common\Response.cs" />
-    <Compile Include="Data\Common\UnifiedStatus.cs" />
     <Compile Include="Data\Common\Season.cs" />
     <Compile Include="Data\Common\ShowType.cs" />
-    <Compile Include="Data\HummingBirdV1\Favorite.cs" />
-    <Compile Include="Data\HummingBirdV1\ItemType.cs" />
-    <Compile Include="Data\HummingBirdV1\LibraryEntry.cs" />
-    <Compile Include="Data\HummingBirdV1\Anime.cs" />
-    <Compile Include="Data\HummingBirdV1\Genre.cs" />
-    <Compile Include="Data\HummingBirdV1\LibraryEntryRating.cs" />
-    <Compile Include="Data\HummingBirdV1\RatingType.cs" />
-    <Compile Include="Data\HummingBirdV1\Story.cs" />
-    <Compile Include="Data\HummingBirdV1\StoryType.cs" />
-    <Compile Include="Data\HummingBirdV1\SubStory.cs" />
-    <Compile Include="Data\HummingBirdV1\SubStoryType.cs" />
     <Compile Include="Data\Common\TitleLanguage.cs" />
-    <Compile Include="Data\HummingBirdV1\User.cs" />
-    <Compile Include="Data\HummingBirdV1\UserMini.cs" />
     <Compile Include="Data\IAnimeEntry.cs" />
     <Compile Include="Data\IAnimeInfo.cs" />
     <Compile Include="Clients\IAnimeBrowser.cs" />
@@ -157,15 +141,6 @@
     <Compile Include="Other\JsonConverters\AniList\SeriesTypeMapper.cs" />
     <Compile Include="Other\JsonConverters\AniList\TitleLanguageMapper.cs" />
     <Compile Include="Other\JsonConverters\TypeToTypeMapper.cs" />
-    <Compile Include="Other\JsonConverters\HummingBirdV1\SubStoryTypeMapper.cs" />
-    <Compile Include="Other\JsonConverters\HummingBirdV1\StoryTypeMapper.cs" />
-    <Compile Include="Other\JsonConverters\HummingBirdV1\TitleLanguageMapper.cs" />
-    <Compile Include="Other\JsonConverters\HummingBirdV1\ItemTypeMapper.cs" />
-    <Compile Include="Other\JsonConverters\HummingBirdV1\RatingTypeMapper.cs" />
-    <Compile Include="Other\JsonConverters\HummingBirdV1\ShowTypeMapper.cs" />
-    <Compile Include="Other\JsonConverters\HummingBirdV1\AnimeStatusMapper.cs" />
-    <Compile Include="Other\JsonConverters\InterfaceInstatiator.cs" />
-    <Compile Include="Other\JsonConverters\HummingBirdV1\AnimeEntryStatusMapper.cs" />
     <Compile Include="Other\NewsoftJsonSerializer.cs" />
     <Compile Include="Other\ScoreConverter.cs" />
     <Compile Include="Other\UnixTimestampConveter.cs" />

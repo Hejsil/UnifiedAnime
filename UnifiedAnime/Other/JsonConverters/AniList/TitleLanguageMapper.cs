@@ -1,6 +1,5 @@
 ﻿using MoreCollections;
 using UnifiedAnime.Data.Common;
-using UnifiedAnime.Data.HummingBirdV1;
 
 namespace UnifiedAnime.Other.JsonConverters.AniList
 {

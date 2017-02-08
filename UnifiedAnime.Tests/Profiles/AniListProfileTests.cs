@@ -10,6 +10,7 @@ using UnifiedAnime.Data.AniList;
 using UnifiedAnime.Data.Common;
 using UnifiedAnime.Other;
 using UnifiedAnime.Tests.Properties;
+using System.Net;
 
 namespace UnifiedAnime.Tests.Profiles
 {
@@ -22,12 +23,12 @@ namespace UnifiedAnime.Tests.Profiles
         public AniListProfileTests()
         {
             Browser = new AniListBrowser(Resources.AniListClientId, Resources.AniListClientSecret);
-            var response = Browser.Authorize();
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
+            var response = Browser.RefreshCredentials();
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
             Profile = new AniListProfile(Resources.AniListClientId, Resources.AniListClientSecret, "");
             response = Profile.AuthenticateWithPin(Resources.AniListProfilePin);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Test()]
@@ -48,14 +49,14 @@ namespace UnifiedAnime.Tests.Profiles
 
             {
                 var response = Profile.CreateActivityStatus(testMessage);
-                Assert.AreEqual(UnifiedStatus.Success, response.Status);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
             {
                 var response = Browser.GetActivity("UnifiedAnimeTestUser");
-                Assert.AreEqual(UnifiedStatus.Success, response.Status);
-                Assert.NotNull(response.Data);
+                Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+                Assert.NotNull(response.Activities);
 
-                var activities = response.Data.Where(act => act.Value == testMessage).ToArray();
+                var activities = response.Activities.Where(act => act.Value == testMessage).ToArray();
                 Assert.AreEqual(activities.Length, 1);
 
                 foreach (var act in activities)
@@ -72,15 +73,15 @@ namespace UnifiedAnime.Tests.Profiles
                 "This status was added during a test. It should have been removed once the test has been completed.";
 
             {
-                var response = Profile.CreateActivityMessage(testMessage, Browser.GetUser("hejsil").Data.Id);
-                Assert.AreEqual(UnifiedStatus.Success, response.Status);
+                var response = Profile.CreateActivityMessage(testMessage, Browser.GetUser("hejsil").User.Id);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
             {
                 var response = Browser.GetActivity("hejsil");
-                Assert.AreEqual(UnifiedStatus.Success, response.Status);
-                Assert.NotNull(response.Data);
+                Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+                Assert.NotNull(response.Activities);
 
-                var activities = response.Data.Where(act => act.Value == testMessage).ToArray();
+                var activities = response.Activities.Where(act => act.Value == testMessage).ToArray();
                 Assert.AreEqual(activities.Length, 1);
 
                 foreach (var act in activities)

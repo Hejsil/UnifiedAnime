@@ -13,7 +13,7 @@ namespace UnifiedAnime.Clients.Profiles.AniList
 {
     public class AniListProfile : RestBasedAnimeClient
     {
-        public override string Url => "https://anilist.co/api/";
+        private const string Url = "https://anilist.co/api/";
 
         public string AuthenticationPinLink
             => $@"{Url}auth/authorize?grant_type=authorization_pin&client_id={_clientId}&response_type=pin";
@@ -27,20 +27,14 @@ namespace UnifiedAnime.Clients.Profiles.AniList
         private readonly string _redirectUri;
 
         public AniListProfile(string clientId, string clientSecret, string redirectUri)
+            : base(Url)
         {
-            if (clientId == null)
-                throw new ArgumentNullException(nameof(clientId));
-            if (clientSecret == null)
-                throw new ArgumentNullException(nameof(clientSecret));
-            if (redirectUri == null)
-                throw new ArgumentNullException(nameof(redirectUri));
-
-            _clientId = clientId;
-            _clientSecret = clientSecret;
-            _redirectUri = redirectUri;
+            _clientId = clientId ?? throw new ArgumentNullException(nameof(clientId));
+            _clientSecret = clientSecret ?? throw new ArgumentNullException(nameof(clientSecret));
+            _redirectUri = redirectUri ?? throw new ArgumentNullException(nameof(redirectUri));
         }
 
-        public Response AuthenticateWithPin(string pin)
+        public IRestResponse AuthenticateWithPin(string pin)
         {
             // NOTE: We use the base.MakeRequest here, because no access token should be added, when requesting and access token
             var request = base.MakeRequest("auth/access_token", Method.POST);
@@ -51,14 +45,12 @@ namespace UnifiedAnime.Clients.Profiles.AniList
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
 
             var response = Execute<Credentials>(request);
+            Credentials = response.Data;
 
-            if (response.Status == UnifiedStatus.Success)
-                Credentials = response.Data;
-
-            return response;
+            return response.RestResponse;
         }
 
-        public Response AuthenticateWithCode(string code)
+        public IRestResponse AuthenticateWithCode(string code)
         {
             // NOTE: We use the base.MakeRequest here, because no access token should be added, when requesting and access token
             var request = base.MakeRequest("auth/access_token", Method.POST);
@@ -70,14 +62,12 @@ namespace UnifiedAnime.Clients.Profiles.AniList
             request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
 
             var response = Execute<Credentials>(request);
+            Credentials = response.Data;
 
-            if (response.Status == UnifiedStatus.Success)
-                Credentials = response.Data;
-
-            return response;
+            return response.RestResponse;
         }
 
-        public Response RefreshCredentials()
+        public IRestResponse RefreshCredentials()
         {
             var response = MakeAndExecute<Credentials>("auth/access_token", Method.POST,
                 new Parameters
@@ -88,33 +78,32 @@ namespace UnifiedAnime.Clients.Profiles.AniList
                     { "code", Credentials.RefreshToken },
                 });
 
-            if (response.Status == UnifiedStatus.Success)
-                Credentials = response.Data;
+            Credentials = response.Data;
 
-            return response;
+            return response.RestResponse;
         }
 
-        public Response CreateActivityStatus(string text) => MakeAndExecute("user/activity", Method.POST, "text", text);
-        public Response CreateActivityMessage(string text, int userId) => MakeAndExecute("user/activity", Method.POST,
+        public IRestResponse CreateActivityStatus(string text) => MakeAndExecute("user/activity", Method.POST, "text", text);
+        public IRestResponse CreateActivityMessage(string text, int userId) => MakeAndExecute("user/activity", Method.POST,
             new Parameters
             {
                 { "text", text },
                 { "messenger_id", userId }
             });
 
-        public Response CreateActivityReply(string text, int activityId) => MakeAndExecute("user/activity", Method.POST,
+        public IRestResponse CreateActivityReply(string text, int activityId) => MakeAndExecute("user/activity", Method.POST,
             new Parameters
             {
                 { "text", text },
                 { "reply_id", activityId },
             });
 
-        public Response RemoveActivity(int activityId) => MakeAndExecute("user/activity", Method.DELETE, "id", activityId);
-        public Response RemoveActivityReply(int replyId) => MakeAndExecute("user/activity/reply", Method.DELETE, "id", replyId);
-        public Response ToggleFollow(int userId) => MakeAndExecute("user/follow", Method.POST, "id", userId);
-        public Response<Anime[]> GetAiringAnimes(int limit) => MakeAndExecute<Anime[]>("user/airing", Method.GET, "limit", limit);
+        public IRestResponse RemoveActivity(int activityId) => MakeAndExecute("user/activity", Method.DELETE, "id", activityId);
+        public IRestResponse RemoveActivityReply(int replyId) => MakeAndExecute("user/activity/reply", Method.DELETE, "id", replyId);
+        public IRestResponse ToggleFollow(int userId) => MakeAndExecute("user/follow", Method.POST, "id", userId);
+        public (Anime[] Animes, IRestResponse RestResponse) GetAiringAnimes(int limit) => MakeAndExecute<Anime[]>("user/airing", Method.GET, "limit", limit);
 
-        public Response CreateAnimeEntry(
+        public IRestResponse CreateAnimeEntry(
             int id,
             AnimeEntryStatus listStatus,
             int score, // TODO: Maybe change to some more advanced class, or something
@@ -130,7 +119,7 @@ namespace UnifiedAnime.Clients.Profiles.AniList
                 advancedRatingScores, customLists, hiddenDefault);
         }
 
-        public Response EditAnimeEntry(
+        public IRestResponse EditAnimeEntry(
             int id,
             AnimeEntryStatus listStatus,
             int score, // TODO: Maybe change to some more advanced class, or something
@@ -146,7 +135,7 @@ namespace UnifiedAnime.Clients.Profiles.AniList
                 advancedRatingScores, customLists, hiddenDefault);
         }
 
-        private Response CreateOrEditAnimeEntry(
+        private IRestResponse CreateOrEditAnimeEntry(
             Method restMethod, 
             int id, 
             AnimeEntryStatus listStatus, 
@@ -173,7 +162,7 @@ namespace UnifiedAnime.Clients.Profiles.AniList
                 });
         }
 
-        public Response CreateMangaEntry(
+        public IRestResponse CreateMangaEntry(
             int id,
             MangaEntryStatus listStatus,
             int score, // TODO: Maybe change to some more advanced class, or something
@@ -189,7 +178,7 @@ namespace UnifiedAnime.Clients.Profiles.AniList
                 notes, advancedRatingScores, customLists, hiddenDefault);
         }
 
-        public Response EditAnimeEntry(
+        public IRestResponse EditAnimeEntry(
             int id,
             MangaEntryStatus listStatus,
             int score, // TODO: Maybe change to some more advanced class, or something
@@ -205,7 +194,7 @@ namespace UnifiedAnime.Clients.Profiles.AniList
                 notes, advancedRatingScores, customLists, hiddenDefault);
         }
 
-        private Response CreateOrEditMangaEntry(
+        private IRestResponse CreateOrEditMangaEntry(
             Method restMethod,
             int id,
             MangaEntryStatus listStatus,
@@ -234,21 +223,21 @@ namespace UnifiedAnime.Clients.Profiles.AniList
                 });
         }
         
-        public Response RemoveAnimeEntry(int id) => MakeAndExecute($"animelist/{id}", Method.DELETE);
-        public Response RemoveMangaEntry(int id) => MakeAndExecute($"mangalist/{id}", Method.DELETE);
-        public Response ToggleFavouriteAnime(int id) => MakeAndExecute("anime/favourite", Method.POST, "id", id);
-        public Response ToggleFavouriteManga(int id) => MakeAndExecute("manga/favourite", Method.POST, "id", id);
-        public Response ToggleFavouriteCharacter(int id) => MakeAndExecute("character/favourite", Method.POST, "id", id);
-        public Response ToggleFavouriteStaff(int id) => MakeAndExecute("staff/favourite", Method.POST, "id", id);
+        public IRestResponse RemoveAnimeEntry(int id) => MakeAndExecute($"animelist/{id}", Method.DELETE);
+        public IRestResponse RemoveMangaEntry(int id) => MakeAndExecute($"mangalist/{id}", Method.DELETE);
+        public IRestResponse ToggleFavouriteAnime(int id) => MakeAndExecute("anime/favourite", Method.POST, "id", id);
+        public IRestResponse ToggleFavouriteManga(int id) => MakeAndExecute("manga/favourite", Method.POST, "id", id);
+        public IRestResponse ToggleFavouriteCharacter(int id) => MakeAndExecute("character/favourite", Method.POST, "id", id);
+        public IRestResponse ToggleFavouriteStaff(int id) => MakeAndExecute("staff/favourite", Method.POST, "id", id);
 
-        public Response RateAnimeReview(int id, ReviewRating rating) => MakeAndExecute("anime/review/rate", Method.POST,
+        public IRestResponse RateAnimeReview(int id, ReviewRating rating) => MakeAndExecute("anime/review/rate", Method.POST,
             new Parameters
             {
                 { "id", id },
                 { "rating", (int)rating },
             });
 
-        public Response RateMangaReview(int id, ReviewRating rating)
+        public IRestResponse RateMangaReview(int id, ReviewRating rating)
         {
             var request = MakeRequest("manga/review/rate", Method.POST);
             request.AddParameter("id", id);
@@ -257,10 +246,10 @@ namespace UnifiedAnime.Clients.Profiles.AniList
             return Execute(request);
         }
 
-        public Response CreateAnimeReview(int id, string text, string summary, bool isPrivate, int score) => CreateOrEditAnimeReview(Method.POST, id, text, summary, isPrivate, score);
-        public Response EditAnimeReview(int id, string text, string summary, bool isPrivate, int score) => CreateOrEditAnimeReview(Method.PUT, id, text, summary, isPrivate, score);
+        public IRestResponse CreateAnimeReview(int id, string text, string summary, bool isPrivate, int score) => CreateOrEditAnimeReview(Method.POST, id, text, summary, isPrivate, score);
+        public IRestResponse EditAnimeReview(int id, string text, string summary, bool isPrivate, int score) => CreateOrEditAnimeReview(Method.PUT, id, text, summary, isPrivate, score);
 
-        private Response CreateOrEditAnimeReview(Method restMethod, int id, string text, string summary, bool isPrivate,
+        private IRestResponse CreateOrEditAnimeReview(Method restMethod, int id, string text, string summary, bool isPrivate,
             int score) => MakeAndExecute("anime/review", restMethod,
                 new Parameters
                 {
@@ -271,10 +260,10 @@ namespace UnifiedAnime.Clients.Profiles.AniList
                     { "score", score },
                 });
 
-        public Response CreateMangaReview(int id, string text, string summary, bool isPrivate, int score) => CreateOrEditMangaReview(Method.POST, id, text, summary, isPrivate, score);
-        public Response EditMangaReview(int id, string text, string summary, bool isPrivate, int score) => CreateOrEditMangaReview(Method.PUT, id, text, summary, isPrivate, score);
+        public IRestResponse CreateMangaReview(int id, string text, string summary, bool isPrivate, int score) => CreateOrEditMangaReview(Method.POST, id, text, summary, isPrivate, score);
+        public IRestResponse EditMangaReview(int id, string text, string summary, bool isPrivate, int score) => CreateOrEditMangaReview(Method.PUT, id, text, summary, isPrivate, score);
 
-        private Response CreateOrEditMangaReview(Method restMethod, int id, string text, string summary, bool isPrivate, 
+        private IRestResponse CreateOrEditMangaReview(Method restMethod, int id, string text, string summary, bool isPrivate, 
             int score) => MakeAndExecute("manga/review", restMethod,
                 new Parameters
                 {
@@ -285,10 +274,10 @@ namespace UnifiedAnime.Clients.Profiles.AniList
                     { "score", score },
                 });
 
-        public Response RemoveAnimeReview(int id) => MakeAndExecute("anime/review", Method.DELETE, "id", id);
-        public Response RemoveMangaReview(int id) => MakeAndExecute("manga/review", Method.DELETE, "id", id);
+        public IRestResponse RemoveAnimeReview(int id) => MakeAndExecute("anime/review", Method.DELETE, "id", id);
+        public IRestResponse RemoveMangaReview(int id) => MakeAndExecute("manga/review", Method.DELETE, "id", id);
 
-        public Response CreateThread(string title, string body, IEnumerable<int> tags, IEnumerable<int> tagsAnime,
+        public IRestResponse CreateThread(string title, string body, IEnumerable<int> tags, IEnumerable<int> tagsAnime,
             IEnumerable<int> tagsManga) => MakeAndExecute("forum/thread", Method.POST,
             new Parameters
             {
@@ -299,7 +288,7 @@ namespace UnifiedAnime.Clients.Profiles.AniList
                 { "tags_manga", string.Join(",", tagsManga) }
             });
 
-        public Response EditThread(int id, string title, string body, IEnumerable<int> tags, IEnumerable<int> tagsAnime,
+        public IRestResponse EditThread(int id, string title, string body, IEnumerable<int> tags, IEnumerable<int> tagsAnime,
             IEnumerable<int> tagsManga) => MakeAndExecute("forum/thread", Method.PUT,
             new Parameters
             {
@@ -311,12 +300,12 @@ namespace UnifiedAnime.Clients.Profiles.AniList
                 { "tags_manga", string.Join(",", tagsManga) }
             });
 
-        public Response DeleteThread(int id) => MakeAndExecute($"forum/thread/{id}", Method.DELETE);
+        public IRestResponse DeleteThread(int id) => MakeAndExecute($"forum/thread/{id}", Method.DELETE);
 
-        public Response ToggleThreadSubscription(int id)
+        public IRestResponse ToggleThreadSubscription(int id)
             => MakeAndExecute("forum/comment/subscribe", Method.POST, "thread_id", id);
 
-        public Response CreateThreadComment(int threadId, string comment, int replyId)
+        public IRestResponse CreateThreadComment(int threadId, string comment, int replyId)
             => MakeAndExecute("forum/comment", Method.POST,
                 new Parameters
                 {
@@ -325,7 +314,7 @@ namespace UnifiedAnime.Clients.Profiles.AniList
                     { "reply_id", replyId }
                 });
 
-        public Response EditThreadComment(int id, string comment) => MakeAndExecute("forum/comment", Method.PUT,
+        public IRestResponse EditThreadComment(int id, string comment) => MakeAndExecute("forum/comment", Method.PUT,
             new Parameters
             {
                 { "id", id },

@@ -6,6 +6,7 @@ using UnifiedAnime.Clients.Browsers.AniList;
 using UnifiedAnime.Data.AniList;
 using UnifiedAnime.Data.Common;
 using UnifiedAnime.Tests.Properties;
+using System.Net;
 
 namespace UnifiedAnime.Tests.Browsers
 {
@@ -17,22 +18,21 @@ namespace UnifiedAnime.Tests.Browsers
         public AniListBrowserTests()
         {
             Browser = new AniListBrowser(Resources.AniListClientId, Resources.AniListClientSecret);
-            Browser.Authorize();
+            Browser.RefreshCredentials();
         }
 
         [Test()]
         public void AniListBrowserTest()
         {
             var browser = new AniListBrowser(Resources.AniListClientId, Resources.AniListClientSecret);
-            Assert.AreEqual("https://anilist.co/api/", browser.Url);
         }
 
         [Test()]
         public void AuthenticateTest()
         {
             var browser = new AniListBrowser(Resources.AniListClientId, Resources.AniListClientSecret);
-            var response = browser.Authorize();
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
+            var response = browser.RefreshCredentials();
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
         
         [TestCase("UnifiedAnimeTestUser")]
@@ -40,10 +40,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetUserTest(object displayName)
         {
             var response = Browser.GetUser(displayName.ToString());
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.User);
 
-            var user = response.Data;
+            var user = response.User;
             Assert.AreEqual("This is a test user for the library UnifiedAnime:\nhttps://github.com/Hejsil/UnifiedAnime", user.About);
             Assert.AreEqual(true, user.AdultContent);
             Assert.AreEqual(true, user.AdvancedRating);
@@ -75,10 +75,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetActivityTest(object displayName)
         {
             var response = Browser.GetActivity(displayName.ToString());
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Activities);
 
-            var activities = response.Data;
+            var activities = response.Activities;
             Assert.AreEqual(16, activities.Length);
 
             // TODO: This will be hard to test, because the activity might change all the time,
@@ -90,10 +90,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetFollowersTest(object displayName)
         {
             var response = Browser.GetFollowers(displayName.ToString());
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Users);
 
-            var followers = response.Data;
+            var followers = response.Users;
             Assert.AreEqual(1, followers.Length);
             var follower = followers[0];
             Assert.AreEqual("hejsil", follower.DisplayName);
@@ -106,10 +106,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetFollowingTest(object displayName)
         {
             var response = Browser.GetFollowing(displayName.ToString());
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Users);
 
-            var followers = response.Data;
+            var followers = response.Users;
             Assert.AreEqual(1, followers.Length);
             var follower = followers[0];
             Assert.AreEqual("hejsil", follower.DisplayName);
@@ -122,10 +122,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetFavouritesTest(object displayName)
         {
             var response = Browser.GetFavourites(displayName.ToString());
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Favorites);
 
-            var favorites = response.Data;
+            var favorites = response.Favorites;
             Assert.AreEqual(1, favorites.Anime.Length);
             Assert.Null(favorites.Manga);
             Assert.Null(favorites.Character);
@@ -141,10 +141,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void SearchUserTest()
         {
             var response = Browser.SearchUser("UnifiedAnimeTestUser");
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Users);
 
-            var users = response.Data;
+            var users = response.Users;
             Assert.AreEqual(1, users.Length);
             var user = users[0];
             Assert.AreEqual("UnifiedAnimeTestUser", user.DisplayName);
@@ -185,16 +185,16 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetAnimelistTest(object displayName)
         {
             var response = Browser.GetAnimelist(displayName.ToString());
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
-            Assert.NotNull(response.Data.AnimeList);
-            Assert.NotNull(response.Data.AnimeList.Completed);
-            Assert.NotNull(response.Data.AnimeList.Dropped);
-            Assert.NotNull(response.Data.AnimeList.OnHold);
-            Assert.NotNull(response.Data.AnimeList.PlanToWatch);
-            Assert.NotNull(response.Data.AnimeList.Watching);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.UserWithAnimeList);
+            Assert.NotNull(response.UserWithAnimeList.AnimeList);
+            Assert.NotNull(response.UserWithAnimeList.AnimeList.Completed);
+            Assert.NotNull(response.UserWithAnimeList.AnimeList.Dropped);
+            Assert.NotNull(response.UserWithAnimeList.AnimeList.OnHold);
+            Assert.NotNull(response.UserWithAnimeList.AnimeList.PlanToWatch);
+            Assert.NotNull(response.UserWithAnimeList.AnimeList.Watching);
 
-            var animelist = response.Data.AnimeList;
+            var animelist = response.UserWithAnimeList.AnimeList;
             
             Assert.AreEqual(1, animelist.Completed.Length);
             Assert.AreEqual(1, animelist.Dropped.Length);
@@ -311,16 +311,16 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetMangalistTest(object displayName)
         {
             var response = Browser.GetMangalist(displayName.ToString());
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
-            Assert.NotNull(response.Data.MangaList);
-            Assert.NotNull(response.Data.MangaList.Completed);
-            Assert.NotNull(response.Data.MangaList.Dropped);
-            Assert.NotNull(response.Data.MangaList.OnHold);
-            Assert.NotNull(response.Data.MangaList.PlanToRead);
-            Assert.NotNull(response.Data.MangaList.Reading);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.UserWithMangaList);
+            Assert.NotNull(response.UserWithMangaList.MangaList);
+            Assert.NotNull(response.UserWithMangaList.MangaList.Completed);
+            Assert.NotNull(response.UserWithMangaList.MangaList.Dropped);
+            Assert.NotNull(response.UserWithMangaList.MangaList.OnHold);
+            Assert.NotNull(response.UserWithMangaList.MangaList.PlanToRead);
+            Assert.NotNull(response.UserWithMangaList.MangaList.Reading);
 
-            var mangalist = response.Data.MangaList;
+            var mangalist = response.UserWithMangaList.MangaList;
 
             Assert.AreEqual(1, mangalist.Completed.Length);
             Assert.AreEqual(1, mangalist.Dropped.Length);
@@ -414,10 +414,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void BrowseAnimeTest(int year, Season season, MediaType type, SortingMethod sortingMethod, params string[] firstAnimes)
         {
             var response = Browser.BrowseAnime(year: year, season: season, type: type, sortingMethod: sortingMethod);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Animes);
 
-            var animes = response.Data;
+            var animes = response.Animes;
             Assert.NotNull(animes);
 
             for (var i = 0; i < firstAnimes.Length; i++)
@@ -436,10 +436,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void BrowseMangaTest(int year, MediaType type, SortingMethod sortingMethod, params string[] firstMangas)
         {
             var response = Browser.BrowseManga(year: year, type: type, sortingMethod: sortingMethod);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Mangas);
 
-            var mangas = response.Data;
+            var mangas = response.Mangas;
             Assert.NotNull(mangas);
 
             for (var i = 0; i < firstMangas.Length; i++)
@@ -457,10 +457,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void SearchAnimeTest(string animeName, params string[] resultNames)
         {
             var response = Browser.SearchAnime(animeName);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Animes);
 
-            var animes = response.Data;
+            var animes = response.Animes;
             Assert.NotNull(animes);
 
             foreach (var result in resultNames)
@@ -478,10 +478,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void SearchMangaTest(string mangaName, params string[] resultNames)
         {
             var response = Browser.SearchManga(mangaName);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Mangas);
 
-            var mangas = response.Data;
+            var mangas = response.Mangas;
             Assert.NotNull(mangas);
 
             foreach (var result in resultNames)
@@ -499,10 +499,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void SearchCharacterTest(string characterName, params string[] resultNames)
         {
             var response = Browser.SearchCharacter(characterName);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Characters);
 
-            var characters = response.Data;
+            var characters = response.Characters;
             Assert.NotNull(characters);
 
             foreach (var result in resultNames)
@@ -518,10 +518,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void SearchStaffTest(string staffName, params string[] resultNames)
         {
             var response = Browser.SearchStaff(staffName);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Staff);
 
-            var staff = response.Data;
+            var staff = response.Staff;
             Assert.NotNull(staff);
 
             foreach (var result in resultNames)
@@ -536,10 +536,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void SearchStudioTest(string studioName, params string[] resultNames)
         {
             var response = Browser.SearchStudio(studioName);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Studios);
 
-            var studios = response.Data;
+            var studios = response.Studios;
             Assert.NotNull(studios);
 
             foreach (var result in resultNames)
@@ -553,10 +553,10 @@ namespace UnifiedAnime.Tests.Browsers
         {
             // HACK: Don't really know how to test this, as thread are ever changing
             var response = Browser.SearchThread("Attack On Titan");
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Threads);
 
-            var threads = response.Data;
+            var threads = response.Threads;
             Assert.NotNull(threads);
             // HACK: We will just assume, for now, that there is always at least one thread about Attack On Titan
             Assert.Greater(threads.Length, 0);
@@ -566,10 +566,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetStaffTest()
         {
             var response = Browser.GetStaff(95185);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Staff);
 
-            var staff = response.Data;
+            var staff = response.Staff;
             Assert.NotNull(staff);
 
             //Assert.AreEqual(, staff.Dob); TODO: Figure these out
@@ -591,10 +591,10 @@ namespace UnifiedAnime.Tests.Browsers
         {
             // HACK: What difference is this from GetStaff?
             var response = Browser.GetStaffPage(95185);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Staff);
 
-            var staff = response.Data;
+            var staff = response.Staff;
             Assert.NotNull(staff);
 
             //Assert.AreEqual(, staff.Dob); TODO: Figure these out
@@ -615,10 +615,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetStudioTest()
         {
             var response = Browser.GetStudio(2);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Studio);
 
-            var studio = response.Data;
+            var studio = response.Studio;
             Assert.NotNull(studio);
 
             //Assert.AreEqual(, studio.MainStudio); TODO: Figure these out
@@ -631,10 +631,10 @@ namespace UnifiedAnime.Tests.Browsers
         {
             // HACK: What difference is this from GetStudio?
             var response = Browser.GetStudioPage(2);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Studio);
 
-            var studio = response.Data;
+            var studio = response.Studio;
             Assert.NotNull(studio);
 
             //Assert.AreEqual(, //studio.MainStudio); TODO: Figure these out
@@ -646,10 +646,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetAnimeReviewTest()
         {
             var response = Browser.GetAnimeReview(2131);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Review);
 
-            var review = response.Data;
+            var review = response.Review;
 
             Assert.AreEqual("Sound! Euphonium 2", review.Anime.TitleEnglish);
             //Assert.AreEqual(2016", review.Date, "Dec 29); // TODO: Fix date datatype
@@ -668,10 +668,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetMangaReviewTest()
         {
             var response = Browser.GetMangaReview(2116);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Review);
 
-            var review = response.Data;
+            var review = response.Review;
 
             Assert.AreEqual("Evil Blade", review.Manga.TitleEnglish);
             //Assert.AreEqual(2016", review.Date, "Dec 29); // TODO: Fix date datatype
@@ -690,9 +690,9 @@ namespace UnifiedAnime.Tests.Browsers
         {
             // 2167 is Clannad
             var response = Browser.GetAnimeReviews(2167);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
-            Assert.Greater(response.Data.Length, 0);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Reviews);
+            Assert.Greater(response.Reviews.Length, 0);
             // TODO: Maybe more
         }
 
@@ -701,9 +701,9 @@ namespace UnifiedAnime.Tests.Browsers
         {
             // 30002 is Evil Blade
             var response = Browser.GetMangaReviews(30070);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
-            Assert.Greater(response.Data.Length, 0);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Reviews);
+            Assert.Greater(response.Reviews.Length, 0);
             // TODO: Maybe more
         }
 
@@ -712,10 +712,10 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetUserReviewsTest(object displayName)
         {
             var response = Browser.GetUserReviews(displayName.ToString());
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
-            Assert.NotNull(response.Data.AnimeReviews);
-            Assert.NotNull(response.Data.MangaReviews);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Review);
+            Assert.NotNull(response.Review.AnimeReviews);
+            Assert.NotNull(response.Review.MangaReviews);
             // TODO: Maybe more
         }
 
@@ -723,8 +723,8 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetRecentThreadsTest()
         {
             var response = Browser.GetRecentThreads(0);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Feed);
             // TODO: Maybe more
         }
 
@@ -732,8 +732,8 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetNewThreadsTest()
         {
             var response = Browser.GetNewThreads(0);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Feed);
             // TODO: Maybe more
         }
 
@@ -741,8 +741,8 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetThreadsByTagTest()
         {
             var response = Browser.GetThreadsByTag(0);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Feed);
             // TODO: Maybe more
         }
 
@@ -750,8 +750,8 @@ namespace UnifiedAnime.Tests.Browsers
         public void GetThreadTest()
         {
             var response = Browser.GetThread(1802);
-            Assert.AreEqual(UnifiedStatus.Success, response.Status);
-            Assert.NotNull(response.Data);
+            Assert.AreEqual(HttpStatusCode.OK, response.RestResponse.StatusCode);
+            Assert.NotNull(response.Feed);
             // TODO: Maybe more
         }
     }
