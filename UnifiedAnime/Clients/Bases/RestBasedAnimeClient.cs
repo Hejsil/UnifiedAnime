@@ -10,8 +10,8 @@ namespace UnifiedAnime.Clients.Bases
     public abstract class RestBasedAnimeClient
     {
         private readonly RestClient _client;
-        
-        public RestBasedAnimeClient(string url)
+
+        protected RestBasedAnimeClient(string url)
         {
             _client = new RestClient(url);
         }
@@ -45,12 +45,18 @@ namespace UnifiedAnime.Clients.Bases
         protected (T Data, IRestResponse RestResponse) Execute<T>(IRestRequest request)
         {
             var response = Execute(request);
-            var data = JsonConvert.DeserializeObject<T>(response.Content,
+            var data = default(T);
+
+            try
+            {
+                data = JsonConvert.DeserializeObject<T>(response.Content,
                     new JsonSerializerSettings
                     {
                         NullValueHandling = NullValueHandling.Ignore,
                         MissingMemberHandling = MissingMemberHandling.Ignore
                     });
+            }
+            catch { }
 
             return (data, response);
         }
