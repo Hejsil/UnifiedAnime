@@ -25,11 +25,10 @@
 //SOFTWARE.
 #endregion
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace MoreCollections
+namespace UnifiedAnime.Collections
 {
     //Taken from: http://stackoverflow.com/questions/10966331/two-way-bidirectional-dictionary-in-c" and modified.
     /// <summary>
@@ -111,7 +110,7 @@ namespace MoreCollections
         private readonly Dictionary<T2, T1> _reverse = new Dictionary<T2, T1>();
 
         /// <summary>
-        /// Initializes a new instance of <see cref="MoreCollections.Map{T1, T2}"/>.
+        /// Initializes a new instance of <see cref="Map{T1,T2}"/>.
         /// </summary>
         public Map()
         {

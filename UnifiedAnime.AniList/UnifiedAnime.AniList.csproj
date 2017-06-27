@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{47922C5C-0464-4186-AA2A-F0B9165BC176}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UnifiedAnime.AniList</RootNamespace>
+    <AssemblyName>UnifiedAnime.AniList</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AniListBrowser.cs" />
+    <Compile Include="AniListProfile.cs" />
+    <Compile Include="Converters\ActivityTypeMapper.cs" />
+    <Compile Include="Converters\AnimeEntryStatusMapper.cs" />
+    <Compile Include="Converters\AnimeListConverter.cs" />
+    <Compile Include="Converters\AnimeSourceMapper.cs" />
+    <Compile Include="Converters\FullDateTimeConverter.cs" />
+    <Compile Include="Converters\FuzzyDatesConverter.cs" />
+    <Compile Include="Converters\GenreMapper.cs" />
+    <Compile Include="Converters\IntSeasonMapper.cs" />
+    <Compile Include="Converters\MangaEntryStatusMapper.cs" />
+    <Compile Include="Converters\MangaListConverter.cs" />
+    <Compile Include="Converters\MediaTypeMapper.cs" />
+    <Compile Include="Converters\NullableDateTimeConverter.cs" />
+    <Compile Include="Converters\SeasonAndYearConveter.cs" />
+    <Compile Include="Converters\SeasonMapper.cs" />
+    <Compile Include="Converters\SeriesTypeMapper.cs" />
+    <Compile Include="Converters\SortMapper.cs" />
+    <Compile Include="Converters\ThreadSearchConverter.cs" />
+    <Compile Include="Converters\TitleLanguageMapper.cs" />
+    <Compile Include="Model\Activity.cs" />
+    <Compile Include="Model\ActivityType.cs" />
+    <Compile Include="Model\AniListObject.cs" />
+    <Compile Include="Model\AniListThread.cs" />
+    <Compile Include="Model\Anime.cs" />
+    <Compile Include="Model\AnimeEntry.cs" />
+    <Compile Include="Model\AnimeList.cs" />
+    <Compile Include="Model\AnimeReview.cs" />
+    <Compile Include="Model\AnimeStatusDistribution.cs" />
+    <Compile Include="Model\BigUser.cs" />
+    <Compile Include="Model\BigUserAnimeList.cs" />
+    <Compile Include="Model\BigUserMangaList.cs" />
+    <Compile Include="Model\Character.cs" />
+    <Compile Include="Model\Comment.cs" />
+    <Compile Include="Model\Credentials.cs" />
+    <Compile Include="Model\Favorites.cs" />
+    <Compile Include="Model\Feed.cs" />
+    <Compile Include="Model\Genre.cs" />
+    <Compile Include="Model\ListOrder.cs" />
+    <Compile Include="Model\ListStats.cs" />
+    <Compile Include="Model\Manga.cs" />
+    <Compile Include="Model\MangaEntry.cs" />
+    <Compile Include="Model\MangaList.cs" />
+    <Compile Include="Model\MangaReview.cs" />
+    <Compile Include="Model\MangaStatusDistribution.cs" />
+    <Compile Include="Model\MediaType.cs" />
+    <Compile Include="Model\PageData.cs" />
+    <Compile Include="Model\Review.cs" />
+    <Compile Include="Model\ReviewRating.cs" />
+    <Compile Include="Model\ScoreDistribution.cs" />
+    <Compile Include="Model\ScoreDistributions.cs" />
+    <Compile Include="Model\ScoreSystem.cs" />
+    <Compile Include="Model\SeasonAndYear.cs" />
+    <Compile Include="Model\SeriesEntry.cs" />
+    <Compile Include="Model\SeriesType.cs" />
+    <Compile Include="Model\SmallAnime.cs" />
+    <Compile Include="Model\SmallCharacter.cs" />
+    <Compile Include="Model\SmallManga.cs" />
+    <Compile Include="Model\SmallSeries.cs" />
+    <Compile Include="Model\SmallStaff.cs" />
+    <Compile Include="Model\SmallUser.cs" />
+    <Compile Include="Model\SortingMethod.cs" />
+    <Compile Include="Model\Staff.cs" />
+    <Compile Include="Model\Stats.cs" />
+    <Compile Include="Model\StatusDistributions.cs" />
+    <Compile Include="Model\Studio.cs" />
+    <Compile Include="Model\Tag.cs" />
+    <Compile Include="Model\TaggedAnime.cs" />
+    <Compile Include="Model\TaggedManga.cs" />
+    <Compile Include="Model\TaggedObject.cs" />
+    <Compile Include="Model\User.cs" />
+    <Compile Include="Model\UserReviews.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UnifiedAnime\UnifiedAnime.csproj">
+      <Project>{ed5c942e-52e3-4fad-9efa-b59092ec0fd3}</Project>
+      <Name>UnifiedAnime</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

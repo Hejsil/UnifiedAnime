@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="UnifiedAnime.WPF.Views.SearchControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UnifiedAnime.WPF.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Grid>
+        <Grid Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <materialDesign:PackIcon 
+                        Kind="Magnify" 
+                        Foreground="{Binding ElementName=SearchBox, Path=BorderBrush}" 
+                        VerticalAlignment="Stretch" 
+                        Width="24"/>
+                <TextBox 
+                        Name="SearchBox" 
+                        Grid.Column="1" 
+                        materialDesign:HintAssist.Hint="Flip Flappers"
+                        KeyDown="SearchBox_OnKeyDown"/>
+            </Grid>
+            <Border BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="0 0 0 1" />
+
+            <ListView Grid.Row = "1" ItemsSource="{Binding Animes}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Image Source="{Binding ImageUrl}" Width="220" Height="312"></Image>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</UserControl>
+

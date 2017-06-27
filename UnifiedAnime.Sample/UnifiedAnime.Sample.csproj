@@ -1,20 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ED5C942E-52E3-4FAD-9EFA-B59092EC0FD3}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnifiedAnime</RootNamespace>
-    <AssemblyName>UnifiedAnime</AssemblyName>
+    <ProjectGuid>{32A0E14E-1E76-4E60-9F41-5CADE50FC478}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>UnifiedAnime.Sample</RootNamespace>
+    <AssemblyName>UnifiedAnime.Sample</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,12 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,37 +45,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bases\Parameters.cs" />
-    <Compile Include="Bases\Reponse.cs" />
-    <Compile Include="Bases\RestBasedAnimeClient.cs" />
-    <Compile Include="IAnimeProfile.cs" />
-    <Compile Include="Collections\Map.cs" />
-    <Compile Include="Model\AnimeAgeRating.cs" />
-    <Compile Include="Model\AnimeSource.cs" />
-    <Compile Include="Model\AnimeStatus.cs" />
-    <Compile Include="Model\AnimeEntryStatus.cs" />
-    <Compile Include="Model\MangaEntryStatus.cs" />
-    <Compile Include="Model\Season.cs" />
-    <Compile Include="Model\ShowType.cs" />
-    <Compile Include="Model\TitleLanguage.cs" />
-    <Compile Include="Model\IAnimeEntry.cs" />
-    <Compile Include="Model\IAnimeInfo.cs" />
-    <Compile Include="IAnimeBrowser.cs" />
-    <Compile Include="Converters\TypeToTypeMapper.cs" />
-    <Compile Include="Converters\NewsoftJsonSerializer.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Converters\UnixTimestampConveter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\UnifiedAnime.AniList\UnifiedAnime.AniList.csproj">
+      <Project>{47922c5c-0464-4186-aa2a-f0b9165bc176}</Project>
+      <Name>UnifiedAnime.AniList</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UnifiedAnime\UnifiedAnime.csproj">
+      <Project>{ed5c942e-52e3-4fad-9efa-b59092ec0fd3}</Project>
+      <Name>UnifiedAnime</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
