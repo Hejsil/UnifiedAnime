@@ -33,16 +33,16 @@
             <Border BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="0 0 0 1" />
 
             <ListView Grid.Row = "1" ItemsSource="{Binding Animes}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <ListView.ItemsPanel>
+                <!--<ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel IsItemsHost="True" Orientation="Horizontal" />
                     </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
+                </ListView.ItemsPanel>-->
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <materialDesign:Card>
                             <Image Source="{Binding ImageUrl}" Width="220" Height="312"></Image>
-                        </Grid>
+                        </materialDesign:Card>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
