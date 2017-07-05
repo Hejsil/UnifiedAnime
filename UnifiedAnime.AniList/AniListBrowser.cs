@@ -120,6 +120,54 @@ namespace UnifiedAnime.AniList
         public IRestResponse<BigUserAnimeList> GetAnimelist(string displayName)
             => MakeAndExecute<BigUserAnimeList>($"user/{displayName}/animelist", Method.GET);
 
+
+        IRestResponse<IAnimeEntry[]> IAnimeBrowser.GetAnimelist(int id)
+        {
+            var response = GetAnimelist(id);
+
+            if (response.Data == null)
+                return new Response<IAnimeEntry[]>(response, null);
+
+            var animelist = response.Data.AnimeList;
+            var result = new IAnimeEntry[
+                animelist.Completed.Length +
+                animelist.Dropped.Length +
+                animelist.OnHold.Length +
+                animelist.PlanToWatch.Length +
+                animelist.Watching.Length];
+
+            // By doing this instead of making a List<IAnimeEntry> and calling add range, is that
+            // we avoid the .ToArray() that is not nessesary
+            var i = 0;
+            foreach (var entry in animelist.Completed)
+            {
+                result[i] = entry;
+                i++;
+            }
+            foreach (var entry in animelist.Dropped)
+            {
+                result[i] = entry;
+                i++;
+            }
+            foreach (var entry in animelist.OnHold)
+            {
+                result[i] = entry;
+                i++;
+            }
+            foreach (var entry in animelist.PlanToWatch)
+            {
+                result[i] = entry;
+                i++;
+            }
+            foreach (var entry in animelist.Watching)
+            {
+                result[i] = entry;
+                i++;
+            }
+
+            return new Response<IAnimeEntry[]>(response, result);
+        }
+
         /// <summary>
         /// Get all user data including the users manga list.
         /// </summary>
@@ -171,8 +219,8 @@ namespace UnifiedAnime.AniList
             Season? season = null,
             MediaType? type = null,
             AnimeStatus? status = null,
-            IEnumerable<Genre> genres = null, // TODO: Genre enum
-            IEnumerable<Genre> excludedGenres = null, // TODO: Genre enum
+            IEnumerable<Genre> genres = null, 
+            IEnumerable<Genre> excludedGenres = null,
             SortingMethod? sortingMethod = null,
             bool? airingData = null,
             bool? fullPage = null,

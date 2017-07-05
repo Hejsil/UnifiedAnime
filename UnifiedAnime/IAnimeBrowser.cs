@@ -8,5 +8,6 @@ namespace UnifiedAnime
     {
         IRestResponse<IAnimeInfo> GetAnime(int id);
         IRestResponse<IAnimeInfo[]> SearchAnime(string query);
+        IRestResponse<IAnimeEntry[]> GetAnimelist(int id);
     }
 }

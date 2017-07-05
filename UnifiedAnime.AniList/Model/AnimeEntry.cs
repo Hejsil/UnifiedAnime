@@ -4,7 +4,7 @@ using UnifiedAnime.Model;
 
 namespace UnifiedAnime.AniList.Model
 {
-    public class AnimeEntry : SeriesEntry
+    public class AnimeEntry : SeriesEntry, IAnimeEntry
     {
         [JsonProperty("list_status")]
         [JsonConverter(typeof(AnimeEntryStatusMapper))]
