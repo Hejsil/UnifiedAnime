@@ -12,21 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using UnifiedAnime.AniList;
 
-namespace UnifiedAnime.WPF
+namespace UnifiedAnime.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Plays.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Plays : UserControl
     {
-        public IAnimeBrowser Browser { get; } = new AniListBrowser(Properties.Resources.AniListID, Properties.Resources.AniListSecret);
-
-        public MainWindow()
+        public Plays()
         {
             InitializeComponent();
-            SearchControl.Browser = Browser;
         }
     }
 }

@@ -11,8 +11,8 @@ namespace UnifiedAnime.Sample
     {
         static void Main(string[] args)
         {
-            var browser = new AniListBrowser();
-            var anime = browser.GetAnime(21196);
+            //var browser = new AniListBrowser();
+            //var anime = browser.GetAnime(21196);
         }
     }
 }

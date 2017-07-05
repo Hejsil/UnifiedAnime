@@ -16,7 +16,7 @@
     <Grid>
         <dragablz:TabablzControl>
             <TabItem Header="Search">
-                <views:SearchControl></views:SearchControl>
+                <views:SearchControl x:Name="SearchControl"></views:SearchControl>
             </TabItem>
             <TabItem Header="List">
                 

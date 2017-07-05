@@ -25,7 +25,7 @@ namespace UnifiedAnime.WPF.Views
     /// </summary>
     public partial class SearchControl : UserControl, INotifyPropertyChanged
     {
-        public IAnimeBrowser Browser => ((MainWindow) Parent).Browser;
+        public IAnimeBrowser Browser { get; set; }
 
         private IAnimeInfo[] _animes;
         public IAnimeInfo[] Animes

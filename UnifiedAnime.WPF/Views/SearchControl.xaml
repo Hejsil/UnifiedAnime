@@ -12,6 +12,7 @@
         <Grid Margin="16">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid>
@@ -30,22 +31,27 @@
                         materialDesign:HintAssist.Hint="Flip Flappers"
                         KeyDown="SearchBox_OnKeyDown"/>
             </Grid>
-            <Border BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="0 0 0 1" />
+            <Border Grid.Row="1" BorderBrush="{DynamicResource MaterialDesignDivider}" BorderThickness="0 0 0 1" />
 
-            <ListView Grid.Row = "1" ItemsSource="{Binding Animes}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <!--<ListView.ItemsPanel>
+            <ScrollViewer Grid.Row="2">
+                <ItemsControl ItemsSource="{Binding Animes}">
+                    <!--<ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel IsItemsHost="True" Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>-->
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <materialDesign:Card>
-                            <Image Source="{Binding ImageUrl}" Width="220" Height="312"></Image>
-                        </materialDesign:Card>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <materialDesign:Card Margin="5" Padding="5" Height="312">
+                                <DockPanel>
+                                    <Image DockPanel.Dock="Left" Source="{Binding ImageUrl}"></Image>
+                                    <TextBox>Hello World</TextBox>
+                                </DockPanel>
+                            </materialDesign:Card>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </UserControl>

@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="UnifiedAnime.WPF.Views.Plays"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UnifiedAnime.WPF.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <materialDesign:Card Height="200" Width="200">
+        <DockPanel>
+            <materialDesign:PackIcon 
+                DockPanel.Dock="Left"
+                Kind="Magnify" 
+                Foreground="{Binding ElementName=SearchBox, Path=BorderBrush}"/>
+        </DockPanel>
+    </materialDesign:Card>
+</UserControl>
